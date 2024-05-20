@@ -11,6 +11,7 @@ class UtenteRegistrato {
     private String email;
     private String password;
     protected EventoController eventoController;
+    private static VistaEvento vistaEventoInstance; //Istanza singleton di VistaEvento
 
     //Costruttore che ha il compito di creare un nuovo Utente
     //con i suoi attributi che verranno ereditati dalle classi
@@ -19,6 +20,17 @@ class UtenteRegistrato {
         this.email = email;
         this.password = password;
         this.eventoController = new EventoController(); //Inizializza eventoController
+        //Creazione dell'istanza di VistaEvento solo se non è già stata creata
+        if (vistaEventoInstance == null) {
+            vistaEventoInstance = new VistaEvento();
+            //Aggiunta dell'osservatore solo alla prima creazione dell'istanza
+            eventoController.aggiungiOsservatore(vistaEventoInstance);
+        }
+    }
+
+    //Metodo per ottenere l'istanza singleton di VistaEvento
+    public static VistaEvento getVistaEventoInstance() {
+        return vistaEventoInstance;
     }
 
     //Metodo della classe UtenteRegistrato o delle classi che la
@@ -28,20 +40,20 @@ class UtenteRegistrato {
         List<Evento> eventi = eventoController.getListaEventi();
         // Crea la vista e la registra come osservatore
 
-        VistaEvento vistaEvento = new VistaEvento();
-        eventoController.aggiungiOsservatore(vistaEvento);
+        //Ottieni l'istanza di VistaEvento
+        VistaEvento vistaEvento = UtenteRegistrato.getVistaEventoInstance();
 
         //Controlla se è vuoto
         if (eventi.isEmpty()) {
             System.out.println("Non ci sono eventi disponibili al momento.");
-            eventoController.notificaOsservatori("Tentato accesso ad una lista vuota di eventi");
+            vistaEvento.aggiorna("Tentato accesso ad una lista vuota di eventi");
         } else {
             //Se non è vuoto stampa tutti gli eventi
             System.out.println("Eventi disponibili:");
             for (Evento evento : eventi) {
                 System.out.println(evento);
             }
-            eventoController.notificaOsservatori("Lista di eventi visualizzata con successo");
+            vistaEvento.aggiorna("Lista di eventi visualizzata con successo");
             System.out.println("Vuoi ricercare un evento specifico? (s/n)");
             Scanner scanner = new Scanner(System.in);
             String scelta = scanner.nextLine();
@@ -52,7 +64,7 @@ class UtenteRegistrato {
             while (!input) {
                 switch (scelta.toLowerCase()) {
                     case "s":
-                        eventoController.notificaOsservatori("Passaggio alla ricerca di un evento");
+                        vistaEvento.aggiorna("Passaggio alla ricerca di un evento");
                         input = true; //L'Utente ha inserito un input valido
                         //perciò mi sposto in ricercaEventi
                         //Chiamata al metodo ricercaEventi
@@ -62,7 +74,7 @@ class UtenteRegistrato {
                         //Siccome qui uscirà completamente dal metodo, non serve
                         //aggiornare input
                         System.out.println("Ritorno al menù principale");
-                        eventoController.notificaOsservatori("Ritorno al menù principale");
+                        vistaEvento.aggiorna("Ritorno al menù principale");
                         //Serve per uscire dal metodo visualizzaEventi e
                         //Tornare al menù principale
                         return; //Esci dal metodo senza andare in ricercaEventi
@@ -89,7 +101,7 @@ class UtenteRegistrato {
                 while (!inputValido) {
                     switch (risposta.toLowerCase()) {
                         case "s":
-                            eventoController.notificaOsservatori("Valido accesso alla gestione degli eventi");
+                            vistaEvento.aggiorna("Valido accesso alla gestione degli eventi");
                             inputValido = true; //L'Organizzatore ha inserito un input valido
                             //perciò mi sposto in gestioneEventi
                             //Chiamata al metodo gestioneEventi tramite cast a Organizzatore
@@ -99,7 +111,7 @@ class UtenteRegistrato {
                             //Siccome qui uscirà completamente dal metodo, non serve
                             //aggiornare inputValido
                             System.out.println("Ritorno al menù principale");
-                            eventoController.notificaOsservatori("Ritorno al menù principale");
+                            vistaEvento.aggiorna("Ritorno al menù principale");
                             //Serve per uscire dal metodo visualizzaEventi e
                             //Tornare al menù principale
                             return; //Esci dal metodo senza andare in gestioneEventi
@@ -116,6 +128,8 @@ class UtenteRegistrato {
     }
 
     public void ricercaEventi() {
+        //Ottieni l'istanza di VistaEvento
+        VistaEvento vistaEvento = UtenteRegistrato.getVistaEventoInstance();
         Scanner scanner = new Scanner(System.in);
         System.out.println("Inserisci il nome dell'evento da cercare:");
         String nomeEvento = scanner.nextLine();
@@ -125,10 +139,10 @@ class UtenteRegistrato {
         //Richiesta al programma se ha trovato qualcosa
         if (evento != null) {
             System.out.println(evento);
-            eventoController.notificaOsservatori("Ricerca eseguita con successo");
+            vistaEvento.aggiorna("Ricerca eseguita con successo");
         } else {
             System.out.println("Errore: Evento non trovato");
-            eventoController.notificaOsservatori("Errore durante la ricerca di un evento");
+            vistaEvento.aggiorna("Errore durante la ricerca di un evento");
         }
     }
 
@@ -253,6 +267,8 @@ class Organizzatore extends ResponsabileBarVenditore {
     //Metodo specifico della classe Organizzatore
     //per la creazione degli eventi
     public void creazioneEventi() {
+        //Ottieni l'istanza di VistaEvento
+        VistaEvento vistaEvento = UtenteRegistrato.getVistaEventoInstance();
         //Creazione degli eventi
         Scanner scanner = new Scanner(System.in);
 
@@ -284,19 +300,21 @@ class Organizzatore extends ResponsabileBarVenditore {
 
             //Stampa il report
             System.out.println("Evento creato con successo!");
-            eventoController.notificaOsservatori("Doppio Creazione di un nuovo evento avvenuta con successo\nNome: " + nomeEvento);
+            vistaEvento.aggiorna("Creazione di un nuovo evento avvenuta con successo\nNome: " + nomeEvento);
         }catch(Exception e){
             //Se si verifica una qualsiasi eccezione nell'inserimento
             //dei dati dell'evento, notifica l'Organizzatore e la vista dell'errore
             System.out.println("Si è verificato un errore durante la creazione dell'evento.");
             System.out.println("Assicurati di inserire i dati in modo corretto, segui il formato.");
-            eventoController.notificaOsservatori("Errore durante la creazione di un nuovo evento");
+            vistaEvento.aggiorna("Errore durante la creazione di un nuovo evento");
         }
     }
 
     //Metodo specifico della classe Organizzatore
     //per la gestione degli eventi
     public void gestioneEventi() {
+        //Ottieni l'istanza di VistaEvento
+        VistaEvento vistaEvento = UtenteRegistrato.getVistaEventoInstance();
         Scanner scanner = new Scanner(System.in);
 
         while (true) {
@@ -315,7 +333,7 @@ class Organizzatore extends ResponsabileBarVenditore {
                     //Controlla se è vuota
                     if (eventi.isEmpty()){
                         System.out.println("Non ci sono eventi disponibili al momento");
-                        eventoController.notificaOsservatori("Tentato accesso ad una lista vuota di eventi");
+                        vistaEvento.aggiorna("Tentato accesso ad una lista vuota di eventi");
                         break;
                     }else{
                         modificaEvento();
@@ -327,7 +345,7 @@ class Organizzatore extends ResponsabileBarVenditore {
                     //Controlla se è vuota
                     if (eventi.isEmpty()){
                         System.out.println("Non ci sono eventi disponibili al momento");
-                        eventoController.notificaOsservatori("Tentato accesso ad una lista vuota di eventi");
+                        vistaEvento.aggiorna("Tentato accesso ad una lista vuota di eventi");
                         break;
                     }else{
                         eliminaEvento();
@@ -343,6 +361,8 @@ class Organizzatore extends ResponsabileBarVenditore {
 
     //Metodo interno al metodo gestioneEventi
     private void modificaEvento() {
+        //Ottieni l'istanza di VistaEvento
+        VistaEvento vistaEvento = UtenteRegistrato.getVistaEventoInstance();
         //Modificare un evento
         Scanner scanner = new Scanner(System.in);
         //Prende la lista degli eventi dal controller
@@ -363,7 +383,7 @@ class Organizzatore extends ResponsabileBarVenditore {
         if (sceltaEvento < 1 || sceltaEvento > eventi.size()) {
             System.out.println("Selezione non valida");
             System.out.println("Ritorno al menù di gestione degli eventi");
-            eventoController.notificaOsservatori("Tentato accesso ad un evento non esistente");
+            vistaEvento.aggiorna("Tentato accesso ad un evento non esistente");
             return; //Torna al menù di modifica degli Eventi
         }
 
@@ -397,7 +417,7 @@ class Organizzatore extends ResponsabileBarVenditore {
                 //specifica che dipenderà dalla classe Evento)
                   //Notifica l'avvenuta modifica
                   System.out.println("Nuovo nome inserito con successo");
-                  eventoController.notificaOsservatori("Modifica del nome avvenuta con successo");
+                  vistaEvento.aggiorna("Modifica del nome avvenuta con successo");
                 break;
               case 2:
                   inputValido = true; //L'Organizzatore ha inserito un input valido
@@ -408,7 +428,7 @@ class Organizzatore extends ResponsabileBarVenditore {
                 //specifica che dipenderà dalla classe Evento)
                   //Notifica l'avvenuta modifica
                   System.out.println("Nuova via inserita con successo");
-                  eventoController.notificaOsservatori("Modifica della via avvenuta con successo");
+                  vistaEvento.aggiorna("Modifica della via avvenuta con successo");
                 break;
               case 3:
                   inputValido = true; //L'Organizzatore ha inserito un input valido
@@ -426,13 +446,13 @@ class Organizzatore extends ResponsabileBarVenditore {
                         break; //Esci se la data viene inserita correttamente
                     } catch (DateTimeParseException e) {
                         System.out.println("Inserire un numero valido per la data");
-                        eventoController.notificaOsservatori("Modifica della data fallita");
+                        vistaEvento.aggiorna("Modifica della data fallita");
                     }
                 } while (true);
                 //Mostra quando la data è stata inserita con successo
                   //ed esce dal case
                 System.out.println("Nuova data inserita con successo");
-                  eventoController.notificaOsservatori("Modifica della data avvenuta con successo");
+                  vistaEvento.aggiorna("Modifica della data avvenuta con successo");
                 break;
               case 4:
                   inputValido = true; //L'Organizzatore ha inserito un input valido
@@ -450,13 +470,13 @@ class Organizzatore extends ResponsabileBarVenditore {
                         break;
                     } catch (DateTimeParseException e) {
                         System.out.println("Inserire un numero valido per l'ora di inizio.");
-                        eventoController.notificaOsservatori("Modifica dell'ora di inizio fallita");
+                        vistaEvento.aggiorna("Modifica dell'ora di inizio fallita");
                     }
                 } while (true);
                   //Mostra quando l'ora di inizio è stata inserita con
                   //successo ed esce dal case
                 System.out.println("Nuova ora di inizio inserita con successo");
-                  eventoController.notificaOsservatori("Modifica dell'ora di inizio avvenuta con successo");
+                  vistaEvento.aggiorna("Modifica dell'ora di inizio avvenuta con successo");
                 break;
               case 5:
                   inputValido = true; //L'Organizzatore ha inserito un input valido
@@ -474,20 +494,20 @@ class Organizzatore extends ResponsabileBarVenditore {
                         break;
                     } catch (DateTimeParseException e) {
                         System.out.println("Inserire un numero valido per l'ora di fine.");
-                        eventoController.notificaOsservatori("Modifica dell'ora di fine fallita");
+                        vistaEvento.aggiorna("Modifica dell'ora di fine fallita");
                     }
                 } while (true);
                   //Mostra quando l'ora di fine è stata inserita con
                   //successo ed esce dal case
                 System.out.println("Nuova ora di fine inserita con successo");
-                  eventoController.notificaOsservatori("Modifica dell'ora di fine avvenuta con successo");
+                  vistaEvento.aggiorna("Modifica dell'ora di fine avvenuta con successo");
                 break;
               case 6:
                   //Siccome qui uscirà completamente dal metodo, non serve
                   //aggiornare inputValido
                   //Caso usato per uscire dal ciclo
                 System.out.println("Ritorno al menù di gestione degli eventi");
-                  eventoController.notificaOsservatori("Ritorno al menù di gestione degli eventi");
+                  vistaEvento.aggiorna("Ritorno al menù di gestione degli eventi");
                   //Serve per uscire dal metodo modificaEvento e
                   //Tornare al menù di gestioneEvento
                 return;
@@ -500,11 +520,13 @@ class Organizzatore extends ResponsabileBarVenditore {
         }
         //Qualsiasi modifica accada, una volta avvenuta, tornerà al menù di gestioneEventi
         System.out.println("Ritorno al menù di gestione degli eventi");
-        eventoController.notificaOsservatori("Ritorno al menù di gestione degli eventi");
+        vistaEvento.aggiorna("Ritorno al menù di gestione degli eventi");
     }
 
     //Metodo interno al metodo gestioneEventi
     private void eliminaEvento() {
+        //Ottieni l'istanza di VistaEvento
+        VistaEvento vistaEvento = UtenteRegistrato.getVistaEventoInstance();
         //Eliminare un evento
         Scanner scanner = new Scanner(System.in);
         //Prende la lista degli eventi dal controller
@@ -525,7 +547,7 @@ class Organizzatore extends ResponsabileBarVenditore {
         if (sceltaEvento < 1 || sceltaEvento > eventi.size()) {
             System.out.println("Selezione non valida");
             System.out.println("Ritorno al menù di gestione degli eventi");
-            eventoController.notificaOsservatori("Tentato accesso ad un evento non esistente");
+            vistaEvento.aggiorna("Tentato accesso ad un evento non esistente");
             return; //Torna al menù di modifica degli Eventi
         }
 
@@ -547,7 +569,7 @@ class Organizzatore extends ResponsabileBarVenditore {
                     //Eliminazione confermata, rimuovi l'Evento dal "database"
                     eventi.remove(eventoDaEliminare);
                     System.out.println("Evento eliminato con successo.");
-                    eventoController.notificaOsservatori("Eliminazione dell'evento avvenuta con successo");
+                    vistaEvento.aggiorna("Eliminazione dell'evento avvenuta con successo");
 
                     //Non serve sistemare il "database" poiché utilizzando una
                     //Lista, gli Eventi successivi scalano in automatico
@@ -557,7 +579,7 @@ class Organizzatore extends ResponsabileBarVenditore {
                     //aggiornare inputValido
                     //Eliminazione annullata
                     System.out.println("Eliminazione annullata\nRitorno al menù di gestione degli eventi");
-                    eventoController.notificaOsservatori("Eliminazione annullata");
+                    vistaEvento.aggiorna("Eliminazione annullata");
                     //Serve per uscire dal metodo eliminaEvento e
                     //Tornare al menù di gestioneEvento
                     return; //Esci dal metodo senza eliminare e torna al menù di gestioneEventi
@@ -571,19 +593,21 @@ class Organizzatore extends ResponsabileBarVenditore {
         }
         //Una volta eliminato l'Evento, si tornerà al menù di gestioneEventi
         System.out.println("Ritorno al menù di gestione degli eventi");
-        eventoController.notificaOsservatori("Ritorno al menù di gestione degli eventi");
+        vistaEvento.aggiorna("Ritorno al menù di gestione degli eventi");
     }
 
     //Metodo specifico della classe Organizzatore
     //per la visualizzazione delle partecipazioni agli eventi
     public void visualizzaPartecipazioneEventi() {
+        //Ottieni l'istanza di VistaEvento
+        VistaEvento vistaEvento = UtenteRegistrato.getVistaEventoInstance();
         //Ottiene il "database" degli Eventi
         List<Evento> eventi = eventoController.getListaEventi();
 
         //Controlla se è vuoto
         if (eventi.isEmpty()) {
             System.out.println("Non ci sono eventi disponibili al momento");
-            eventoController.notificaOsservatori("Tentato accesso alla lista vuota di eventi");
+            vistaEvento.aggiorna("Tentato accesso alla lista vuota di eventi");
         } else {
             Scanner scanner = new Scanner(System.in);
             //Mostra la lista degli eventi al Organizzatore
@@ -602,7 +626,7 @@ class Organizzatore extends ResponsabileBarVenditore {
             if (sceltaEvento < 1 || sceltaEvento > eventi.size()) {
                 System.out.println("Selezione non valida");
                 System.out.println("Ritorno al menù di gestione degli eventi");
-                eventoController.notificaOsservatori("Tentato accesso ad un evento non esistente");
+                vistaEvento.aggiorna("Tentato accesso ad un evento non esistente");
                 return; //Torna al menù di modifica degli Eventi
             }
 
@@ -611,7 +635,7 @@ class Organizzatore extends ResponsabileBarVenditore {
             System.out.println("Partecipazioni all'evento " + eventoSelezionato.getNome() + ":");
             //Stampa il numero di partecipazioni al Evento selezionato
             System.out.println("Numero di partecipanti: " + eventoSelezionato.getNumPartecipanti());
-            eventoController.notificaOsservatori("Visualizzazione delle partecipazioni avvenuta con successo");
+            vistaEvento.aggiorna("Visualizzazione delle partecipazioni avvenuta con successo");
         }
     }
     //Utilizzando l'ereditarietà, non è necessario riscrivere questi metodi
@@ -814,7 +838,7 @@ class EventoController {
     //Metodo che aggiunge Evento alla lista
     public void aggiungiEvento(Evento evento) {
         listaEventi.add(evento);
-        notificaOsservatori("Aggiunto un nuovo evento con successo: " + evento.getNome());
+        //notificaOsservatori("Aggiunto un nuovo evento con successo: " + evento.getNome());
     }
 
     //Metodo che ottiene la lista
