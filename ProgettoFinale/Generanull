@@ -27,8 +27,9 @@ class UtenteRegistrato {
         //Ottiene il "database" degli Eventi
         List<Evento> eventi = eventoController.getListaEventi();
         // Crea la vista e la registra come osservatore
-        VistaEvento vista = new VistaEvento();
-        eventoController.aggiungiOsservatore(vista);
+
+        VistaEvento vistaEvento = new VistaEvento();
+        eventoController.aggiungiOsservatore(vistaEvento);
 
         //Controlla se è vuoto
         if (eventi.isEmpty()) {
@@ -234,7 +235,7 @@ class Organizzatore extends ResponsabileBarVenditore {
     public Organizzatore(String email, String password) {
         super(email, password);
         //Inizializza altri dati per Organizzatore
-        this.eventoController = eventoController;
+        this.eventoController = new EventoController();
     }
 
     //Metodo specifico della classe Organizzatore
@@ -782,6 +783,7 @@ class RegistrazioneController {
 
 //Gestisce la logica degli Eventi
 class EventoController {
+    private VistaEvento vistaEvento;
     //Creazione della lista di Eventi
     private List<Evento> listaEventi;
     //Creazione della lista di Osservatori per gli Eventi
@@ -789,8 +791,12 @@ class EventoController {
 
     //Costruttore delle liste
     public EventoController() {
-        listaEventi = new ArrayList<>();
-        osservatori = new ArrayList<>();
+        this.listaEventi = new ArrayList<>();
+        this.osservatori = new ArrayList<>();
+    }
+
+    public void setVistaEvento(VistaEvento vistaEvento) {
+        this.vistaEvento = vistaEvento;
     }
 
     // Aggiunge un osservatore all'elenco
@@ -1183,17 +1189,20 @@ class VistaRegistrazione implements RegistrazioneOsservatore {
 //Classe che contiene il metodo principale del programma
 public class Main {
     public static void main(String[] args) {
-        //Crea 3 oggetti, due per i controller e uno per la vista
+        //Crea 4 oggetti, due per i controller e due per le viste
         VistaRegistrazione vista = new VistaRegistrazione();
+        VistaEvento vistaEvento = new VistaEvento();
         RegistrazioneController controller = new RegistrazioneController(vista);
         EventoController eventoController = new EventoController();
-        //Impostazione di vista
+        //Impostazione delle viste
         controller.setVista(vista);
+        eventoController.setVistaEvento(vistaEvento);
         //Passa l'istanza della vista alla classe Registrazione
         Registrazione registrazione = Registrazione.getInstance(vista);
         //Registrazione registrazione = new Registrazione(vista);
-        //La vista viene aggiunta come osservatore del controller
+        //Le viste vengono aggiunte come osservatori dei rispettivi controller
         controller.aggiungiOsservatore(vista);
+        eventoController.aggiungiOsservatore(vistaEvento);
 
         Scanner scanner = new Scanner(System.in);
         //Implemento un boolean, che mi servirà per chiedere
