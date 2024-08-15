@@ -128,7 +128,7 @@ public class Organizzatore extends ResponsabileBarVenditore {
     }
 
     //Metodo interno al metodo gestioneEventi
-    private void modificaEvento() {
+    protected void modificaEvento() {
         //Ottieni l'istanza di VistaEvento
         VistaEvento vistaEvento = UtenteRegistrato.getVistaEventoInstance();
         //Modificare un evento
@@ -292,7 +292,7 @@ public class Organizzatore extends ResponsabileBarVenditore {
     }
 
     //Metodo interno al metodo gestioneEventi
-    private void eliminaEvento() {
+    protected void eliminaEvento() {
         //Ottieni l'istanza di VistaEvento
         VistaEvento vistaEvento = UtenteRegistrato.getVistaEventoInstance();
         //Eliminare un evento
