@@ -2,9 +2,13 @@ package Main;
 
 import java.util.*;
 
-import Evento.*;
-import Prodotto.*;
-import Registrazione.*;
+import Controller.EventoController;
+import Controller.ProdottoController;
+import Controller.RegistrazioneController;
+import Model.Registrazione;
+import Vista.VistaEvento;
+import Vista.VistaProdotto;
+import Vista.VistaRegistrazione;
 
 //Classe che contiene il metodo principale del programma
 public class Main {
