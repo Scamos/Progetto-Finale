@@ -19,8 +19,8 @@ class OrganizzatoreTest {
 
     @BeforeEach
     void setUp() {
-        organizzatore = new Organizzatore("test@example.com", "password123");
-        eventi = new ArrayList<>(); // Inizializza la lista di eventi per i test
+        organizzatore = new Organizzatore("test@esempio.com", "password123");
+        eventi = new ArrayList<>(); //Inizializza la lista di eventi per i test
     }
 
     @Test

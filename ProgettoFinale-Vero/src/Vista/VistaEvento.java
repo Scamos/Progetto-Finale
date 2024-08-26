@@ -2,7 +2,7 @@ package Vista;
 
 import Observer.EventoOsservatore;
 
-//Implementazione dell'osservatore che aggiorna la vista
+//Classe che implementa l'interfaccia dell'osservatore che aggiorna la vista: EventoOsservatore
 public class VistaEvento implements EventoOsservatore {
     private static VistaEvento instance;
 
@@ -16,9 +16,12 @@ public class VistaEvento implements EventoOsservatore {
         return instance;
     }
 
-    //Aggiorna tutti gli osservatori, in questo caso solo 1
+    //Aggiorna tutti gli osservatori
     @Override
     public void aggiorna(String messaggio) {
+        //Stampa un messaggio il quale indica che la ricezione
+        //di una notifica è avvenuta e che la vista
+        //è stata aggiornata
         System.out.println("Vista: " + messaggio);
     }
 }

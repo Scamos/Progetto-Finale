@@ -35,6 +35,11 @@ public class EventoController {
         return instance;
     }
 
+    //Getter della vista
+    public VistaEvento getVistaEvento() {
+        return vistaEvento;
+    }
+
     //Setter della vista
     public void setVistaEvento(VistaEvento vistaEvento) {
         this.vistaEvento = vistaEvento;

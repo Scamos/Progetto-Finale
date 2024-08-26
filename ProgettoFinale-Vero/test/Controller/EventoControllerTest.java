@@ -64,9 +64,9 @@ class EventoControllerTest {
         controller.setVistaEvento(vistaEvento);
 
         //Assert: Verifica che la vista evento sia stata impostata correttamente
-        //Nota: Non è presente un metodo getter per verificare, quindi questo test può essere limitato
+        //Nota: Se non fosse presente un metodo getter per verificare, questo test potrebbe essere limitato
         //a non lanciare eccezioni se non si può accedere alla vista evento.
-        //assertEquals(vistaEvento, controller.getVistaEvento()); // Questo se esistesse un getter
+        assertEquals(vistaEvento, controller.getVistaEvento());
     }
 
     //aggiungiOsservatore: Verifica che un osservatore possa essere aggiunto senza generare eccezioni.

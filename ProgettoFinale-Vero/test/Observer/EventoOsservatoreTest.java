@@ -3,6 +3,7 @@ package Observer;
 import Vista.VistaEvento;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.BeforeEach;
+import static org.junit.jupiter.api.Assertions.*;
 
 //Triple A pattern
 //Arrange: fare il setup del oggetto test ecc.
@@ -20,16 +21,43 @@ class EventoOsservatoreTest {
 
     @Test
     void aggiorna() {
-        //Arrange: Prepara il messaggio di test
-        String messaggioTest = "Evento aggiornato!";
+        //Arrange
+        String messaggio = "Evento aggiornato";
+        String outputAtteso = "Vista: " + messaggio + System.lineSeparator();
 
-        //Act: Chiama il metodo aggiorna con il messaggio di test
-        vistaEvento.aggiorna(messaggioTest);
+        //Act
+        java.io.ByteArrayOutputStream outContent = new java.io.ByteArrayOutputStream();
+        System.setOut(new java.io.PrintStream(outContent));
+        vistaEvento.aggiorna(messaggio);
 
-        //Assert: Verifica l'output (qui dovremmo verificare se il messaggio è stato stampato sulla console)
-        //Poiché la classe VistaEvento stampa il messaggio nella console, non c'è un modo diretto di verificare l'output
-        //senza modificare il design. Tuttavia, se si volesse testare il metodo senza dipendere dalla console,
-        //si potrebbe refactorare VistaEvento per salvare il messaggio e poi verificare che sia corretto.
-        //Un altro approccio è utilizzare un Mock.
+        //Assert
+        assertEquals(outputAtteso, outContent.toString());
+    }
+
+    @Test
+    void getInstanceStessaIstanza() {
+        //Arrange
+        VistaEvento primaIstanza = VistaEvento.getInstance();
+
+        //Act
+        VistaEvento secondaIstanza = VistaEvento.getInstance();
+
+        //Assert
+        assertSame(primaIstanza, secondaIstanza);
+    }
+
+    @Test
+    void aggiornaMessaggioVuoto() {
+        //Arrange
+        String messaggio = "";
+        String outputAtteso = "Vista: " + System.lineSeparator();
+
+        //Act
+        java.io.ByteArrayOutputStream outContent = new java.io.ByteArrayOutputStream();
+        System.setOut(new java.io.PrintStream(outContent));
+        vistaEvento.aggiorna(messaggio);
+
+        //Assert
+        assertEquals(outputAtteso, outContent.toString());
     }
 }
