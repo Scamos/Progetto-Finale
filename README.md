@@ -1,7 +1,10 @@
 # Progetto Finale
 
 ## Client
-Codice per il frontend scritto in Javascript, HTML e CSS
+Codice per il frontend non implementato
 
 ## Server
-Codice per il backend scritto in Java
+Codice per il backend scritto in Java (IntelliJ)
+
+## Test
+Unit test eseguiti utilizzando JUnit
