@@ -14,7 +14,6 @@ public class MainTest {
 
     private final ByteArrayOutputStream outputStreamCaptor = new ByteArrayOutputStream();
     private final PrintStream originalSystemOut = System.out;
-    //private final ByteArrayInputStream inputStreamCaptor = new ByteArrayInputStream("".getBytes());
     private final InputStream originalSystemIn = System.in;
 
     @BeforeEach
@@ -22,26 +21,6 @@ public class MainTest {
         //Reindirizza System.out per catturare l'output
         System.setOut(new PrintStream(outputStreamCaptor));
     }
-
-    /*@Test
-    public void mainRiuscito() {
-        //Simula l'input
-        String simulatedUserInput = "mariorossi@gmail.com\n1234\n8\nn\n";
-        InputStream inputStream = new ByteArrayInputStream(simulatedUserInput.getBytes());
-        System.setIn(inputStream);
-
-        //Esegui il main
-        Main.main(new String[]{});
-
-        //Cattura l'output
-        String output = outputStreamCaptor.toString();
-
-        //Verifica che l'output contenga le stringhe aspettate
-        assertTrue(output.contains("Benvenuto!"));
-        assertTrue(output.contains("Utente autenticato: mariorossi@gmail.com"));
-        assertTrue(output.contains("Logout effettuato."));
-        assertTrue(output.contains("Vuoi continuare? (s/n)"));
-    }*/
 
     @Test
     public void mainEmailNonValida() {
@@ -58,26 +37,6 @@ public class MainTest {
         //Verifica che l'output contenga le stringhe aspettate
         assertTrue(output.contains("Email non valida. Registrazione annullata."));
     }
-
-    /*@Test
-    public void mainSceltaNonValida() {
-        //Simula l'input
-        String simulatedUserInput = "mariorossi@gmail.com\n1234\n8\ninvalido\nn\n";
-        InputStream inputStream = new ByteArrayInputStream(simulatedUserInput.getBytes());
-        System.setIn(inputStream);
-
-        //Esegui il main
-        Main.main(new String[]{});
-
-        //Cattura l'output
-        String output = outputStreamCaptor.toString();
-
-        //Verifica che l'output contenga le stringhe aspettate
-        assertTrue(output.contains("Utente autenticato: mariorossi@gmail.com"));
-        assertTrue(output.contains("Logout effettuato."));
-        assertTrue(output.contains("Scelta non valida\nInserisci un valore valido"));
-        assertTrue(output.contains("Vuoi continuare? (s/n)"));
-    }*/
 
     @Test
     public void mainPasswordNonValida() {

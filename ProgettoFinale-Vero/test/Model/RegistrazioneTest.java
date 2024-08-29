@@ -99,14 +99,40 @@ class RegistrazioneTest {
     @Test
     void creaNuovoUtenteRegistrato() {
         //Arrange
-        /*String email = "nuovoutente@esempio.com";
+        String email = "nuovoutente@esempio.com";
         String password = "nuovapassword";
-        String input = "n\n8\n"; //Simula la scelta di non inserire i dati della carta e poi il logout
-        InputStream in = new ByteArrayInputStream(input.getBytes());
-        System.setIn(in);
 
-        //Act & Assert
-        assertDoesNotThrow(() -> registrazione.creaNuovoUtenteRegistrato(email, password));*/
+        //Act
+        UtenteRegistrato nuovoUtente = new UtenteRegistrato(email, password);
+        nuovoUtente.setNumeroCarta("1234567890123456");
+        nuovoUtente.setDataScadenza("12/25");
+        nuovoUtente.setNomeProprietario("John");
+        nuovoUtente.setCognomeProprietario("Doe");
+        nuovoUtente.setCvv("123");
+        nuovoUtente.setSaldo(100.00);
+
+        registrazione.getUtentiRegistrati().add(nuovoUtente);
+
+        //Assert
+        assertFalse(registrazione.verificaEmail(email, password)); //Restituisce false poiché l'email esiste
+
+        UtenteRegistrato utenteRecuperato = null;
+        for (UtenteRegistrato utente : registrazione.getUtentiRegistrati()) {
+            if (utente.getEmail().equals(email)) {
+                utenteRecuperato = utente;
+                break;
+            }
+        }
+
+        assertNotNull(utenteRecuperato);
+        assertEquals(email, utenteRecuperato.getEmail());
+        assertEquals(password, utenteRecuperato.getPassword());
+        assertEquals("1234567890123456", utenteRecuperato.getNumeroCarta());
+        assertEquals("12/25", utenteRecuperato.getDataScadenza());
+        assertEquals("John", utenteRecuperato.getNomeProprietario());
+        assertEquals("Doe", utenteRecuperato.getCognomeProprietario());
+        assertEquals("123", utenteRecuperato.getCvv());
+        assertEquals(100.00, utenteRecuperato.getSaldo(), 0.001);
     }
 
     @Test

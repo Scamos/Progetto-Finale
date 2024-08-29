@@ -5,6 +5,7 @@ import org.junit.jupiter.api.Test;
 
 import java.time.LocalDate;
 import java.time.LocalTime;
+import java.io.*;
 import java.util.*;
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -15,12 +16,14 @@ import static org.junit.jupiter.api.Assertions.*;
 class OrganizzatoreTest {
 
     private Organizzatore organizzatore;
-    private List<Evento> eventi; // Lista di eventi per il test
+    private List<Evento> eventi; //Lista di eventi per il test
+    private final ByteArrayOutputStream outputStreamCaptor = new ByteArrayOutputStream();
 
     @BeforeEach
     void setUp() {
         organizzatore = new Organizzatore("test@esempio.com", "password123");
         eventi = new ArrayList<>(); //Inizializza la lista di eventi per i test
+        System.setOut(new PrintStream(outputStreamCaptor));
     }
 
     @Test
@@ -34,8 +37,8 @@ class OrganizzatoreTest {
     @Test
     void creazioneEventi() {
         //Arrange
-        Evento evento = new Evento("Festa di compleanno", "Via Roma 10", "2024-08-20", "18:00", "23:00");
-        eventi.add(evento); // Aggiungi l'evento alla lista
+        Evento evento = new Evento("Festa di compleanno", "Via Roma 10", "2025-08-20", "18:00", "23:00");
+        eventi.add(evento); //Aggiungi l'evento alla lista
 
         //Act
         //Simula l'aggiunta dell'evento nella lista di eventi
@@ -45,6 +48,20 @@ class OrganizzatoreTest {
         assertNotNull(listaEventi);
         assertEquals(1, listaEventi.size());
         assertEquals("Festa di compleanno", listaEventi.get(0).getNome());
+    }
+
+    @Test
+    void creazioneEventiInput() {
+        //Arrange
+        String input = "Test Evento\nVia Test\n2025-12-31\n18:00\n22:00\n";
+        System.setIn(new ByteArrayInputStream(input.getBytes()));
+
+        //Act
+        organizzatore.creazioneEventi();
+
+        //Assert
+        String output = outputStreamCaptor.toString();
+        assertTrue(output.contains("Evento creato con successo"));
     }
 
     @Test
@@ -89,6 +106,22 @@ class OrganizzatoreTest {
     }
 
     @Test
+    void gestioneEventiModificaInput() {
+        //Arrange
+        Evento evento = new Evento("Test Evento", "Via Test", "2025-12-31", "18:00", "22:00");
+        organizzatore.eventoController.aggiungiEvento(evento);
+        String input = "1\n1\nNuovo Nome\n";
+        System.setIn(new ByteArrayInputStream(input.getBytes()));
+
+        //Act
+        organizzatore.modificaEvento();
+
+        //Assert
+        String output = outputStreamCaptor.toString();
+        assertTrue(output.contains("Nuovo nome inserito con successo"));
+    }
+
+    @Test
     public void gestioneEventiElimina() {
         //Arrange
         Evento evento = new Evento("Sagra del Vino", "Via del Vino 5", "2024-10-01", "12:00", "18:00");
@@ -114,6 +147,22 @@ class OrganizzatoreTest {
     }
 
     @Test
+    void gestioneEventiEliminaInput() {
+        //Arrange
+        Evento evento = new Evento("Test Evento", "Via Test", "2025-12-31", "18:00", "22:00");
+        organizzatore.eventoController.aggiungiEvento(evento);
+        String input = "1\ns\n";
+        System.setIn(new ByteArrayInputStream(input.getBytes()));
+
+        //Act
+        organizzatore.eliminaEvento();
+
+        //Assert
+        String output = outputStreamCaptor.toString();
+        assertTrue(output.contains("Evento eliminato con successo"));
+    }
+
+    @Test
     void visualizzaPartecipazioneEventi() {
         //Arrange
         Evento evento = new Evento("Maratona", "Parco Comunale", "2024-11-10", "08:00", "14:00");
@@ -126,5 +175,22 @@ class OrganizzatoreTest {
 
         //Assert
         assertEquals(1, evento.getNumPartecipanti());
+    }
+
+    @Test
+    void visualizzaPartecipazioneEventiInput() {
+        //Arrange
+        Evento evento = new Evento("Test Evento", "Via Test", "2025-12-31", "18:00", "22:00");
+        organizzatore.eventoController.aggiungiEvento(evento);
+        String input = "4\n";
+        System.setIn(new ByteArrayInputStream(input.getBytes()));
+
+        //Act
+        organizzatore.visualizzaPartecipazioneEventi();
+
+        //Assert
+        String output = outputStreamCaptor.toString();
+        assertTrue(output.contains("Partecipazioni all'evento Test Evento:"));
+        assertTrue(output.contains("Numero di partecipanti: 0"));
     }
 }

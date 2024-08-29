@@ -486,4 +486,8 @@ public class Registrazione {
             }
         }
     }
+
+    public List<UtenteRegistrato> getUtentiRegistrati() {
+        return utentiRegistrati;
+    }
 }

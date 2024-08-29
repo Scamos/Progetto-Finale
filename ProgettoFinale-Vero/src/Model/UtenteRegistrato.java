@@ -1351,7 +1351,7 @@ public class UtenteRegistrato {
     }
 
     //Metodo interno al metodo gestisciOrdini
-    private void gestisciOrdine(Ordine ordine) {
+    protected void gestisciOrdine(Ordine ordine) {
         Scanner scanner = new Scanner(System.in);
 
         //Ottiene le liste degli ordini e dei prodotti
