@@ -1,0 +1,770 @@
+
+
+
+<!DOCTYPE html>
+<html id="htmlId">
+<head>
+  <meta http-equiv="Content-Type" content="text/html;charset=windows-1252"> 
+  <title>Coverage Report > ResponsabileBarVenditore</title>
+  <style type="text/css">
+    @import "../../css/coverage.css";
+    @import "../../css/idea.min.css";
+  </style>
+  <script type="text/javascript" src="../../js/highlight.min.js"></script>
+  <script type="text/javascript" src="../../js/highlightjs-line-numbers.min.js"></script>
+</head>
+
+<body>
+<div class="content">
+<div class="breadCrumbs">
+Current scope:     <a href="../../index.html">all classes</a>
+    <span class="separator">|</span>
+    <a href="../index.html">Model</a>
+</div>
+
+<h1>Coverage Summary for Class: ResponsabileBarVenditore (Model)</h1>
+
+<table class="coverageStats">
+<tr>
+  <th class="name">Class</th>
+<th class="coverageStat 
+">
+  Class, %
+</th>
+<th class="coverageStat 
+">
+  Method, %
+</th>
+<th class="coverageStat 
+">
+  Branch, %
+</th>
+<th class="coverageStat 
+">
+  Line, %
+</th>
+</tr>
+<tr>
+  <td class="name">ResponsabileBarVenditore</td>
+<td class="coverageStat">
+  <span class="percent">
+    100%
+  </span>
+  <span class="absValue">
+    (1/1)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    91,7%
+  </span>
+  <span class="absValue">
+    (11/12)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    42,6%
+  </span>
+  <span class="absValue">
+    (60/141)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    58,5%
+  </span>
+  <span class="absValue">
+    (176/301)
+  </span>
+</td>
+</tr>
+
+</table>
+
+<br/>
+<br/>
+
+
+<pre>
+<code class="sourceCode" id="sourceCode">&nbsp;package Model;
+&nbsp;
+&nbsp;import java.util.*;
+&nbsp;
+&nbsp;import Controller.ProdottoController;
+&nbsp;import Factory.ProdottoFactory;
+&nbsp;
+&nbsp;//Classe che rappresenta un Responsabile Bar oppure un Venditore
+&nbsp;public class ResponsabileBarVenditore extends UtenteRegistrato {
+&nbsp;    //Utilizzando l&#39;ereditarietà, non è necessario riscrivere gli attributi
+&nbsp;    //già presenti in UtenteRegistrato
+&nbsp;
+&nbsp;    //Costruttore che ha il compito di creare un nuovo Responsabile Bar
+&nbsp;    //oppure un Venditore con gli attributi ereditati e volendo anche
+&nbsp;    //nuovi attributi, che saranno ereditati dalle classi che estendono
+&nbsp;    //ResponsabileBarVenditore
+&nbsp;    public ResponsabileBarVenditore(String email, String password) {
+<b class="fc">&nbsp;        super(email, password);</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    //Metodo specifico della classe ResponsabileBarVenditore o delle classi
+&nbsp;    //che la estendono per la visualizzazione degli ordini dei clienti
+&nbsp;    public void visualizzaOrdiniClienti() {
+<b class="fc">&nbsp;        Scanner scanner = new Scanner(System.in);</b>
+<b class="fc">&nbsp;        System.out.println(&quot;Visualizzazione degli ordini dei clienti:&quot;);</b>
+<b class="fc">&nbsp;        List&lt;Ordine&gt; ordini = getTuttiGliOrdini(); //Ottiene la lista globale degli ordini</b>
+&nbsp;
+&nbsp;        //Controlla se la lista degli ordini è vuota
+<b class="pc">&nbsp;        if (ordini.isEmpty()) {</b>
+<b class="nc">&nbsp;            System.out.println(&quot;Nessun ordine da visualizzare.&quot;);</b>
+&nbsp;            return;
+&nbsp;        }
+&nbsp;
+&nbsp;        //Mostra tutti gli ordini presenti nella lista
+<b class="fc">&nbsp;        for (int i = 0; i &lt; ordini.size(); i++) {</b>
+<b class="fc">&nbsp;            System.out.println(&quot;Ordine #&quot; + (i + 1) + &quot;:&quot;);</b>
+<b class="fc">&nbsp;            System.out.println(ordini.get(i));</b>
+&nbsp;        }
+&nbsp;
+<b class="fc">&nbsp;        int numeroOrdine = -1;</b>
+&nbsp;        while (true) {
+<b class="fc">&nbsp;            System.out.print(&quot;Seleziona l&#39;ordine da gestire (numero): &quot;);</b>
+<b class="pc">&nbsp;            if (scanner.hasNextInt()) {</b>
+<b class="fc">&nbsp;                numeroOrdine = scanner.nextInt();</b>
+<b class="fc">&nbsp;                scanner.nextLine();  //Consuma la newline</b>
+<b class="pc">&nbsp;                if (numeroOrdine &gt;= 1 &amp;&amp; numeroOrdine &lt;= ordini.size()) {</b>
+&nbsp;                    break;
+&nbsp;                } else {
+&nbsp;                    //L&#39;input non è nel range valido, chiede quindi di inserire un numero valido
+<b class="nc">&nbsp;                    System.out.println(&quot;Numero ordine non valido. Inserisci un numero valido.&quot;);</b>
+&nbsp;                }
+&nbsp;            } else {
+&nbsp;                //L&#39;input non è valido, chiede quindi di inserire un numero
+<b class="nc">&nbsp;                System.out.println(&quot;Input non valido. Inserisci un numero.&quot;);</b>
+<b class="nc">&nbsp;                scanner.nextLine();  //Consuma la newline</b>
+&nbsp;            }
+&nbsp;        }
+&nbsp;
+&nbsp;        //Ottiene l&#39;ordine in base all&#39;indice selezionato con l&#39;input
+<b class="fc">&nbsp;        Ordine ordineSelezionato = ordini.get(numeroOrdine - 1);</b>
+&nbsp;
+<b class="fc">&nbsp;        System.out.print(&quot;Gestisci ordine:\n1) Gestione Ordine Cliente\n2) Gestione Prodotti da Portare Via\n&quot;);</b>
+<b class="fc">&nbsp;        int scelta = scanner.nextInt();</b>
+<b class="fc">&nbsp;        scanner.nextLine();  //Consuma la newline</b>
+&nbsp;
+<b class="pc">&nbsp;        if (scelta == 1) {</b>
+&nbsp;            //Chiama il metodo per gestire gli ordini
+<b class="nc">&nbsp;            gestioneOrdiniClienti(ordineSelezionato);</b>
+<b class="pc">&nbsp;        } else if (scelta == 2) {</b>
+&nbsp;            //Chiama il metodo per gestire i prodotti da portare via
+<b class="fc">&nbsp;            gestioneProdottiPortareVia(ordineSelezionato);</b>
+&nbsp;        } else {
+&nbsp;            //Se la scelta non è valida, annulla la scelta e torna al menù
+<b class="nc">&nbsp;            System.out.println(&quot;Scelta non valida. Ritorno al menù principale&quot;);</b>
+&nbsp;        }
+&nbsp;    }
+&nbsp;
+&nbsp;    //Metodo specifico della classe ResponsabileBarVenditore o delle classi
+&nbsp;    //che la estendono per la ricerca degli ordini
+&nbsp;    public void ricercaOrdiniClienti() {
+<b class="nc">&nbsp;        Scanner scanner = new Scanner(System.in);</b>
+<b class="nc">&nbsp;        List&lt;Ordine&gt; ordini = getTuttiGliOrdini(); //Ottiene la lista degli ordini</b>
+&nbsp;
+&nbsp;        //Controlla se la lista è vuota
+<b class="nc">&nbsp;        if (ordini.isEmpty()) {</b>
+<b class="nc">&nbsp;            System.out.println(&quot;Nessun ordine trovato.&quot;);</b>
+&nbsp;            return;
+&nbsp;        }
+&nbsp;
+<b class="nc">&nbsp;        int numeroOrdine = -1;</b>
+&nbsp;        while (true) {
+<b class="nc">&nbsp;            System.out.print(&quot;Seleziona l&#39;ordine da gestire (numero): &quot;);</b>
+<b class="nc">&nbsp;            if (scanner.hasNextInt()) {</b>
+<b class="nc">&nbsp;                numeroOrdine = scanner.nextInt();</b>
+<b class="nc">&nbsp;                scanner.nextLine();</b>
+<b class="nc">&nbsp;                if (numeroOrdine &gt;= 1 &amp;&amp; numeroOrdine &lt;= ordini.size()) {</b>
+&nbsp;                    break;
+&nbsp;                } else {
+&nbsp;                    //L&#39;input è fuori dal range
+<b class="nc">&nbsp;                    System.out.println(&quot;Numero ordine non valido.&quot;);</b>
+&nbsp;                }
+&nbsp;            } else {
+<b class="nc">&nbsp;                System.out.println(&quot;Per favore, inserisci un numero valido.&quot;);</b>
+<b class="nc">&nbsp;                scanner.next(); //Scarta l&#39;input non valido</b>
+&nbsp;            }
+&nbsp;        }
+&nbsp;
+&nbsp;        //La selezione è valida quindi si può passare alla gestione dell&#39;ordine
+<b class="nc">&nbsp;        Ordine ordineSelezionato = ordini.get(numeroOrdine - 1);</b>
+<b class="nc">&nbsp;        gestioneOrdiniClienti(ordineSelezionato);</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    //Metodo specifico della classe ResponsabileBarVenditore o delle classi
+&nbsp;    //che la estendono per la ricerca degli ordini con prodotti da portare via
+&nbsp;    public void ricercaOrdiniPerProdottiPortareVia() {
+<b class="fc">&nbsp;        Scanner scanner = new Scanner(System.in);</b>
+&nbsp;        //Ottiene la lista degli ordini
+<b class="fc">&nbsp;        List&lt;Ordine&gt; ordini = getTuttiGliOrdini();</b>
+&nbsp;
+&nbsp;        //Controlla se sono presenti ordini
+<b class="pc">&nbsp;        if (ordini.isEmpty()) {</b>
+<b class="nc">&nbsp;            System.out.println(&quot;Nessun ordine trovato.&quot;);</b>
+&nbsp;            return;
+&nbsp;        }
+&nbsp;
+<b class="fc">&nbsp;        List&lt;Ordine&gt; ordiniConPortareVia = new ArrayList&lt;&gt;(); //Crea la lista degli ordini con prodotti da portare via</b>
+<b class="fc">&nbsp;        for (Ordine ordine : ordini) { //Controlla per ogni ordine se contiene prodotti da portare via, se sì la aggiunge</b>
+<b class="fc">&nbsp;            if (ordine.getPortareVia().contains(true)) {</b>
+<b class="fc">&nbsp;                ordiniConPortareVia.add(ordine);</b>
+&nbsp;            }
+&nbsp;        }
+&nbsp;
+&nbsp;        //Controlla se la lista di ordini con prodotti da portare via è vuota
+<b class="pc">&nbsp;        if (ordiniConPortareVia.isEmpty()) {</b>
+<b class="nc">&nbsp;            System.out.println(&quot;Nessun ordine con prodotti da portare via trovato.&quot;);</b>
+&nbsp;            return;
+&nbsp;        }
+&nbsp;
+&nbsp;        //Mostra la lista degli ordini in cui sono stati trovati prodotti da portare via
+<b class="fc">&nbsp;        System.out.println(&quot;Ordini con prodotti da portare via:&quot;);</b>
+<b class="fc">&nbsp;        for (int i = 0; i &lt; ordiniConPortareVia.size(); i++) {</b>
+<b class="fc">&nbsp;            System.out.println(&quot;Ordine #&quot; + (i + 1) + &quot;:&quot;);</b>
+<b class="fc">&nbsp;            System.out.println(ordiniConPortareVia.get(i));</b>
+&nbsp;        }
+&nbsp;
+<b class="fc">&nbsp;        int numeroOrdine = -1;</b>
+&nbsp;        while (true) {
+<b class="fc">&nbsp;            System.out.print(&quot;Seleziona l&#39;ordine da gestire (numero): &quot;);</b>
+<b class="pc">&nbsp;            if (scanner.hasNextInt()) {</b>
+<b class="fc">&nbsp;                numeroOrdine = scanner.nextInt();</b>
+<b class="fc">&nbsp;                scanner.nextLine();</b>
+<b class="pc">&nbsp;                if (numeroOrdine &gt;= 1 &amp;&amp; numeroOrdine &lt;= ordiniConPortareVia.size()) {</b>
+&nbsp;                    break;
+&nbsp;                } else {
+&nbsp;                    //L&#39;input inserito non è in range
+<b class="nc">&nbsp;                    System.out.println(&quot;Numero ordine non valido.&quot;);</b>
+&nbsp;                }
+&nbsp;            } else {
+<b class="nc">&nbsp;                System.out.println(&quot;Per favore, inserisci un numero valido.&quot;);</b>
+<b class="nc">&nbsp;                scanner.next(); //Scarta l&#39;input non valido</b>
+&nbsp;            }
+&nbsp;        }
+&nbsp;        //La selezione è valida quindi si può passare alla gestione dell&#39;ordine con prodotti da portare via
+<b class="fc">&nbsp;        Ordine ordineSelezionato = ordiniConPortareVia.get(numeroOrdine - 1);</b>
+<b class="fc">&nbsp;        gestioneProdottiPortareVia(ordineSelezionato);</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    //Metodo specifico della classe ResponsabileBarVenditore o delle classi
+&nbsp;    //che la estendono per la gestione degli ordini dei clienti
+&nbsp;    public void gestioneOrdiniClienti(Ordine ordine) {
+&nbsp;        //Gestione prodotti non da portare via
+&nbsp;        //Controlla la presenza di prodotti non da portare via nell&#39;ordine selezionato nella ricerca
+<b class="fc">&nbsp;        boolean presenzaProdottiNonPortareVia = false;</b>
+<b class="pc">&nbsp;        for (boolean portareVia : ordine.getPortareVia()) {</b>
+<b class="nc">&nbsp;            if (!portareVia) {</b>
+<b class="nc">&nbsp;                presenzaProdottiNonPortareVia = true;</b>
+&nbsp;                break;
+&nbsp;            }
+&nbsp;        }
+&nbsp;
+&nbsp;        //Setta già true se la lista è vuota
+<b class="pc">&nbsp;        if (!presenzaProdottiNonPortareVia) {</b>
+<b class="fc">&nbsp;            ordine.setProdottiNonPortareViaCompletati(true);</b>
+&nbsp;        }
+&nbsp;
+<b class="pc">&nbsp;        if (ordine.getProdottiNonPortareViaCompletati()) {</b>
+<b class="fc">&nbsp;            boolean tuttiNonPortareViaGestiti = true;</b>
+<b class="fc">&nbsp;            List&lt;Boolean&gt; nonPortareVia = ordine.getPortareVia(); //Ottiene la lista di prodotti non da portare via</b>
+<b class="fc">&nbsp;            List&lt;Boolean&gt; prodottiGestiti = ordine.getProdottiGestiti(); //Ottiene la lista di prodotti gestiti</b>
+&nbsp;            //Controlla se tutti i prodotti non da portare via sono stati gestiti
+<b class="pc">&nbsp;            for (int i = 0; i &lt; nonPortareVia.size(); i++) {</b>
+<b class="nc">&nbsp;                if (!nonPortareVia.get(i) &amp;&amp; !prodottiGestiti.get(i)) {</b>
+<b class="nc">&nbsp;                    tuttiNonPortareViaGestiti = false;</b>
+&nbsp;                    break;
+&nbsp;                }
+&nbsp;            }
+<b class="pc">&nbsp;            if (!tuttiNonPortareViaGestiti) {</b>
+&nbsp;                //Non tutti i prodotti non da portare via sono stati gestiti
+<b class="nc">&nbsp;                System.out.println(&quot;L&#39;ordine ha prodotti non da portare via non ancora gestiti.\nGestisci prima i prodotti non da portare via&quot;);</b>
+<b class="nc">&nbsp;                gestioneProdottiNonPortareVia(ordine);</b>
+&nbsp;            } else {
+&nbsp;                //Tutti i prodotti non da portare via sono stati gestiti
+<b class="fc">&nbsp;                System.out.println(&quot;L&#39;ordine ha tutti i prodotti non da portare via gestiti.&quot;);</b>
+&nbsp;            }
+&nbsp;        } else {
+&nbsp;            //Non tutti i prodotti non da portare via sono stati gestiti
+<b class="nc">&nbsp;            System.out.println(&quot;L&#39;ordine ha prodotti non da portare via non ancora gestiti.\nGestisci prima i prodotti non da portare via&quot;);</b>
+<b class="nc">&nbsp;            gestioneProdottiNonPortareVia(ordine);</b>
+&nbsp;        }
+&nbsp;
+&nbsp;        //Gestione prodotti da portare via
+&nbsp;        //Controlla la presenza di prodotti da portare via nell&#39;ordine selezionato nella ricerca
+<b class="fc">&nbsp;        boolean presenzaProdottiPortareVia = false;</b>
+<b class="pc">&nbsp;        for (boolean portareVia : ordine.getPortareVia()) {</b>
+<b class="nc">&nbsp;            if (portareVia) {</b>
+<b class="nc">&nbsp;                presenzaProdottiPortareVia = true;</b>
+&nbsp;                break;
+&nbsp;            }
+&nbsp;        }
+&nbsp;
+&nbsp;        //Setta già true se la lista è vuota
+<b class="pc">&nbsp;        if (!presenzaProdottiPortareVia) {</b>
+<b class="fc">&nbsp;            ordine.setProdottiPortareViaCompletati(true);</b>
+&nbsp;        }
+&nbsp;
+<b class="pc">&nbsp;        if (ordine.getProdottiPortareViaCompletati()) {</b>
+&nbsp;            //Controlla se tutti i prodotti da portare via sono stati ritirati
+<b class="fc">&nbsp;            boolean tuttiRitirati = true;</b>
+<b class="fc">&nbsp;            List&lt;Boolean&gt; portareVia = ordine.getPortareVia();</b>
+<b class="fc">&nbsp;            List&lt;Boolean&gt; prodottiRitirati = ordine.getProdottiRitirati();</b>
+<b class="pc">&nbsp;            for (int i = 0; i &lt; portareVia.size(); i++) {</b>
+<b class="nc">&nbsp;                if (portareVia.get(i) &amp;&amp; !prodottiRitirati.get(i)) {</b>
+<b class="nc">&nbsp;                    tuttiRitirati = false;</b>
+&nbsp;                    break;
+&nbsp;                }
+&nbsp;            }
+&nbsp;
+<b class="pc">&nbsp;            if (tuttiRitirati) {</b>
+&nbsp;                //Tutti i prodotti da portare via sono stati ritirati
+<b class="fc">&nbsp;                System.out.print(&quot;Vuoi impostare l&#39;ordine come completato? (s/n): &quot;);</b>
+<b class="fc">&nbsp;                Scanner scanner = new Scanner(System.in);</b>
+<b class="fc">&nbsp;                String risposta = scanner.nextLine();</b>
+<b class="pc">&nbsp;                if (risposta.equalsIgnoreCase(&quot;s&quot;)) {</b>
+<b class="nc">&nbsp;                    ordine.setCompletato(true);</b>
+<b class="nc">&nbsp;                    UtenteRegistrato.rimuoviOrdineGlobal(ordine); //Rimuove l&#39;ordine dalla lista globale</b>
+<b class="nc">&nbsp;                    ordine.getUtente().spostaOrdineCompletato(ordine); //Chiama il metodo per rimuovere l&#39;Ordine</b>
+&nbsp;                    //dalla lista degli ordini attivi per inserirlo in quella degli ordini completati
+<b class="nc">&nbsp;                    System.out.println(&quot;Ordine impostato come completato.&quot;);</b>
+&nbsp;                } else {
+&nbsp;                    //Avvisa sulla scelta di non segnare come completato l&#39;ordine ed esce dal metodo
+<b class="fc">&nbsp;                    System.out.println(&quot;Ordine non impostato come completato.&quot;);</b>
+&nbsp;                }
+&nbsp;            } else {
+&nbsp;                //Non tutti i prodotti da portare via sono stati ritirati
+<b class="nc">&nbsp;                System.out.println(&quot;L&#39;ordine ha prodotti da portare via non ancora ritirati. L&#39;ordine non può essere completato.&quot;);</b>
+&nbsp;            }
+&nbsp;        } else {
+&nbsp;            //Non tutti i prodotti da portare via sono stati gestiti
+<b class="nc">&nbsp;            System.out.println(&quot;L&#39;ordine ha prodotti da portare via non ancora gestiti. Gestisci prima i prodotti da portare via.&quot;);</b>
+<b class="nc">&nbsp;            gestioneProdottiPortareVia(ordine);</b>
+&nbsp;        }
+&nbsp;    }
+&nbsp;
+&nbsp;    //Metodo specifico della classe ResponsabileBarVenditore o delle classi
+&nbsp;    //che la estendono per la gestione dei prodotti non da portare via
+&nbsp;    public void gestioneProdottiNonPortareVia(Ordine ordine) {
+&nbsp;        //Implementazione della gestione dei prodotti non da portare via
+<b class="fc">&nbsp;        System.out.println(&quot;Gestione prodotti non da portare via:&quot;);</b>
+<b class="fc">&nbsp;        boolean tuttiProdottiNonPortareViaGestiti = true;</b>
+&nbsp;        //Ottiene la lista dei prodotti gestiti
+<b class="fc">&nbsp;        List&lt;Boolean&gt; prodottiGestiti = ordine.getProdottiGestiti();</b>
+&nbsp;
+&nbsp;        //Esegue questo processo per ogni prodotto che trova nel Ordine
+&nbsp;        //selezionato precedentemente nella ricerca
+<b class="pc">&nbsp;        for (int i = 0; i &lt; ordine.getProdotti().size(); i++) {</b>
+<b class="nc">&nbsp;            if (!ordine.getPortareVia().get(i)) { //Controlla che i prodotto non sono da portare via</b>
+<b class="nc">&nbsp;                if (!prodottiGestiti.get(i)) { //Controlla se il prodotto è già gestito</b>
+<b class="nc">&nbsp;                    System.out.println(ordine.getProdotti().get(i).getNome() + &quot; - Quantità: &quot; + ordine.getQuantita().get(i));</b>
+&nbsp;                    //Chiede al responsabile se vuole gestire il prodotto
+<b class="nc">&nbsp;                    System.out.print(&quot;Vuoi impostare il Prodotto non da Portare Via come pronto? (s/n): &quot;);</b>
+<b class="nc">&nbsp;                    Scanner scanner = new Scanner(System.in);</b>
+<b class="nc">&nbsp;                    String risposta = scanner.nextLine();</b>
+<b class="nc">&nbsp;                    if (risposta.equalsIgnoreCase(&quot;s&quot;)) {</b>
+<b class="nc">&nbsp;                        prodottiGestiti.set(i, true);</b>
+<b class="nc">&nbsp;                        System.out.println(&quot;Prodotto non da Portare Via impostato come pronto.&quot;);</b>
+&nbsp;                    } else {
+<b class="nc">&nbsp;                        tuttiProdottiNonPortareViaGestiti = false;</b>
+<b class="nc">&nbsp;                        System.out.println(&quot;Prodotto non da Portare Via non impostato come pronto.&quot;);</b>
+&nbsp;                    }
+&nbsp;                }
+&nbsp;            }
+&nbsp;        }
+&nbsp;
+&nbsp;        //Metodi chiamati sull&#39;ordine selezionato dalla ricerca
+<b class="fc">&nbsp;        ordine.setProdottiGestiti(prodottiGestiti); //Metodo per impostare la lista di prodotti gestiti</b>
+<b class="fc">&nbsp;        ordine.setProdottiNonPortareViaCompletati(tuttiProdottiNonPortareViaGestiti); //Aggiorniamo la lista dei prodotti da ritirare</b>
+&nbsp;
+&nbsp;        //Controlla se i prodotti da portare via sono stati gestiti
+<b class="pc">&nbsp;        if (tuttiProdottiNonPortareViaGestiti) {</b>
+<b class="fc">&nbsp;            ordine.setProdottiNonPortareViaCompletati(true);</b>
+<b class="fc">&nbsp;            System.out.println(&quot;Tutti i prodotti non da portare via sono stati gestiti.&quot;);</b>
+&nbsp;        } else {
+<b class="nc">&nbsp;            System.out.println(&quot;Ci sono ancora prodotti non da portare via da gestire.&quot;);</b>
+&nbsp;        }
+&nbsp;    }
+&nbsp;
+&nbsp;    //Metodo specifico della classe ResponsabileBarVenditore o delle classi
+&nbsp;    //che la estendono per la gestione dei prodotti da portare via
+&nbsp;    public void gestioneProdottiPortareVia(Ordine ordine) {
+&nbsp;        //Implementazione della gestione dei prodotti da portare via
+<b class="fc">&nbsp;        System.out.println(&quot;Gestione prodotti da portare via:&quot;);</b>
+<b class="fc">&nbsp;        boolean tuttiProdottiPortareViaGestiti = true;</b>
+<b class="fc">&nbsp;        List&lt;Boolean&gt; prodottiGestiti = ordine.getProdottiGestiti();  //Ottiene la lista dei prodotti gestiti</b>
+<b class="fc">&nbsp;        List&lt;Boolean&gt; prodottiRitirati = ordine.getProdottiRitirati(); //Ottiene la lista dei prodotti ritirati</b>
+&nbsp;
+&nbsp;        //Esegue questo processo per ogni prodotto che trova nel Ordine
+&nbsp;        //selezionato precedentemente nella ricerca
+<b class="pc">&nbsp;        for (int i = 0; i &lt; ordine.getProdotti().size(); i++) {</b>
+&nbsp;            //Controlla se il prodotto è da portare via
+<b class="nc">&nbsp;            if (ordine.getPortareVia().get(i)) {</b>
+<b class="nc">&nbsp;                if (!prodottiGestiti.get(i)) {  //Controlla se il prodotto è già stato gestito</b>
+<b class="nc">&nbsp;                    System.out.println(ordine.getProdotti().get(i).getNome() + &quot; - Quantità: &quot; + ordine.getQuantita().get(i));</b>
+&nbsp;                    //Chiede al responsabile se vuole gestire il prodotto
+<b class="nc">&nbsp;                    System.out.print(&quot;Vuoi impostare il Prodotto da Portare Via come pronto? (s/n): &quot;);</b>
+<b class="nc">&nbsp;                    Scanner scanner = new Scanner(System.in);</b>
+<b class="nc">&nbsp;                    String risposta = scanner.nextLine();</b>
+<b class="nc">&nbsp;                    if (risposta.equalsIgnoreCase(&quot;s&quot;)) {</b>
+<b class="nc">&nbsp;                        prodottiGestiti.set(i, true);  //Imposta il prodotto da portare via come gestito</b>
+<b class="nc">&nbsp;                        prodottiRitirati.set(i, false); //Imposta il prodotto da portare via come da ritirare</b>
+<b class="nc">&nbsp;                        System.out.println(&quot;Prodotto da Portare Via impostato come pronto.&quot;);</b>
+&nbsp;                    } else {
+&nbsp;                        //Avvisa il responsabile della scelta di non gestire il prodotto
+<b class="nc">&nbsp;                        tuttiProdottiPortareViaGestiti = false;</b>
+<b class="nc">&nbsp;                        System.out.println(&quot;Prodotto da Portare Via non impostato come pronto.&quot;);</b>
+&nbsp;                    }
+&nbsp;                }
+&nbsp;            }
+&nbsp;        }
+&nbsp;
+&nbsp;        //Metodi chiamati sull&#39;ordine selezionato dalla ricerca
+<b class="fc">&nbsp;        ordine.setProdottiGestiti(prodottiGestiti); //Metodo per impostare la lista di prodotti gestiti</b>
+<b class="fc">&nbsp;        ordine.setProdottiRitirati(prodottiRitirati); //Aggiorniamo la lista dei prodotti da ritirare</b>
+<b class="fc">&nbsp;        ordine.setProdottiPortareViaCompletati(tuttiProdottiPortareViaGestiti); //Metodo per impostare i prodotti da portare via completati</b>
+&nbsp;
+&nbsp;        //Controlla se i prodotti da portare via sono stati gestiti
+<b class="pc">&nbsp;        if (tuttiProdottiPortareViaGestiti) {</b>
+<b class="fc">&nbsp;            ordine.setProdottiPortareViaCompletati(true);</b>
+<b class="fc">&nbsp;            System.out.println(&quot;Tutti i prodotti da portare via sono stati gestiti.&quot;);</b>
+&nbsp;        } else {
+<b class="nc">&nbsp;            System.out.println(&quot;Ci sono ancora prodotti da portare via da gestire.&quot;);</b>
+&nbsp;        }
+&nbsp;    }
+&nbsp;
+&nbsp;    //Metodo specifico della classe ResponsabileBarVenditore o delle classi
+&nbsp;    //che la estendono per la visualizzazione del magazzino
+&nbsp;    public void visualizzaMagazzino() {
+<b class="fc">&nbsp;        Scanner scanner = new Scanner(System.in);</b>
+&nbsp;        //Ottiene il controller e la lista di Prodotto
+<b class="fc">&nbsp;        ProdottoController prodottoController = ProdottoController.getInstance();</b>
+<b class="fc">&nbsp;        List&lt;Prodotto&gt; prodotti = prodottoController.getListaProdotti();</b>
+&nbsp;
+&nbsp;        //Controlla se la lista di prodotti è vuota
+<b class="pc">&nbsp;        if (prodotti.isEmpty()) {</b>
+<b class="nc">&nbsp;            System.out.println(&quot;Non ci sono prodotti disponibili al momento&quot;);</b>
+&nbsp;            return;
+&nbsp;        }
+&nbsp;
+&nbsp;        //Mostra i prodotti presenti nella lista e chiede se si vuole gestire il magazzino
+<b class="fc">&nbsp;        System.out.println(&quot;Elenco dei prodotti:&quot;);</b>
+<b class="fc">&nbsp;        for (int i = 0; i &lt; prodotti.size(); i++) {</b>
+<b class="fc">&nbsp;            System.out.println((i + 1) + &quot;) &quot; + prodotti.get(i).getNome() + &quot; - Quantità: &quot; + prodotti.get(i).getQuantita() + &quot; - Prezzo: &quot; + prodotti.get(i).getPrezzo());</b>
+&nbsp;        }
+&nbsp;
+<b class="fc">&nbsp;        System.out.print(&quot;Vuoi passare alla gestione del magazzino? (s/n): &quot;);</b>
+<b class="fc">&nbsp;        String rispostaGestione = scanner.nextLine();</b>
+<b class="fc">&nbsp;        boolean scrittaValida = false;</b>
+<b class="pc">&nbsp;        while (!scrittaValida){</b>
+<b class="pc">&nbsp;            switch (rispostaGestione.toLowerCase()){</b>
+&nbsp;                case &quot;s&quot;:
+&nbsp;                    //Avvisa il responsabile e chiama il metodo per gestire il magazzino
+<b class="nc">&nbsp;                    System.out.println(&quot;Passaggio alla gestione del magazzino&quot;);</b>
+<b class="nc">&nbsp;                    gestioneMagazzino();</b>
+<b class="nc">&nbsp;                    scrittaValida = true;</b>
+&nbsp;                    break;
+&nbsp;                case &quot;n&quot;:
+&nbsp;                    //Avvisa il responsabile del ritorno al menù ed esce dal loop
+<b class="fc">&nbsp;                    System.out.println(&quot;Ritorno al menù principale&quot;);</b>
+&nbsp;                    return;
+&nbsp;                default:
+&nbsp;                    //Avvisa per una scelta non valida e fa scegliere nuovamente
+<b class="nc">&nbsp;                    System.out.println(&quot;Scelta non valida\nInserisci un valore valido (s/n): &quot;);</b>
+<b class="nc">&nbsp;                    rispostaGestione = scanner.nextLine();</b>
+&nbsp;                    break;
+&nbsp;            }
+&nbsp;        }
+&nbsp;    }
+&nbsp;
+&nbsp;    //Metodo specifico della classe ResponsabileBarVenditore o delle classi
+&nbsp;    //che la estendono per la gestione del magazzino
+&nbsp;    public void gestioneMagazzino() {
+<b class="fc">&nbsp;        Scanner scanner = new Scanner(System.in);</b>
+<b class="fc">&nbsp;        boolean continua = true;</b>
+&nbsp;
+<b class="fc">&nbsp;        while (continua) {</b>
+&nbsp;            //Rimane nel loop fino al completamento di un operazione o
+&nbsp;            //fino alla scelta di ResponsabileBarVenditore
+<b class="fc">&nbsp;            System.out.println(&quot;Seleziona un&#39;opzione:&quot;);</b>
+<b class="fc">&nbsp;            System.out.println(&quot;1) Aggiungi prodotto&quot;);</b>
+<b class="fc">&nbsp;            System.out.println(&quot;2) Modifica prodotto&quot;);</b>
+<b class="fc">&nbsp;            System.out.println(&quot;3) Elimina prodotto&quot;);</b>
+<b class="fc">&nbsp;            System.out.println(&quot;4) Torna al menù principale&quot;);</b>
+&nbsp;
+<b class="fc">&nbsp;            int scelta = scanner.nextInt();</b>
+<b class="fc">&nbsp;            scanner.nextLine();  //Consuma la newline</b>
+&nbsp;
+<b class="pc">&nbsp;            switch (scelta) {</b>
+&nbsp;                case 1:
+&nbsp;                    //Chiama il metodo interno per aggiungere un prodotto
+<b class="nc">&nbsp;                    aggiungiProdotto();</b>
+&nbsp;                    break;
+&nbsp;                case 2:
+&nbsp;                    //Chiama il metodo interno per modificare un prodotto
+<b class="nc">&nbsp;                    modificaProdotto();</b>
+&nbsp;                    break;
+&nbsp;                case 3:
+&nbsp;                    //Chiama il metodo interno per eliminare un prodotto
+<b class="nc">&nbsp;                    eliminaProdotto();</b>
+&nbsp;                    break;
+&nbsp;                case 4:
+&nbsp;                    //Avvisa il responsabile del ritorno al menù ed esce dal loop
+<b class="fc">&nbsp;                    continua = false;</b>
+<b class="fc">&nbsp;                    System.out.println(&quot;Ritorno al menù principale&quot;);</b>
+&nbsp;                    break;
+&nbsp;                default:
+&nbsp;                    //Avvisa per una scelta non valida e fa scegliere nuovamente
+<b class="nc">&nbsp;                    System.out.println(&quot;Scelta non valida, riprova.&quot;);</b>
+&nbsp;                    break;
+&nbsp;            }
+&nbsp;        }
+&nbsp;    }
+&nbsp;
+&nbsp;    //Metodo specifico della classe ResponsabileBarVenditore o delle classi
+&nbsp;    //che la estendono interno a gestioneMagazzino per l&#39;aggiunta di un prodotto
+&nbsp;    public void aggiungiProdotto() {
+<b class="fc">&nbsp;        Scanner scanner = new Scanner(System.in);</b>
+&nbsp;        //Ottiene il controller di Prodotto
+<b class="fc">&nbsp;        ProdottoController prodottoController = ProdottoController.getInstance();</b>
+&nbsp;
+&nbsp;        //Chiede un nome per questo nuovo prodotto
+<b class="fc">&nbsp;        System.out.print(&quot;Inserisci il nome del prodotto: &quot;);</b>
+<b class="fc">&nbsp;        String nome = scanner.nextLine();</b>
+&nbsp;
+&nbsp;        //Chiede una descrizione per questo nuovo prodotto
+<b class="fc">&nbsp;        System.out.print(&quot;Inserisci la descrizione del prodotto: &quot;);</b>
+<b class="fc">&nbsp;        String descrizione = scanner.nextLine();</b>
+&nbsp;
+&nbsp;        //Chiede un prezzo valido per questo nuovo prodotto
+<b class="fc">&nbsp;        System.out.print(&quot;Inserisci il prezzo del prodotto (formato X.XX): &quot;);</b>
+<b class="fc">&nbsp;        String prezzoInput = scanner.nextLine();</b>
+<b class="pc">&nbsp;        while (!prezzoInput.matches(&quot;\\d+\\.\\d{2}&quot;)) {</b>
+<b class="nc">&nbsp;            System.out.println(&quot;Prezzo non valido. Inserisci un prezzo nel formato X.XX: &quot;);</b>
+<b class="nc">&nbsp;            prezzoInput = scanner.nextLine();</b>
+&nbsp;        }
+<b class="fc">&nbsp;        double prezzo = Double.parseDouble(prezzoInput);</b>
+&nbsp;
+&nbsp;        //Chiede una quantità valida per questo nuovo prodotto
+<b class="fc">&nbsp;        System.out.print(&quot;Inserisci la quantità del prodotto: &quot;);</b>
+<b class="fc">&nbsp;        int quantita = scanner.nextInt();</b>
+<b class="pc">&nbsp;        while (quantita &lt; 0) {</b>
+<b class="nc">&nbsp;            System.out.println(&quot;La quantità deve essere superiore o uguale a 0. Inserisci una nuova quantità: &quot;);</b>
+<b class="nc">&nbsp;            quantita = scanner.nextInt();</b>
+&nbsp;        }
+&nbsp;
+<b class="fc">&nbsp;        scanner.nextLine();  //Consuma la newline</b>
+&nbsp;
+&nbsp;        //Chiama il metodo per creare il nuovo prodotto, utilizzando il pattern Factory
+<b class="fc">&nbsp;        Prodotto nuovoProdotto = ProdottoFactory.creaProdotto(nome, descrizione, prezzo, quantita);</b>
+&nbsp;        //Aggiungi il nuovo prodotto alla lista, utilizzando il Controller
+<b class="fc">&nbsp;        prodottoController.getListaProdotti().add(nuovoProdotto);</b>
+&nbsp;
+<b class="fc">&nbsp;        System.out.println(&quot;Prodotto aggiunto con successo: &quot; + nuovoProdotto);</b>
+<b class="fc">&nbsp;        prodottoController.notificaOsservatori(&quot;Prodotto aggiunto con successo: &quot; + nuovoProdotto);</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    //Metodo specifico della classe ResponsabileBarVenditore o delle classi
+&nbsp;    //che la estendono interno a gestioneMagazzino per la modifica di un prodotto
+&nbsp;    public void modificaProdotto() {
+<b class="fc">&nbsp;        Scanner scanner = new Scanner(System.in);</b>
+&nbsp;        //Ottiene la lista e il controller di Prodotto
+<b class="fc">&nbsp;        ProdottoController prodottoController = ProdottoController.getInstance();</b>
+<b class="fc">&nbsp;        List&lt;Prodotto&gt; prodotti = prodottoController.getListaProdotti();</b>
+&nbsp;
+&nbsp;        //Controlla se la lista di prodotti è vuota
+<b class="pc">&nbsp;        if (prodotti.isEmpty()) {</b>
+<b class="nc">&nbsp;            System.out.println(&quot;Non ci sono prodotti disponibili al momento&quot;);</b>
+<b class="nc">&nbsp;            prodottoController.notificaOsservatori(&quot;Modifica non avvenuta.&quot;);</b>
+&nbsp;            return;
+&nbsp;        }
+&nbsp;
+&nbsp;        //Mostra i prodotti e chiede di inserire l&#39;indice corrispondente
+<b class="fc">&nbsp;        System.out.print(&quot;Seleziona il numero corrispondente al prodotto da modificare: &quot;);</b>
+<b class="fc">&nbsp;        for (int i = 0; i &lt; prodotti.size(); i++) {</b>
+<b class="fc">&nbsp;            System.out.println((i + 1) + &quot;) &quot; + prodotti.get(i).getNome());</b>
+&nbsp;        }
+<b class="fc">&nbsp;        int sceltaProdotto = scanner.nextInt();</b>
+<b class="fc">&nbsp;        scanner.nextLine();  //Consuma la newline rimasta</b>
+&nbsp;
+&nbsp;        //Controlla se la scelta del prodotto è valida
+<b class="pc">&nbsp;        if (sceltaProdotto &lt; 1 || sceltaProdotto &gt; prodotti.size()) {</b>
+<b class="nc">&nbsp;            System.out.println(&quot;Selezione non valida. Ritorno al menù principale.&quot;);</b>
+<b class="nc">&nbsp;            prodottoController.notificaOsservatori(&quot;Modifica non avvenuta.&quot;);</b>
+&nbsp;            return;
+&nbsp;        }
+&nbsp;
+&nbsp;        //Seleziona il prodotto in base all&#39;indice inserito in input
+<b class="fc">&nbsp;        Prodotto prodottoSelezionato = prodotti.get(sceltaProdotto - 1);</b>
+<b class="fc">&nbsp;        System.out.println(&quot;Hai selezionato il prodotto: &quot; + prodottoSelezionato.getNome());</b>
+<b class="fc">&nbsp;        boolean continua = true;</b>
+<b class="fc">&nbsp;        while (continua) {</b>
+&nbsp;            //Rimane nel menù finché non decide diversamente il Responsabile
+<b class="fc">&nbsp;            System.out.println(&quot;Cosa vuoi modificare?&quot;);</b>
+<b class="fc">&nbsp;            System.out.println(&quot;1) Nome prodotto&quot;);</b>
+<b class="fc">&nbsp;            System.out.println(&quot;2) Descrizione prodotto&quot;);</b>
+<b class="fc">&nbsp;            System.out.println(&quot;3) Prezzo prodotto&quot;);</b>
+<b class="fc">&nbsp;            System.out.println(&quot;4) Quantità prodotto (Aggiungi quantità)&quot;);</b>
+<b class="fc">&nbsp;            System.out.println(&quot;5) Annulla modifica&quot;);</b>
+&nbsp;
+<b class="fc">&nbsp;            int scelta = scanner.nextInt();</b>
+<b class="fc">&nbsp;            scanner.nextLine();  //Consuma la newline</b>
+&nbsp;
+<b class="pc">&nbsp;            switch (scelta) {</b>
+&nbsp;                case 1:
+&nbsp;                    //Mostra il nome attuale e chiede di aggiungerne uno nuovo
+<b class="nc">&nbsp;                    System.out.print(&quot;Inserisci il nuovo nome del prodotto (attuale: &quot; + prodottoSelezionato.getNome() + &quot;): &quot;);</b>
+&nbsp;                    //Prende il nuovo nome inserito e chiama il Setter del nome
+<b class="nc">&nbsp;                    String nuovoNome = scanner.nextLine();</b>
+<b class="nc">&nbsp;                    prodottoSelezionato.setNome(nuovoNome);</b>
+<b class="nc">&nbsp;                    System.out.println(&quot;Nome del prodotto modificato con successo.&quot;);</b>
+<b class="nc">&nbsp;                    prodottoController.notificaOsservatori(&quot;Nome aggiornato per il prodotto. - Nuovo nome: &quot; + prodottoSelezionato.getNome());</b>
+&nbsp;                    break;
+&nbsp;                case 2:
+&nbsp;                    //Mostra la descrizione attuale e chiede di aggiungerne una nuova
+<b class="nc">&nbsp;                    System.out.print(&quot;Inserisci la nuova descrizione del prodotto (attuale: &quot; + prodottoSelezionato.getDescrizione() + &quot;): &quot;);</b>
+&nbsp;                    //Prende la nuova descrizione inserita e chiama il Setter della descrizione
+<b class="nc">&nbsp;                    String nuovaDescrizione = scanner.nextLine();</b>
+<b class="nc">&nbsp;                    prodottoSelezionato.setDescrizione(nuovaDescrizione);</b>
+<b class="nc">&nbsp;                    System.out.println(&quot;Descrizione del prodotto modificata con successo.&quot;);</b>
+<b class="nc">&nbsp;                    prodottoController.notificaOsservatori(&quot;Descrizione aggiornata per il prodotto: &quot; + prodottoSelezionato.getNome() + &quot; - Nuova descrizione: &quot; + prodottoSelezionato.getDescrizione());</b>
+&nbsp;                    break;
+&nbsp;                case 3:
+&nbsp;                    //Mostra il prezzo attuale e chiede di aggiungere un prezzo valido
+<b class="nc">&nbsp;                    System.out.print(&quot;Inserisci il nuovo prezzo del prodotto (attuale: &quot; + prodottoSelezionato.getPrezzo() + &quot;): &quot;);</b>
+<b class="nc">&nbsp;                    String prezzoInput = scanner.nextLine();</b>
+<b class="nc">&nbsp;                    while (!prezzoInput.matches(&quot;\\d+\\.\\d{2}&quot;)) {</b>
+<b class="nc">&nbsp;                        System.out.println(&quot;Prezzo non valido. Inserisci un prezzo nel formato X.XX: &quot;);</b>
+<b class="nc">&nbsp;                        prezzoInput = scanner.nextLine();</b>
+&nbsp;                    }
+&nbsp;                    //Prende il nuovo prezzo inserito e chiama il Setter del prezzo
+<b class="nc">&nbsp;                    double nuovoPrezzo = Double.parseDouble(prezzoInput);</b>
+<b class="nc">&nbsp;                    prodottoSelezionato.setPrezzo(nuovoPrezzo);</b>
+<b class="nc">&nbsp;                    System.out.println(&quot;Prezzo del prodotto modificato con successo.&quot;);</b>
+<b class="nc">&nbsp;                    prodottoController.notificaOsservatori(&quot;Prezzo aggiornato per il prodotto: &quot; + prodottoSelezionato.getNome() + &quot; - Nuovo prezzo: &quot; + prodottoSelezionato.getPrezzo());</b>
+&nbsp;                    break;
+&nbsp;                case 4:
+&nbsp;                    //Mostra la quantità attuale e chiede di aggiungere una quantità valida
+<b class="nc">&nbsp;                    System.out.print(&quot;Aggiungi una quantità al prodotto (attuale: &quot; + prodottoSelezionato.getQuantita() + &quot;): &quot;);</b>
+<b class="nc">&nbsp;                    int nuovaQuantita = scanner.nextInt();</b>
+<b class="nc">&nbsp;                    while (nuovaQuantita &lt;= 0) {</b>
+<b class="nc">&nbsp;                        System.out.println(&quot;La quantità deve essere superiore a 0. Inserisci una nuova quantità: &quot;);</b>
+<b class="nc">&nbsp;                        nuovaQuantita = scanner.nextInt();</b>
+&nbsp;                    }
+&nbsp;                    //Chiama il metodo per implementare la quantità inserita alla quantità già presente
+<b class="nc">&nbsp;                    prodottoSelezionato.incrementaQuantita(nuovaQuantita - prodottoSelezionato.getQuantita());</b>
+<b class="nc">&nbsp;                    prodottoController.notificaOsservatori(&quot;Quantità aggiornata per il prodotto: &quot; + prodottoSelezionato.getNome() + &quot; - Nuova quantità: &quot; + prodottoSelezionato.getQuantita());</b>
+<b class="nc">&nbsp;                    System.out.println(&quot;Quantità del prodotto modificata con successo.&quot;);</b>
+&nbsp;                    break;
+&nbsp;                case 5:
+&nbsp;                    //Esci dal loop avvisando il Responsabile dell&#39;annullamento della modifica
+<b class="fc">&nbsp;                    continua = false;</b>
+<b class="fc">&nbsp;                    System.out.println(&quot;Modifica annullata. Ritorno al menù principale.&quot;);</b>
+<b class="fc">&nbsp;                    prodottoController.notificaOsservatori(&quot;Modifica annullata.&quot;);</b>
+&nbsp;                    break;
+&nbsp;                default:
+&nbsp;                    //Avvisa della scelta non valida e fa ripetere la scelta
+<b class="nc">&nbsp;                    System.out.println(&quot;Scelta non valida, riprova.&quot;);</b>
+&nbsp;                    break;
+&nbsp;            }
+&nbsp;        }
+&nbsp;    }
+&nbsp;
+&nbsp;    //Metodo specifico della classe ResponsabileBarVenditore o delle classi
+&nbsp;    //che la estendono interno a gestioneMagazzino per l&#39;eliminazione di un prodotto
+&nbsp;    public void eliminaProdotto() {
+<b class="fc">&nbsp;        Scanner scanner = new Scanner(System.in);</b>
+&nbsp;        //Ottiene il controller e la lista per i prodotti
+<b class="fc">&nbsp;        ProdottoController prodottoController = ProdottoController.getInstance();</b>
+<b class="fc">&nbsp;        List&lt;Prodotto&gt; prodotti = prodottoController.getListaProdotti();</b>
+&nbsp;
+&nbsp;        //Controlla se ci sono prodotti nella lista
+<b class="pc">&nbsp;        if (prodotti.isEmpty()) {</b>
+<b class="nc">&nbsp;            System.out.println(&quot;Non ci sono prodotti disponibili al momento.&quot;);</b>
+<b class="nc">&nbsp;            prodottoController.notificaOsservatori(&quot;Eliminazione non avvenuta.&quot;);</b>
+&nbsp;            return;
+&nbsp;        }
+&nbsp;
+&nbsp;        //Mostra la lista di prodotti presenti
+<b class="fc">&nbsp;        System.out.println(&quot;Seleziona il prodotto da eliminare:&quot;);</b>
+<b class="fc">&nbsp;        for (int i = 0; i &lt; prodotti.size(); i++) {</b>
+<b class="fc">&nbsp;            System.out.println((i + 1) + &quot;) &quot; + prodotti.get(i).getNome());</b>
+&nbsp;        }
+&nbsp;
+<b class="fc">&nbsp;        int indiceProdotto = scanner.nextInt() - 1;</b>
+<b class="fc">&nbsp;        scanner.nextLine();  //Consuma la newline</b>
+&nbsp;
+&nbsp;        //Controlla se l&#39;indice fornito è valido
+<b class="pc">&nbsp;        if (indiceProdotto &lt; 0 || indiceProdotto &gt;= prodotti.size()) {</b>
+<b class="nc">&nbsp;            System.out.println(&quot;Indice prodotto non valido. Ritorno al menù principale.&quot;);</b>
+<b class="nc">&nbsp;            prodottoController.notificaOsservatori(&quot;Eliminazione non avvenuta.&quot;);</b>
+&nbsp;            return;
+&nbsp;        }
+&nbsp;
+&nbsp;        //Selezione il prodotto in base all&#39;indice fornito come input
+<b class="fc">&nbsp;        Prodotto prodottoDaEliminare = prodotti.get(indiceProdotto);</b>
+&nbsp;
+<b class="fc">&nbsp;        boolean confermaValid = false;</b>
+<b class="fc">&nbsp;        while (!confermaValid) {</b>
+&nbsp;            //Chiede conferma per poter eliminare il prodotto
+<b class="fc">&nbsp;            System.out.print(&quot;Sei sicuro di voler eliminare il prodotto &quot; + prodottoDaEliminare.getNome() + &quot;? (s/n): &quot;);</b>
+<b class="fc">&nbsp;            String conferma = scanner.nextLine().trim().toLowerCase();</b>
+&nbsp;
+<b class="pc">&nbsp;            switch (conferma) {</b>
+&nbsp;                case &quot;s&quot;:
+&nbsp;                    //Rimuovo il Prodotto selezionato utilizzando l&#39;indice inserito dal Responsabile
+<b class="nc">&nbsp;                    Prodotto prodottoEliminato = prodotti.remove(indiceProdotto);</b>
+<b class="nc">&nbsp;                    System.out.println(&quot;Prodotto eliminato con successo: &quot; + prodottoEliminato);</b>
+<b class="nc">&nbsp;                    prodottoController.notificaOsservatori(&quot;Prodotto eliminato con successo: &quot; + prodottoEliminato);</b>
+<b class="nc">&nbsp;                    confermaValid = true;</b>
+&nbsp;                    break;
+&nbsp;                case &quot;n&quot;:
+&nbsp;                    //Avvisa il Responsabile dell&#39;operazione annullata ed esce dal loop
+<b class="fc">&nbsp;                    System.out.println(&quot;Eliminazione annullata.&quot;);</b>
+<b class="fc">&nbsp;                    prodottoController.notificaOsservatori(&quot;Eliminazione annullata.&quot;);</b>
+<b class="fc">&nbsp;                    confermaValid = true;</b>
+&nbsp;                    break;
+&nbsp;                default:
+&nbsp;                    //Avvisa della scelta non valida e chiede di reinserire l&#39;input
+<b class="nc">&nbsp;                    System.out.println(&quot;Scelta non valida. Inserisci un valore valido (s/n): &quot;);</b>
+&nbsp;                    break;
+&nbsp;            }
+&nbsp;        }
+&nbsp;    }
+&nbsp;    //Utilizzando l&#39;ereditarietà, non è necessario riscrivere questi metodi
+&nbsp;    //Getter e Setter
+&nbsp;}
+</code>
+</pre>
+</div>
+
+<script type="text/javascript">
+(function() {
+    var msie = false, msie9 = false;
+    /*@cc_on
+      msie = true;
+      @if (@_jscript_version >= 9)
+        msie9 = true;
+      @end
+    @*/
+
+    if (!msie || msie && msie9) {
+      hljs.highlightAll()
+      hljs.initLineNumbersOnLoad();
+    }
+})();
+</script>
+
+<div class="footer">
+    
+    <div style="float:right;">generated on 2024-08-29 22:48</div>
+</div>
+</body>
+</html>

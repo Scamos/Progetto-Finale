@@ -1,0 +1,196 @@
+
+
+
+<!DOCTYPE html>
+<html id="htmlId">
+<head>
+  <meta http-equiv="Content-Type" content="text/html;charset=windows-1252"> 
+  <title>Coverage Report > EventoController</title>
+  <style type="text/css">
+    @import "../../css/coverage.css";
+    @import "../../css/idea.min.css";
+  </style>
+  <script type="text/javascript" src="../../js/highlight.min.js"></script>
+  <script type="text/javascript" src="../../js/highlightjs-line-numbers.min.js"></script>
+</head>
+
+<body>
+<div class="content">
+<div class="breadCrumbs">
+Current scope:     <a href="../../index.html">all classes</a>
+    <span class="separator">|</span>
+    <a href="../index.html">Controller</a>
+</div>
+
+<h1>Coverage Summary for Class: EventoController (Controller)</h1>
+
+<table class="coverageStats">
+<tr>
+  <th class="name">Class</th>
+<th class="coverageStat 
+">
+  Class, %
+</th>
+<th class="coverageStat 
+">
+  Method, %
+</th>
+<th class="coverageStat 
+">
+  Branch, %
+</th>
+<th class="coverageStat 
+">
+  Line, %
+</th>
+</tr>
+<tr>
+  <td class="name">EventoController</td>
+<td class="coverageStat">
+  <span class="percent">
+    100%
+  </span>
+  <span class="absValue">
+    (1/1)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    100%
+  </span>
+  <span class="absValue">
+    (9/9)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    100%
+  </span>
+  <span class="absValue">
+    (8/8)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    100%
+  </span>
+  <span class="absValue">
+    (20/20)
+  </span>
+</td>
+</tr>
+
+</table>
+
+<br/>
+<br/>
+
+
+<pre>
+<code class="sourceCode" id="sourceCode">&nbsp;package Controller;
+&nbsp;
+&nbsp;import Model.Evento;
+&nbsp;import Observer.EventoOsservatore;
+&nbsp;import Vista.VistaEvento;
+&nbsp;
+&nbsp;import java.util.ArrayList;
+&nbsp;import java.util.List;
+&nbsp;
+&nbsp;//Gestisce la logica degli Eventi
+&nbsp;public class EventoController {
+&nbsp;    //Utilizzo di Singleton
+&nbsp;    private static EventoController instance;
+&nbsp;    private VistaEvento vistaEvento;
+&nbsp;    //Creazione della lista di Eventi
+&nbsp;    private List&lt;Evento&gt; listaEventi;
+&nbsp;    //Creazione della lista di Osservatori per gli Eventi
+&nbsp;    private List&lt;EventoOsservatore&gt; osservatori;
+&nbsp;
+&nbsp;    //Costruttore delle liste
+<b class="fc">&nbsp;    protected EventoController() {</b>
+&nbsp;        //Creazione della lista con degli eventi già presenti
+<b class="fc">&nbsp;        this.listaEventi = new ArrayList&lt;&gt;();</b>
+<b class="fc">&nbsp;        listaEventi.add(new Evento(&quot;Karaoke&quot;,&quot;Verdi 5&quot;,&quot;2024-09-10&quot;,&quot;21:30&quot;,&quot;23:00&quot;));</b>
+<b class="fc">&nbsp;        listaEventi.add(new Evento(&quot;Concerto&quot;,&quot;Viola 27&quot;,&quot;2024-09-11&quot;,&quot;21:30&quot;,&quot;23:00&quot;));</b>
+<b class="fc">&nbsp;        listaEventi.add(new Evento(&quot;Degustazione&quot;,&quot;Viola 3&quot;,&quot;2024-09-10&quot;,&quot;15:00&quot;,&quot;18:00&quot;));</b>
+<b class="fc">&nbsp;        this.osservatori = new ArrayList&lt;&gt;();</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    //Crea un&#39;istanza o la restituisce se c&#39;è già
+&nbsp;    public static EventoController getInstance() {
+<b class="fc">&nbsp;        if (instance == null) {</b>
+<b class="fc">&nbsp;            instance = new EventoController();</b>
+&nbsp;        }
+<b class="fc">&nbsp;        return instance;</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    //Getter della vista
+&nbsp;    public VistaEvento getVistaEvento() {
+<b class="fc">&nbsp;        return vistaEvento;</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    //Setter della vista
+&nbsp;    public void setVistaEvento(VistaEvento vistaEvento) {
+<b class="fc">&nbsp;        this.vistaEvento = vistaEvento;</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    //Aggiunge un osservatore all&#39;elenco
+&nbsp;    public void aggiungiOsservatore(EventoOsservatore osservatore) {
+<b class="fc">&nbsp;        osservatori.add(osservatore);</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    //Notifica tutti gli osservatori
+&nbsp;    public void notificaOsservatori(String messaggio) {
+<b class="fc">&nbsp;        for (EventoOsservatore osservatore : osservatori) {</b>
+<b class="fc">&nbsp;            osservatore.aggiorna(messaggio);</b>
+&nbsp;        }
+&nbsp;    }
+&nbsp;
+&nbsp;    //Metodo che aggiunge Evento alla lista
+&nbsp;    public void aggiungiEvento(Evento evento) {
+<b class="fc">&nbsp;        listaEventi.add(evento);</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    //Metodo che ottiene la lista
+&nbsp;    public List&lt;Evento&gt; getListaEventi() {
+<b class="fc">&nbsp;        return listaEventi;</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    //Metodo che ottiene Evento dalla lista, usando il nome
+&nbsp;    public Evento trovaEvento(String nomeEvento) {
+<b class="fc">&nbsp;        for (Evento evento : listaEventi) {</b>
+&nbsp;            //Togliamo sensibilità dalla ricerca, ignorando maiuscole e minuscole
+<b class="fc">&nbsp;            if (evento.getNome().equalsIgnoreCase(nomeEvento)) {</b>
+<b class="fc">&nbsp;                return evento; //Ritorna l&#39;Evento se è stato trovato</b>
+&nbsp;            }
+&nbsp;        }
+<b class="fc">&nbsp;        return null; //Ritorna questo nel caso non è stato trovato</b>
+&nbsp;    }
+&nbsp;}
+</code>
+</pre>
+</div>
+
+<script type="text/javascript">
+(function() {
+    var msie = false, msie9 = false;
+    /*@cc_on
+      msie = true;
+      @if (@_jscript_version >= 9)
+        msie9 = true;
+      @end
+    @*/
+
+    if (!msie || msie && msie9) {
+      hljs.highlightAll()
+      hljs.initLineNumbersOnLoad();
+    }
+})();
+</script>
+
+<div class="footer">
+    
+    <div style="float:right;">generated on 2024-08-29 22:48</div>
+</div>
+</body>
+</html>

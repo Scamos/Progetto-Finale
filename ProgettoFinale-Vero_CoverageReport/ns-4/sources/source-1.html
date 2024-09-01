@@ -1,0 +1,230 @@
+
+
+
+<!DOCTYPE html>
+<html id="htmlId">
+<head>
+  <meta http-equiv="Content-Type" content="text/html;charset=windows-1252"> 
+  <title>Coverage Report > Evento</title>
+  <style type="text/css">
+    @import "../../css/coverage.css";
+    @import "../../css/idea.min.css";
+  </style>
+  <script type="text/javascript" src="../../js/highlight.min.js"></script>
+  <script type="text/javascript" src="../../js/highlightjs-line-numbers.min.js"></script>
+</head>
+
+<body>
+<div class="content">
+<div class="breadCrumbs">
+Current scope:     <a href="../../index.html">all classes</a>
+    <span class="separator">|</span>
+    <a href="../index.html">Model</a>
+</div>
+
+<h1>Coverage Summary for Class: Evento (Model)</h1>
+
+<table class="coverageStats">
+<tr>
+  <th class="name">Class</th>
+<th class="coverageStat 
+">
+  Class, %
+</th>
+<th class="coverageStat 
+">
+  Method, %
+</th>
+<th class="coverageStat 
+">
+  Branch, %
+</th>
+<th class="coverageStat 
+">
+  Line, %
+</th>
+</tr>
+<tr>
+  <td class="name">Evento</td>
+<td class="coverageStat">
+  <span class="percent">
+    100%
+  </span>
+  <span class="absValue">
+    (1/1)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    100%
+  </span>
+  <span class="absValue">
+    (16/16)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    50%
+  </span>
+  <span class="absValue">
+    (1/2)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    100%
+  </span>
+  <span class="absValue">
+    (23/23)
+  </span>
+</td>
+</tr>
+
+</table>
+
+<br/>
+<br/>
+
+
+<pre>
+<code class="sourceCode" id="sourceCode">&nbsp;package Model;
+&nbsp;
+&nbsp;import java.time.LocalDate;
+&nbsp;import java.time.LocalTime;
+&nbsp;
+&nbsp;//Classe che rappresenta un oggetto Evento
+&nbsp;public class Evento {
+&nbsp;    //Attributi privati di Evento, che rappresentano le informazioni di base
+&nbsp;    private String nome;
+&nbsp;    private String via;
+&nbsp;    private LocalDate data;
+&nbsp;    private LocalTime oraInizio;
+&nbsp;    private LocalTime oraFine;
+&nbsp;    private int numPartecipanti;
+&nbsp;
+&nbsp;    //Costruttore che ha il compito di creare un nuovo Evento
+&nbsp;    //con i suoi attributi
+<b class="fc">&nbsp;    public Evento(String nome, String via, String data, String oraInizio, String oraFine) {</b>
+<b class="fc">&nbsp;        this.nome = nome;</b>
+<b class="fc">&nbsp;        this.via = via;</b>
+<b class="fc">&nbsp;        this.data = LocalDate.parse(data);</b>
+<b class="fc">&nbsp;        this.oraInizio = LocalTime.parse(oraInizio);</b>
+<b class="fc">&nbsp;        this.oraFine = LocalTime.parse(oraFine);</b>
+<b class="fc">&nbsp;        this.numPartecipanti = 0;</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    //Metodi getter e setter di Evento
+&nbsp;    //Getter di nome
+&nbsp;    public String getNome() {
+<b class="fc">&nbsp;        return nome;</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    //Setter di nome
+&nbsp;    public void setNome(String nome) {
+<b class="fc">&nbsp;        this.nome = nome;</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    //Getter di via
+&nbsp;    public String getVia() {
+<b class="fc">&nbsp;        return via;</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    //Setter di via
+&nbsp;    public void setVia(String via) {
+<b class="fc">&nbsp;        this.via = via;</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    //Getter di data
+&nbsp;    public LocalDate getData() {
+<b class="fc">&nbsp;        return data;</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    //Setter di data
+&nbsp;    public void setData(LocalDate data) {
+<b class="fc">&nbsp;        this.data = data;</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    //Getter di ora inizio
+&nbsp;    public LocalTime getOraInizio() {
+<b class="fc">&nbsp;        return oraInizio;</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    //Setter di ora inizio
+&nbsp;    public void setOraInizio(LocalTime oraInizio) {
+<b class="fc">&nbsp;        this.oraInizio = oraInizio;</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    //Getter di ora fine
+&nbsp;    public LocalTime getOraFine() {
+<b class="fc">&nbsp;        return oraFine;</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    //Setter di ora fine
+&nbsp;    public void setOraFine(LocalTime oraFine) {
+<b class="fc">&nbsp;        this.oraFine = oraFine;</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    //Getter di posti rimanenti
+&nbsp;    public int getNumPartecipanti() {
+<b class="fc">&nbsp;        return numPartecipanti;</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    //Setter di posti rimanenti
+&nbsp;    public void setNumPartecipanti(int numPartecipanti) {
+<b class="fc">&nbsp;        this.numPartecipanti = numPartecipanti;</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    //Metodo che viene chiamato a ogni nuovo partecipante
+&nbsp;    //a un Evento per aumentare il corrispettivo numero di partecipanti
+&nbsp;    public void incrementaPartecipanti() {
+<b class="fc">&nbsp;        this.numPartecipanti++;</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    //Metodo che viene chiamato a ogni partecipante che non partecipa più
+&nbsp;    //a un Evento per aumentare il corrispettivo numero di partecipanti
+&nbsp;    public void decrementaPartecipanti() {
+<b class="pc">&nbsp;        if (this.numPartecipanti &gt; 0) {</b>
+<b class="fc">&nbsp;            this.numPartecipanti--;</b>
+&nbsp;        }
+&nbsp;    }
+&nbsp;
+&nbsp;    //Override del metodo toString che serve per poter
+&nbsp;    //rappresentare l&#39;oggetto in maniera leggibile
+&nbsp;    @Override
+&nbsp;    public String toString() {
+<b class="fc">&nbsp;        return &quot;Evento{&quot; +</b>
+&nbsp;                &quot;nome=&#39;&quot; + nome + &#39;\&#39;&#39; +
+&nbsp;                &quot;, via=&#39;&quot; + via + &#39;\&#39;&#39; +
+&nbsp;                &quot;, data=&quot; + data +
+&nbsp;                &quot;, oraInizio=&quot; + oraInizio +
+&nbsp;                &quot;, oraFine=&quot; + oraFine +
+&nbsp;                &#39;}&#39;;
+&nbsp;    }
+&nbsp;}
+</code>
+</pre>
+</div>
+
+<script type="text/javascript">
+(function() {
+    var msie = false, msie9 = false;
+    /*@cc_on
+      msie = true;
+      @if (@_jscript_version >= 9)
+        msie9 = true;
+      @end
+    @*/
+
+    if (!msie || msie && msie9) {
+      hljs.highlightAll()
+      hljs.initLineNumbersOnLoad();
+    }
+})();
+</script>
+
+<div class="footer">
+    
+    <div style="float:right;">generated on 2024-08-29 22:48</div>
+</div>
+</body>
+</html>

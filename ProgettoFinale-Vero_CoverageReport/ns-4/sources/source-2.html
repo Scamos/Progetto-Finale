@@ -1,0 +1,228 @@
+
+
+
+<!DOCTYPE html>
+<html id="htmlId">
+<head>
+  <meta http-equiv="Content-Type" content="text/html;charset=windows-1252"> 
+  <title>Coverage Report > Ordine</title>
+  <style type="text/css">
+    @import "../../css/coverage.css";
+    @import "../../css/idea.min.css";
+  </style>
+  <script type="text/javascript" src="../../js/highlight.min.js"></script>
+  <script type="text/javascript" src="../../js/highlightjs-line-numbers.min.js"></script>
+</head>
+
+<body>
+<div class="content">
+<div class="breadCrumbs">
+Current scope:     <a href="../../index.html">all classes</a>
+    <span class="separator">|</span>
+    <a href="../index.html">Model</a>
+</div>
+
+<h1>Coverage Summary for Class: Ordine (Model)</h1>
+
+<table class="coverageStats">
+<tr>
+  <th class="name">Class</th>
+<th class="coverageStat 
+">
+  Class, %
+</th>
+<th class="coverageStat 
+">
+  Method, %
+</th>
+<th class="coverageStat 
+">
+  Line, %
+</th>
+</tr>
+<tr>
+  <td class="name">Ordine</td>
+<td class="coverageStat">
+  <span class="percent">
+    100%
+  </span>
+  <span class="absValue">
+    (1/1)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    100%
+  </span>
+  <span class="absValue">
+    (17/17)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    100%
+  </span>
+  <span class="absValue">
+    (29/29)
+  </span>
+</td>
+</tr>
+
+</table>
+
+<br/>
+<br/>
+
+
+<pre>
+<code class="sourceCode" id="sourceCode">&nbsp;package Model;
+&nbsp;
+&nbsp;import java.util.ArrayList;
+&nbsp;import java.util.Collections;
+&nbsp;import java.util.List;
+&nbsp;
+&nbsp;//Classe che rappresenta un oggetto Ordine
+&nbsp;public class Ordine {
+&nbsp;    //Attributi privati di Ordine, che rappresentano le informazioni di base
+&nbsp;    private UtenteRegistrato utente;
+&nbsp;    private List&lt;Prodotto&gt; prodotti;
+&nbsp;    private List&lt;Integer&gt; quantita;
+&nbsp;    private List&lt;Boolean&gt; portareVia;
+&nbsp;    private List&lt;Boolean&gt; prodottiGestiti;
+&nbsp;    private List&lt;Boolean&gt; prodottiRitirati;
+&nbsp;    private double costoTotale;
+&nbsp;    private boolean completato;
+&nbsp;    private boolean prodottiPortareViaCompletati;
+&nbsp;    private boolean prodottiNonPortareViaCompletati;
+&nbsp;
+&nbsp;    //Costruttore che ha il compito di creare un nuovo Ordine
+&nbsp;    //con i suoi attributi
+<b class="fc">&nbsp;    public Ordine(UtenteRegistrato utente, List&lt;Prodotto&gt; prodotti, List&lt;Integer&gt; quantita, List&lt;Boolean&gt; portareVia, double costoTotale) {</b>
+<b class="fc">&nbsp;        this.utente = utente;</b>
+<b class="fc">&nbsp;        this.prodotti = prodotti;</b>
+<b class="fc">&nbsp;        this.quantita = quantita;</b>
+<b class="fc">&nbsp;        this.portareVia = portareVia;</b>
+<b class="fc">&nbsp;        this.prodottiGestiti = new ArrayList&lt;&gt;(Collections.nCopies(prodotti.size(), false));</b>
+<b class="fc">&nbsp;        this.prodottiRitirati = new ArrayList&lt;&gt;(Collections.nCopies(prodotti.size(), false));</b>
+<b class="fc">&nbsp;        this.costoTotale = costoTotale;</b>
+<b class="fc">&nbsp;        this.completato = false;</b>
+<b class="fc">&nbsp;        this.prodottiPortareViaCompletati = false;</b>
+<b class="fc">&nbsp;        this.prodottiNonPortareViaCompletati = false;</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    //Getter del Utente Registrato
+&nbsp;    public UtenteRegistrato getUtente() {
+<b class="fc">&nbsp;        return utente;</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    //Getter dei prodotti
+&nbsp;    public List&lt;Prodotto&gt; getProdotti() {
+<b class="fc">&nbsp;        return prodotti;</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    //Getter della lista dei prodotti gestiti
+&nbsp;    public List&lt;Integer&gt; getQuantita() {
+<b class="fc">&nbsp;        return quantita;</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    //Getter dei prodotti da portare via
+&nbsp;    public List&lt;Boolean&gt; getPortareVia() {
+<b class="fc">&nbsp;        return portareVia;</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    //Getter dei prodotti gestiti
+&nbsp;    public List&lt;Boolean&gt; getProdottiGestiti() {
+<b class="fc">&nbsp;        return prodottiGestiti;</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    //Setter dei prodotti gestiti
+&nbsp;    public void setProdottiGestiti(List&lt;Boolean&gt; prodottiGestiti) {
+<b class="fc">&nbsp;        this.prodottiGestiti = prodottiGestiti;</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    //Getter dei prodotti ritirati
+&nbsp;    public List&lt;Boolean&gt; getProdottiRitirati() {
+<b class="fc">&nbsp;        return prodottiRitirati;</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    //Setter dei prodotti ritirati
+&nbsp;    public void setProdottiRitirati(List&lt;Boolean&gt; prodottiRitirati) {
+<b class="fc">&nbsp;        this.prodottiRitirati = prodottiRitirati;</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    //Getter di costoTotale
+&nbsp;    public double getCostoTotale() {
+<b class="fc">&nbsp;        return costoTotale;</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    //Getter di ordine completato
+&nbsp;    public boolean getCompletato() {
+<b class="fc">&nbsp;        return completato;</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    //Setter di ordine completato
+&nbsp;    public void setCompletato(boolean completato) {
+<b class="fc">&nbsp;        this.completato = completato;</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    //Getter di prodotti non da portare via completati
+&nbsp;    public boolean getProdottiPortareViaCompletati() {
+<b class="fc">&nbsp;        return prodottiPortareViaCompletati;</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    //Setter di prodotti da portare via completati
+&nbsp;    public void setProdottiPortareViaCompletati(boolean prodottiPortareViaCompletati) {
+<b class="fc">&nbsp;        this.prodottiPortareViaCompletati = prodottiPortareViaCompletati;</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    //Getter di prodotti non da portare via completati
+&nbsp;    public boolean getProdottiNonPortareViaCompletati() {
+<b class="fc">&nbsp;        return prodottiNonPortareViaCompletati;</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    //Setter di prodotti non da portare via completati
+&nbsp;    public void setProdottiNonPortareViaCompletati(boolean prodottiNonPortareViaCompletati) {
+<b class="fc">&nbsp;        this.prodottiNonPortareViaCompletati = prodottiNonPortareViaCompletati;</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    //Override del metodo toString che serve per poter
+&nbsp;    //rappresentare l&#39;oggetto in maniera leggibile
+&nbsp;    @Override
+&nbsp;    public String toString() {
+<b class="fc">&nbsp;        return &quot;Ordine{&quot; +</b>
+<b class="fc">&nbsp;                &quot;utente=&quot; + utente.getEmail() +</b>
+&nbsp;                &quot;, prodotti=&quot; + prodotti +
+&nbsp;                &quot;, quantita=&quot; + quantita +
+&nbsp;                &quot;, portareVia=&quot; + portareVia +
+<b class="fc">&nbsp;                &quot;, costoTotale=&quot; + String.format(&quot;%.2f&quot;, costoTotale) +</b>
+&nbsp;                &quot;, completato=&quot; + completato +
+&nbsp;                &#39;}&#39;;
+&nbsp;    }
+&nbsp;}
+</code>
+</pre>
+</div>
+
+<script type="text/javascript">
+(function() {
+    var msie = false, msie9 = false;
+    /*@cc_on
+      msie = true;
+      @if (@_jscript_version >= 9)
+        msie9 = true;
+      @end
+    @*/
+
+    if (!msie || msie && msie9) {
+      hljs.highlightAll()
+      hljs.initLineNumbersOnLoad();
+    }
+})();
+</script>
+
+<div class="footer">
+    
+    <div style="float:right;">generated on 2024-08-29 22:48</div>
+</div>
+</body>
+</html>

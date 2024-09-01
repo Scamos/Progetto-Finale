@@ -1,0 +1,609 @@
+
+
+
+<!DOCTYPE html>
+<html id="htmlId">
+<head>
+  <meta http-equiv="Content-Type" content="text/html;charset=windows-1252"> 
+  <title>Coverage Report > Registrazione</title>
+  <style type="text/css">
+    @import "../../css/coverage.css";
+    @import "../../css/idea.min.css";
+  </style>
+  <script type="text/javascript" src="../../js/highlight.min.js"></script>
+  <script type="text/javascript" src="../../js/highlightjs-line-numbers.min.js"></script>
+</head>
+
+<body>
+<div class="content">
+<div class="breadCrumbs">
+Current scope:     <a href="../../index.html">all classes</a>
+    <span class="separator">|</span>
+    <a href="../index.html">Model</a>
+</div>
+
+<h1>Coverage Summary for Class: Registrazione (Model)</h1>
+
+<table class="coverageStats">
+<tr>
+  <th class="name">Class</th>
+<th class="coverageStat 
+">
+  Class, %
+</th>
+<th class="coverageStat 
+">
+  Method, %
+</th>
+<th class="coverageStat 
+">
+  Branch, %
+</th>
+<th class="coverageStat 
+">
+  Line, %
+</th>
+</tr>
+<tr>
+  <td class="name">Registrazione</td>
+<td class="coverageStat">
+  <span class="percent">
+    100%
+  </span>
+  <span class="absValue">
+    (1/1)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    87,5%
+  </span>
+  <span class="absValue">
+    (7/8)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    24,6%
+  </span>
+  <span class="absValue">
+    (29/118)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    47,5%
+  </span>
+  <span class="absValue">
+    (104/219)
+  </span>
+</td>
+</tr>
+
+</table>
+
+<br/>
+<br/>
+
+
+<pre>
+<code class="sourceCode" id="sourceCode">&nbsp;package Model;
+&nbsp;
+&nbsp;import java.util.*;
+&nbsp;import Vista.VistaRegistrazione;
+&nbsp;
+&nbsp;//Singleton
+&nbsp;//Design Pattern che permette di avere una sola istanza dell&#39;oggetto
+&nbsp;//Registrazione nell&#39;applicazione
+&nbsp;//Questa classe rappresenta la registrazione
+&nbsp;public class Registrazione {
+&nbsp;    //Attributo per accettare un parametro di tipo VistaRegistrazione
+&nbsp;    private VistaRegistrazione vista;
+&nbsp;    //Attributo statico che contiene l&#39;unica istanza di Registrazione nell&#39;applicazione
+&nbsp;    private static Registrazione istanza;
+&nbsp;    //Lista degli utenti registrati
+&nbsp;    private List&lt;UtenteRegistrato&gt; utentiRegistrati;
+&nbsp;
+&nbsp;    //Costruttore privato per evitare la creazione di istanze aggiuntive
+<b class="fc">&nbsp;    private Registrazione(VistaRegistrazione vista) {</b>
+<b class="fc">&nbsp;        this.vista = vista;</b>
+<b class="fc">&nbsp;        utentiRegistrati = new ArrayList&lt;&gt;();</b>
+&nbsp;
+&nbsp;        //Creazione di Utenti
+<b class="fc">&nbsp;        UtenteRegistrato utente1 = new UtenteRegistrato(&quot;mariorossi@gmail.com&quot;, &quot;1234&quot;);</b>
+&nbsp;        //Configurazione di un utente
+<b class="fc">&nbsp;        utente1.setNumeroCarta(&quot;1111222233334444&quot;);</b>
+<b class="fc">&nbsp;        utente1.setDataScadenza(&quot;12/26&quot;);</b>
+<b class="fc">&nbsp;        utente1.setNomeProprietario(&quot;Mario&quot;);</b>
+<b class="fc">&nbsp;        utente1.setCognomeProprietario(&quot;Rossi&quot;);</b>
+<b class="fc">&nbsp;        utente1.setCvv(&quot;123&quot;);</b>
+<b class="fc">&nbsp;        utente1.setSaldo(100.00);</b>
+<b class="fc">&nbsp;        utentiRegistrati.add(utente1);</b>
+&nbsp;
+<b class="fc">&nbsp;        UtenteRegistrato utente2 = new UtenteRegistrato(&quot;luigibianchi@gmail.com&quot;, &quot;4321&quot;);</b>
+&nbsp;        //Configurazione di un utente
+<b class="fc">&nbsp;        utente2.setNumeroCarta(&quot;5555666677778888&quot;);</b>
+<b class="fc">&nbsp;        utente2.setDataScadenza(&quot;11/26&quot;);</b>
+<b class="fc">&nbsp;        utente2.setNomeProprietario(&quot;Luigi&quot;);</b>
+<b class="fc">&nbsp;        utente2.setCognomeProprietario(&quot;Bianchi&quot;);</b>
+<b class="fc">&nbsp;        utente2.setCvv(&quot;456&quot;);</b>
+<b class="fc">&nbsp;        utente2.setSaldo(150.00);</b>
+<b class="fc">&nbsp;        utentiRegistrati.add(utente2);</b>
+&nbsp;
+&nbsp;        //Creazione di Responsabili Bar o Venditori
+<b class="fc">&nbsp;        ResponsabileBarVenditore barman = new ResponsabileBarVenditore(&quot;barman@gmail.com&quot;, &quot;5678&quot;);</b>
+&nbsp;        //Configurazione di un responsabile bar o venditore
+<b class="fc">&nbsp;        barman.setNumeroCarta(&quot;9999000011112222&quot;);</b>
+<b class="fc">&nbsp;        barman.setDataScadenza(&quot;10/26&quot;);</b>
+<b class="fc">&nbsp;        barman.setNomeProprietario(&quot;Carlo&quot;);</b>
+<b class="fc">&nbsp;        barman.setCognomeProprietario(&quot;Rassi&quot;);</b>
+<b class="fc">&nbsp;        barman.setCvv(&quot;789&quot;);</b>
+<b class="fc">&nbsp;        barman.setSaldo(200.00);</b>
+<b class="fc">&nbsp;        utentiRegistrati.add(barman);</b>
+&nbsp;
+<b class="fc">&nbsp;        ResponsabileBarVenditore venditore = new ResponsabileBarVenditore(&quot;venditore@gmail.com&quot;, &quot;8765&quot;);</b>
+&nbsp;        //Configurazione di un responsabile bar o venditore
+<b class="fc">&nbsp;        venditore.setNumeroCarta(&quot;3333444455556666&quot;);</b>
+<b class="fc">&nbsp;        venditore.setDataScadenza(&quot;09/26&quot;);</b>
+<b class="fc">&nbsp;        venditore.setNomeProprietario(&quot;Antonio&quot;);</b>
+<b class="fc">&nbsp;        venditore.setCognomeProprietario(&quot;Bensi&quot;);</b>
+<b class="fc">&nbsp;        venditore.setCvv(&quot;012&quot;);</b>
+<b class="fc">&nbsp;        venditore.setSaldo(250.00);</b>
+<b class="fc">&nbsp;        utentiRegistrati.add(venditore);</b>
+&nbsp;
+&nbsp;        //Creazione di Organizzatori
+<b class="fc">&nbsp;        Organizzatore organizzatrice = new Organizzatore(&quot;organizzatrice@gmail.com&quot;, &quot;abcd&quot;);</b>
+&nbsp;        //Configurazione di un organizzatore
+<b class="fc">&nbsp;        organizzatrice.setNumeroCarta(&quot;7777888899990000&quot;);</b>
+<b class="fc">&nbsp;        organizzatrice.setDataScadenza(&quot;08/26&quot;);</b>
+<b class="fc">&nbsp;        organizzatrice.setNomeProprietario(&quot;Maria&quot;);</b>
+<b class="fc">&nbsp;        organizzatrice.setCognomeProprietario(&quot;Rosa&quot;);</b>
+<b class="fc">&nbsp;        organizzatrice.setCvv(&quot;345&quot;);</b>
+<b class="fc">&nbsp;        organizzatrice.setSaldo(300.00);</b>
+<b class="fc">&nbsp;        utentiRegistrati.add(organizzatrice);</b>
+&nbsp;
+<b class="fc">&nbsp;        Organizzatore organizzatore = new Organizzatore(&quot;organizzatore@gmail.com&quot;, &quot;dcba&quot;);</b>
+&nbsp;        //Configurazione di un organizzatore
+<b class="fc">&nbsp;        organizzatore.setNumeroCarta(&quot;1111333355557777&quot;);</b>
+<b class="fc">&nbsp;        organizzatore.setDataScadenza(&quot;07/26&quot;);</b>
+<b class="fc">&nbsp;        organizzatore.setNomeProprietario(&quot;Mauro&quot;);</b>
+<b class="fc">&nbsp;        organizzatore.setCognomeProprietario(&quot;Del Mulino&quot;);</b>
+<b class="fc">&nbsp;        organizzatore.setCvv(&quot;678&quot;);</b>
+<b class="fc">&nbsp;        organizzatore.setSaldo(350.00);</b>
+<b class="fc">&nbsp;        utentiRegistrati.add(organizzatore);</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    //Metodo che restituisce l&#39;istanza esistente o ne crea una nuova se non esiste già
+&nbsp;    public static Registrazione getInstance(VistaRegistrazione vista) {
+<b class="fc">&nbsp;        if (istanza == null) {</b>
+<b class="fc">&nbsp;            istanza = new Registrazione(vista);</b>
+&nbsp;        }
+<b class="fc">&nbsp;        return istanza;</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    //Metodo per verificare se l&#39;email inserita dall&#39;utente è presente
+&nbsp;    //nel &quot;database&quot; oppure no
+&nbsp;    public boolean verificaEmail(String email, String password) {
+&nbsp;        //Verifica nel &quot;database&quot; se l&#39;email esiste già
+<b class="fc">&nbsp;        for (UtenteRegistrato utente : utentiRegistrati) {</b>
+<b class="fc">&nbsp;            if (utente.getEmail().equals(email)) {</b>
+<b class="fc">&nbsp;                return false; //L&#39;Email è già presente nel &quot;database&quot;</b>
+&nbsp;            }
+&nbsp;        }
+&nbsp;        //Se l&#39;email non è presente nel &quot;database&quot;, si potrà quindi
+&nbsp;        //creare un nuovo utente
+<b class="fc">&nbsp;        return true; //L&#39;Email non è presente nel &quot;database&quot;</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    //Metodo usato per verificare la password degli utenti, viene
+&nbsp;    //chiamato nel caso l&#39;email sia valida
+&nbsp;    public void verificaPassword(String email, String password) {
+&nbsp;        //Verifica nel &quot;database&quot; se l&#39;email è uguale a quella passata dal Utente
+<b class="fc">&nbsp;        boolean utenteNelDB = false;</b>
+&nbsp;        //Esegue la ricerca nel &quot;database&quot;
+<b class="pc">&nbsp;        for (UtenteRegistrato utente : utentiRegistrati) {</b>
+<b class="pc">&nbsp;            if (utente.getEmail().equals(email)) {</b>
+<b class="fc">&nbsp;                utenteNelDB = true;</b>
+<b class="fc">&nbsp;                if (utente.getPassword().equals(password)) {</b>
+&nbsp;                    //La Password che l&#39;Utente ha inserito è corretta,
+&nbsp;                    //l&#39;autenticazione è stata fatta correttamente
+&nbsp;                    //Notifica gli osservatori del login con successo
+<b class="fc">&nbsp;                    vista.aggiorna(&quot;Login eseguito con successo di &quot; + email + &quot;\n&quot;);</b>
+&nbsp;                    //Chiama il metodo che mostrà il menù principale con un utente registrato
+<b class="fc">&nbsp;                    chiamaUtenteRegistrato(email, password);</b>
+&nbsp;                    return;
+&nbsp;                }
+&nbsp;                break; //Uscita dal ciclo perché l&#39;utente è presente nel &quot;DB&quot;
+&nbsp;            }
+&nbsp;        }
+&nbsp;        //Questo avviene quando l&#39;utente non è stato trovato,
+&nbsp;        //se succede deve mostrare un errore di autenticazione
+<b class="pc">&nbsp;        if (!utenteNelDB) {</b>
+<b class="nc">&nbsp;            mostraErroreRegistrazione();</b>
+&nbsp;            //Aggiorna la vista
+<b class="nc">&nbsp;            vista.aggiorna(&quot;Errore: l&#39;Utente non è stato trovato\nLog in Annullato\n&quot;);</b>
+&nbsp;        } else {
+&nbsp;            //Questo avviene se l&#39;utente è stato trovato ma la password non
+&nbsp;            //corrisponde, dunque bisogna mostrare un errore adeguato
+<b class="fc">&nbsp;            System.out.println(&quot;Errore: Password incorretta&quot;);</b>
+&nbsp;            //Aggiorna la vista
+<b class="fc">&nbsp;            vista.aggiorna(&quot;Errore: Password incorretta\nLog in Annullato\n&quot;);</b>
+&nbsp;        }
+&nbsp;    }
+&nbsp;
+&nbsp;    //Metodo che viene chiamato ogni volta che è presente un errore durante la registrazione
+&nbsp;    public void mostraErroreRegistrazione() {
+&nbsp;        //Mostra messaggio di errore
+<b class="fc">&nbsp;        System.out.println(&quot;Errore: Dati inseriti incorretti&quot;);</b>
+<b class="fc">&nbsp;        vista.aggiorna(&quot;Errore: Dati inseriti incorretti&quot;);</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    //Metodo che viene chiamato alla creazione di un nuovo utente
+&nbsp;    public void creaNuovoUtenteRegistrato(String email, String password) {
+&nbsp;        //Salva nel &quot;database&quot; il nuovo utente
+<b class="nc">&nbsp;        UtenteRegistrato nuovoUtente = new UtenteRegistrato(email, password);</b>
+&nbsp;        //Aggiunta facoltativa delle informazioni della carta di credito
+<b class="nc">&nbsp;        Scanner scanner = new Scanner(System.in);</b>
+<b class="nc">&nbsp;        System.out.println(&quot;Vuoi inserire le informazioni della carta di credito? (s/n)&quot;);</b>
+<b class="nc">&nbsp;        String scelta = scanner.nextLine();</b>
+<b class="nc">&nbsp;        if (scelta.equalsIgnoreCase(&quot;s&quot;)) {</b>
+&nbsp;            //Validazione del numero della carta
+<b class="nc">&nbsp;            boolean valid = false;</b>
+<b class="nc">&nbsp;            while (!valid) {</b>
+<b class="nc">&nbsp;                System.out.println(&quot;Inserisci il numero della carta di credito (16 cifre):&quot;);</b>
+<b class="nc">&nbsp;                String numeroCarta = scanner.nextLine();</b>
+&nbsp;                //Controllo del numero di carta con regex
+<b class="nc">&nbsp;                if (numeroCarta.matches(&quot;\\d{16}&quot;)) {</b>
+&nbsp;                    //Set del numero di carta
+<b class="nc">&nbsp;                    nuovoUtente.setNumeroCarta(numeroCarta);</b>
+<b class="nc">&nbsp;                    valid = true;</b>
+&nbsp;                } else {
+&nbsp;                    //Avvisa l&#39;utente dell&#39;inserimento di un numero di carta non valido e lo chiede nuovamente
+<b class="nc">&nbsp;                    System.out.println(&quot;Numero della carta non valido.&quot;);</b>
+&nbsp;                }
+&nbsp;            }
+&nbsp;
+&nbsp;            //Validazione della data di scadenza
+<b class="nc">&nbsp;            valid = false;</b>
+<b class="nc">&nbsp;            while (!valid) {</b>
+<b class="nc">&nbsp;                System.out.println(&quot;Inserisci la data di scadenza (MM/YY):&quot;);</b>
+<b class="nc">&nbsp;                String dataScadenza = scanner.nextLine();</b>
+&nbsp;                //Controllo della data di scadenza con regex
+<b class="nc">&nbsp;                if (dataScadenza.matches(&quot;^(0[1-9]|1[0-2])/([2-9][5-9]|[3-9][0-9])$&quot;)) {</b>
+&nbsp;                    //Set della data di scadenza
+<b class="nc">&nbsp;                    nuovoUtente.setDataScadenza(dataScadenza);</b>
+<b class="nc">&nbsp;                    valid = true;</b>
+&nbsp;                } else {
+&nbsp;                    //Avvisa l&#39;utente dell&#39;inserimento di una data di scadenza non valida e la chiede nuovamente
+<b class="nc">&nbsp;                    System.out.println(&quot;Data di scadenza non valida.&quot;);</b>
+&nbsp;                }
+&nbsp;            }
+&nbsp;
+&nbsp;            //Validazione del nome del proprietario
+<b class="nc">&nbsp;            valid = false;</b>
+<b class="nc">&nbsp;            while (!valid) {</b>
+<b class="nc">&nbsp;                System.out.println(&quot;Inserisci il nome del proprietario della carta:&quot;);</b>
+<b class="nc">&nbsp;                String nomeProprietario = scanner.nextLine();</b>
+&nbsp;                //Controllo del nome con regex
+<b class="nc">&nbsp;                if (nomeProprietario.matches(&quot;^[A-Z][a-z]*(\\s[A-Z][a-z]*)*$&quot;) &amp;&amp; !nomeProprietario.isEmpty()) {</b>
+&nbsp;                    //Set del cognome
+<b class="nc">&nbsp;                    nuovoUtente.setNomeProprietario(nomeProprietario);</b>
+<b class="nc">&nbsp;                    valid = true;</b>
+&nbsp;                } else {
+&nbsp;                    //Avvisa l&#39;utente dell&#39;inserimento di un nome non valido e lo chiede nuovamente
+<b class="nc">&nbsp;                    System.out.println(&quot;Nome del proprietario non valido.&quot;);</b>
+&nbsp;                }
+&nbsp;            }
+&nbsp;
+&nbsp;            //Validazione del cognome del proprietario
+<b class="nc">&nbsp;            valid = false;</b>
+<b class="nc">&nbsp;            while (!valid) {</b>
+<b class="nc">&nbsp;                System.out.println(&quot;Inserisci il cognome del proprietario della carta:&quot;);</b>
+<b class="nc">&nbsp;                String cognomeProprietario = scanner.nextLine();</b>
+&nbsp;                //Controllo del cognome con regex
+<b class="nc">&nbsp;                if (cognomeProprietario.matches(&quot;^[A-Z][a-z]*(\\s[A-Z][a-z]*)*$&quot;) &amp;&amp; !cognomeProprietario.isEmpty()) {</b>
+&nbsp;                    //Set del nome
+<b class="nc">&nbsp;                    nuovoUtente.setCognomeProprietario(cognomeProprietario);</b>
+<b class="nc">&nbsp;                    valid = true;</b>
+&nbsp;                } else {
+&nbsp;                    //Avvisa l&#39;utente dell&#39;inserimento di un cognome non valido e lo chiede nuovamente
+<b class="nc">&nbsp;                    System.out.println(&quot;Cognome del proprietario non valido.&quot;);</b>
+&nbsp;                }
+&nbsp;            }
+&nbsp;
+&nbsp;            //Validazione del CVV
+<b class="nc">&nbsp;            valid = false;</b>
+<b class="nc">&nbsp;            while (!valid) {</b>
+<b class="nc">&nbsp;                System.out.println(&quot;Inserisci il CVV della carta (3 cifre):&quot;);</b>
+<b class="nc">&nbsp;                String cvv = scanner.nextLine();</b>
+&nbsp;                //Controllo del CVV con regex
+<b class="nc">&nbsp;                if (cvv.matches(&quot;\\d{3}&quot;)) {</b>
+&nbsp;                    //Set del CVV
+<b class="nc">&nbsp;                    nuovoUtente.setCvv(cvv);</b>
+<b class="nc">&nbsp;                    valid = true;</b>
+&nbsp;                } else {
+&nbsp;                    //Avvisa l&#39;utente dell&#39;inserimento di un CVV non valido e lo chiede nuovamente
+<b class="nc">&nbsp;                    System.out.println(&quot;CVV non valido.&quot;);</b>
+&nbsp;                }
+&nbsp;            }
+&nbsp;
+&nbsp;            //Validazione del saldo
+<b class="nc">&nbsp;            valid = false;</b>
+<b class="nc">&nbsp;            while (!valid) {</b>
+<b class="nc">&nbsp;                System.out.println(&quot;Inserisci il saldo iniziale della carta:&quot;);</b>
+<b class="nc">&nbsp;                String saldoInput = scanner.nextLine();</b>
+&nbsp;                //Controllo del saldo con regex
+<b class="nc">&nbsp;                if (saldoInput.matches(&quot;^\\d+\\.\\d{2}$&quot;)) {</b>
+&nbsp;                    try {
+<b class="nc">&nbsp;                        double saldo = Double.parseDouble(saldoInput);</b>
+<b class="nc">&nbsp;                        if (saldo &gt;= 0) {</b>
+&nbsp;                            //Set del saldo
+<b class="nc">&nbsp;                            nuovoUtente.setSaldo(saldo);</b>
+<b class="nc">&nbsp;                            valid = true;</b>
+&nbsp;                        } else {
+&nbsp;                            //Avvisa l&#39;utente dell&#39;inserimento di un saldo negativo e lo chiede nuovamente
+<b class="nc">&nbsp;                            System.out.println(&quot;Saldo non valido. Deve essere maggiore o uguale a zero.&quot;);</b>
+&nbsp;                        }
+<b class="nc">&nbsp;                    } catch (NumberFormatException e) {</b>
+&nbsp;                        //Avvisa l&#39;utente dell&#39;inserimento di un input non numerico e lo chiede nuovamente
+<b class="nc">&nbsp;                        System.out.println(&quot;Saldo non valido.&quot;);</b>
+&nbsp;                    }
+&nbsp;                } else {
+&nbsp;                    //Avvisa l&#39;utente dell&#39;inserimento di un saldo non valido e lo chiede nuovamente
+<b class="nc">&nbsp;                    System.out.println(&quot;Saldo non valido. Deve essere un numero con due cifre decimali.&quot;);</b>
+&nbsp;                }
+&nbsp;            }
+&nbsp;        }
+&nbsp;
+&nbsp;        //Inserisci nella lista degli utenti il nuovo utente
+<b class="nc">&nbsp;        utentiRegistrati.add(nuovoUtente);</b>
+<b class="nc">&nbsp;        System.out.println(&quot;Nuovo utente registrato con successo!&quot;);</b>
+&nbsp;
+&nbsp;        //Chiama la funzione per eseguire il log in del nuovo utente
+<b class="nc">&nbsp;        chiamaUtenteRegistrato(email, password);</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    //Metodo che viene chiamato alla registrazione di un utente, sia se già
+&nbsp;    //presente sia se è appena stato creato
+&nbsp;    public void chiamaUtenteRegistrato(String email, String password) {
+&nbsp;        //Accesso all&#39;utente registrato
+<b class="fc">&nbsp;        System.out.println(&quot;Utente autenticato: &quot; + email);</b>
+<b class="fc">&nbsp;        System.out.println(&quot;Benvenuto, &quot; + email + &quot;!&quot;);</b>
+&nbsp;
+<b class="fc">&nbsp;        Scanner scanner = new Scanner(System.in);</b>
+<b class="fc">&nbsp;        int scelta = 0;</b>
+&nbsp;
+&nbsp;        //Prende l&#39;Utente corrispondente nell&#39;elenco degli utenti registrati
+<b class="fc">&nbsp;        UtenteRegistrato utenteRegistrato = null;</b>
+<b class="pc">&nbsp;        for (UtenteRegistrato utente : utentiRegistrati) {</b>
+<b class="pc">&nbsp;            if (utente.getEmail().equals(email)) {</b>
+&nbsp;                //Setta utenteRegistrato dopo averlo trovato
+<b class="fc">&nbsp;                utenteRegistrato = (UtenteRegistrato) utente;</b>
+&nbsp;                break;
+&nbsp;            }
+&nbsp;        }
+&nbsp;        //Verifica se l&#39;utente è un ResponsabileBarVenditore
+<b class="fc">&nbsp;        boolean isResponsabileBarVenditore = false;</b>
+&nbsp;        //Prende il ResponsabileBarVenditore corrispondente nell&#39;elenco degli utenti registrati
+<b class="fc">&nbsp;        ResponsabileBarVenditore responsabileBarVenditore = null;</b>
+&nbsp;        //Verifica se l&#39;utente è un Organizzatore
+<b class="fc">&nbsp;        boolean isOrganizzatore = false;</b>
+&nbsp;        //Prende l&#39;Organizzatore corrispondente nell&#39;elenco degli utenti registrati
+<b class="fc">&nbsp;        Organizzatore organizzatore = null;</b>
+&nbsp;        //Passaggio di verifica per ResponsabileBarVenditore
+<b class="fc">&nbsp;        for (UtenteRegistrato utente : utentiRegistrati) {</b>
+<b class="pc">&nbsp;            if (utente.getEmail().equals(email) &amp;&amp; utente instanceof ResponsabileBarVenditore) {</b>
+&nbsp;                //Setta responsabileBarVenditore dopo averlo trovato, se lo trova
+<b class="nc">&nbsp;                responsabileBarVenditore = (ResponsabileBarVenditore) utente;</b>
+&nbsp;                //Imposta a vero se trova il ResponsabileBarVenditore
+<b class="nc">&nbsp;                isResponsabileBarVenditore = true;</b>
+&nbsp;                break;
+&nbsp;            }
+&nbsp;        }
+&nbsp;        //Passaggio di verifica per Organizzatore
+<b class="fc">&nbsp;        for (UtenteRegistrato utente : utentiRegistrati) {</b>
+<b class="pc">&nbsp;            if (utente.getEmail().equals(email) &amp;&amp; utente instanceof Organizzatore) {</b>
+&nbsp;                //Setta organizzatore dopo averlo trovato, se lo trova
+<b class="nc">&nbsp;                organizzatore = (Organizzatore) utente;</b>
+&nbsp;                //Imposta a vero se trova l&#39;Organizzatore
+<b class="nc">&nbsp;                isOrganizzatore = true;</b>
+&nbsp;            }
+&nbsp;        }
+&nbsp;
+&nbsp;        //Menù di scelta di un utente autenticato
+<b class="fc">&nbsp;        while (scelta != 8) {</b>
+<b class="fc">&nbsp;            System.out.println(&quot;Utente autenticato: &quot; + email);</b>
+<b class="fc">&nbsp;            System.out.println(&quot;\nScegli una delle varie opzioni:&quot;);</b>
+<b class="fc">&nbsp;            System.out.println(&quot;1) Visualizzazione Eventi&quot;);</b>
+<b class="fc">&nbsp;            System.out.println(&quot;2) Visualizzazione Lotteria&quot;);</b>
+<b class="fc">&nbsp;            System.out.println(&quot;3) Partecipazione Lotteria&quot;);</b>
+<b class="fc">&nbsp;            System.out.println(&quot;4) Visualizzazione Prodotti&quot;);</b>
+<b class="fc">&nbsp;            System.out.println(&quot;5) Acquisto Prodotti&quot;);</b>
+<b class="fc">&nbsp;            System.out.println(&quot;6) Visualizzazione Libreria Personale&quot;);</b>
+<b class="fc">&nbsp;            System.out.println(&quot;7) Gestione Libreria Personale&quot;);</b>
+&nbsp;
+&nbsp;            //Se il login è stato effettuato da un ResponsabileBarVenditore o da
+&nbsp;            //un Organizzatore, visualizza le opzioni che possiedono in più
+<b class="pc">&nbsp;            if (isResponsabileBarVenditore || isOrganizzatore) {</b>
+<b class="nc">&nbsp;                System.out.println(&quot;9) Visualizzazione Ordini Clienti&quot;);</b>
+<b class="nc">&nbsp;                System.out.println(&quot;10) Gestione Ordini Clienti&quot;);</b>
+<b class="nc">&nbsp;                System.out.println(&quot;11) Gestione Prodotti da Portare Via&quot;);</b>
+<b class="nc">&nbsp;                System.out.println(&quot;12) Visualizzazione Magazzino&quot;);</b>
+<b class="nc">&nbsp;                System.out.println(&quot;13) Gestione Magazzino&quot;);</b>
+&nbsp;            }
+&nbsp;
+&nbsp;            //Se il login è stato effettuato da un Organizzatore,
+&nbsp;            //visualizza le opzioni che possiede in più
+<b class="pc">&nbsp;            if (isOrganizzatore) {</b>
+<b class="nc">&nbsp;                System.out.println(&quot;14) Creazione Lotteria&quot;);</b>
+<b class="nc">&nbsp;                System.out.println(&quot;15) Gestione Lotteria&quot;);</b>
+<b class="nc">&nbsp;                System.out.println(&quot;16) Creazione Eventi&quot;);</b>
+<b class="nc">&nbsp;                System.out.println(&quot;17) Gestione Eventi&quot;);</b>
+<b class="nc">&nbsp;                System.out.println(&quot;18) Visualizza Partecipazioni Eventi&quot;);</b>
+&nbsp;            }
+&nbsp;
+&nbsp;            //In ogni caso, questa scelta sarà presente e sarà
+&nbsp;            //in fondo al menù
+<b class="fc">&nbsp;            System.out.println(&quot;8) Logout&quot;);</b>
+&nbsp;
+&nbsp;            //Permette di leggere la scelta dell&#39;utente
+<b class="fc">&nbsp;            scelta = scanner.nextInt();</b>
+&nbsp;
+&nbsp;            //Esegui l&#39;azione che l&#39;utente ha scelto
+<b class="pc">&nbsp;            switch (scelta) {</b>
+&nbsp;                case 1:
+<b class="nc">&nbsp;                    utenteRegistrato.visualizzaEventi();</b>
+&nbsp;                    break;
+&nbsp;                case 2:
+<b class="nc">&nbsp;                    utenteRegistrato.visualizzaLotteria();</b>
+&nbsp;                    break;
+&nbsp;                case 3:
+<b class="nc">&nbsp;                    utenteRegistrato.partecipaLotteria();</b>
+&nbsp;                    break;
+&nbsp;                case 4:
+<b class="nc">&nbsp;                    utenteRegistrato.visualizzaProdotti();</b>
+&nbsp;                    break;
+&nbsp;                case 5:
+&nbsp;                    //Acquisto prodotti
+<b class="nc">&nbsp;                    utenteRegistrato.ricercaProdotti();</b>
+&nbsp;                    break;
+&nbsp;                case 6:
+<b class="nc">&nbsp;                    utenteRegistrato.visualizzaLibreriaPersonale();</b>
+&nbsp;                    break;
+&nbsp;                case 7:
+<b class="nc">&nbsp;                    utenteRegistrato.gestioneLibreriaPersonale();</b>
+&nbsp;                    break;
+&nbsp;                case 8:
+&nbsp;                    //Esegue il logout
+<b class="fc">&nbsp;                    System.out.println(&quot;Logout effettuato.&quot;);</b>
+<b class="fc">&nbsp;                    vista.aggiorna(&quot;Logout effettuato con successo per l&#39;utente: &quot; + email);</b>
+&nbsp;                    //Ritorna alla registrazione
+&nbsp;                    break;
+&nbsp;
+&nbsp;                //Le scelte, da questo caso in poi, hanno il controllo per verificare se sono metodi
+&nbsp;                //possibili da chiamare (da ResponsabileBarVenditore o classi che la estendono)
+&nbsp;                case 9:
+<b class="nc">&nbsp;                    if (isResponsabileBarVenditore || isOrganizzatore) {</b>
+<b class="nc">&nbsp;                        responsabileBarVenditore.visualizzaOrdiniClienti();</b>
+&nbsp;                        break;
+&nbsp;                    } else {
+<b class="nc">&nbsp;                        System.out.println(&quot;Opzione inserita non presente. Scrivi un valore valido:&quot;);</b>
+&nbsp;                        break;
+&nbsp;                    }
+&nbsp;                case 10:
+<b class="nc">&nbsp;                    if (isResponsabileBarVenditore || isOrganizzatore) {</b>
+&nbsp;                        //Gestione degli ordini dei clienti
+<b class="nc">&nbsp;                        responsabileBarVenditore.ricercaOrdiniClienti();</b>
+&nbsp;                        break;
+&nbsp;                    } else {
+<b class="nc">&nbsp;                        System.out.println(&quot;Opzione inserita non presente. Scrivi un valore valido:&quot;);</b>
+&nbsp;                        break;
+&nbsp;                    }
+&nbsp;                case 11:
+<b class="nc">&nbsp;                    if (isResponsabileBarVenditore || isOrganizzatore) {</b>
+&nbsp;                        //Gestione degli ordini con prodotti da portare via
+<b class="nc">&nbsp;                        responsabileBarVenditore.ricercaOrdiniPerProdottiPortareVia();</b>
+&nbsp;                        break;
+&nbsp;                    } else {
+<b class="nc">&nbsp;                        System.out.println(&quot;Opzione inserita non presente. Scrivi un valore valido:&quot;);</b>
+&nbsp;                        break;
+&nbsp;                    }
+&nbsp;                case 12:
+<b class="nc">&nbsp;                    if (isResponsabileBarVenditore || isOrganizzatore) {</b>
+<b class="nc">&nbsp;                        responsabileBarVenditore.visualizzaMagazzino();</b>
+&nbsp;                        break;
+&nbsp;                    } else {
+<b class="nc">&nbsp;                        System.out.println(&quot;Opzione inserita non presente. Scrivi un valore valido:&quot;);</b>
+&nbsp;                        break;
+&nbsp;                    }
+&nbsp;                case 13:
+<b class="nc">&nbsp;                    if (isResponsabileBarVenditore || isOrganizzatore) {</b>
+<b class="nc">&nbsp;                        responsabileBarVenditore.gestioneMagazzino();</b>
+&nbsp;                        break;
+&nbsp;                    } else {
+<b class="nc">&nbsp;                        System.out.println(&quot;Opzione inserita non presente. Scrivi un valore valido:&quot;);</b>
+&nbsp;                        break;
+&nbsp;                    }
+&nbsp;
+&nbsp;                    //Le scelte, da questo caso in poi, hanno il controllo per verificare se sono metodi
+&nbsp;                    //possibili da chiamare (da Organizzatore)
+&nbsp;                case 14:
+<b class="nc">&nbsp;                    if (isOrganizzatore) {</b>
+<b class="nc">&nbsp;                        organizzatore.creazioneLotteria();</b>
+&nbsp;                        break;
+&nbsp;                    } else {
+<b class="nc">&nbsp;                        System.out.println(&quot;Opzione inserita non presente. Scrivi un valore valido:&quot;);</b>
+&nbsp;                        break;
+&nbsp;                    }
+&nbsp;                case 15:
+<b class="nc">&nbsp;                    if (isOrganizzatore) {</b>
+<b class="nc">&nbsp;                        organizzatore.gestioneLotteria();</b>
+&nbsp;                        break;
+&nbsp;                    } else {
+<b class="nc">&nbsp;                        System.out.println(&quot;Opzione inserita non presente. Scrivi un valore valido:&quot;);</b>
+&nbsp;                        break;
+&nbsp;                    }
+&nbsp;                case 16:
+<b class="nc">&nbsp;                    if (isOrganizzatore) {</b>
+<b class="nc">&nbsp;                        organizzatore.creazioneEventi();</b>
+&nbsp;                        break;
+&nbsp;                    } else {
+<b class="nc">&nbsp;                        System.out.println(&quot;Opzione inserita non presente. Scrivi un valore valido:&quot;);</b>
+&nbsp;                        break;
+&nbsp;                    }
+&nbsp;                case 17:
+<b class="nc">&nbsp;                    if (isOrganizzatore) {</b>
+<b class="nc">&nbsp;                        organizzatore.gestioneEventi();</b>
+&nbsp;                        break;
+&nbsp;                    } else {
+<b class="nc">&nbsp;                        System.out.println(&quot;Opzione inserita non presente. Scrivi un valore valido:&quot;);</b>
+&nbsp;                        break;
+&nbsp;                    }
+&nbsp;                case 18:
+<b class="nc">&nbsp;                    if (isOrganizzatore) {</b>
+<b class="nc">&nbsp;                        organizzatore.visualizzaPartecipazioneEventi();</b>
+&nbsp;                        break;
+&nbsp;                    } else {
+<b class="nc">&nbsp;                        System.out.println(&quot;Opzione inserita non presente. Scrivi un valore valido:&quot;);</b>
+&nbsp;                        break;
+&nbsp;                    }
+&nbsp;                default:
+&nbsp;                    //Se l&#39;utente ha scelto qualcosa che non è presente nel menù
+&nbsp;                    //a lui disponibile, viene avvisato e si rimane nel loop
+<b class="nc">&nbsp;                    System.out.println(&quot;Opzione inserita non presente. Scrivi un valore valido:&quot;);</b>
+&nbsp;                    break;
+&nbsp;            }
+&nbsp;        }
+&nbsp;    }
+&nbsp;
+&nbsp;    public List&lt;UtenteRegistrato&gt; getUtentiRegistrati() {
+<b class="fc">&nbsp;        return utentiRegistrati;</b>
+&nbsp;    }
+&nbsp;}
+</code>
+</pre>
+</div>
+
+<script type="text/javascript">
+(function() {
+    var msie = false, msie9 = false;
+    /*@cc_on
+      msie = true;
+      @if (@_jscript_version >= 9)
+        msie9 = true;
+      @end
+    @*/
+
+    if (!msie || msie && msie9) {
+      hljs.highlightAll()
+      hljs.initLineNumbersOnLoad();
+    }
+})();
+</script>
+
+<div class="footer">
+    
+    <div style="float:right;">generated on 2024-08-29 22:48</div>
+</div>
+</body>
+</html>

@@ -1,0 +1,524 @@
+
+
+
+<!DOCTYPE html>
+<html id="htmlId">
+<head>
+  <meta http-equiv="Content-Type" content="text/html;charset=windows-1252"> 
+  <title>Coverage Report > Organizzatore</title>
+  <style type="text/css">
+    @import "../../css/coverage.css";
+    @import "../../css/idea.min.css";
+  </style>
+  <script type="text/javascript" src="../../js/highlight.min.js"></script>
+  <script type="text/javascript" src="../../js/highlightjs-line-numbers.min.js"></script>
+</head>
+
+<body>
+<div class="content">
+<div class="breadCrumbs">
+Current scope:     <a href="../../index.html">all classes</a>
+    <span class="separator">|</span>
+    <a href="../index.html">Model</a>
+</div>
+
+<h1>Coverage Summary for Class: Organizzatore (Model)</h1>
+
+<table class="coverageStats">
+<tr>
+  <th class="name">Class</th>
+<th class="coverageStat 
+">
+  Class, %
+</th>
+<th class="coverageStat 
+">
+  Method, %
+</th>
+<th class="coverageStat 
+">
+  Branch, %
+</th>
+<th class="coverageStat 
+">
+  Line, %
+</th>
+</tr>
+<tr>
+  <td class="name">Organizzatore</td>
+<td class="coverageStat">
+  <span class="percent">
+    100%
+  </span>
+  <span class="absValue">
+    (1/1)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    62,5%
+  </span>
+  <span class="absValue">
+    (5/8)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    48,7%
+  </span>
+  <span class="absValue">
+    (19/39)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    51,2%
+  </span>
+  <span class="absValue">
+    (86/168)
+  </span>
+</td>
+</tr>
+
+</table>
+
+<br/>
+<br/>
+
+
+<pre>
+<code class="sourceCode" id="sourceCode">&nbsp;package Model;
+&nbsp;
+&nbsp;import java.time.LocalDate;
+&nbsp;import java.time.LocalTime;
+&nbsp;import java.time.format.DateTimeParseException;
+&nbsp;import java.util.*;
+&nbsp;
+&nbsp;import Vista.VistaEvento;
+&nbsp;
+&nbsp;//Classe che rappresenta un Organizzatore
+&nbsp;public class Organizzatore extends ResponsabileBarVenditore {
+&nbsp;    //Utilizzando l&#39;ereditarietà, non è necessario riscrivere gli attributi
+&nbsp;    //già presenti in UtenteRegistrato o in ResponsabileBarVenditore
+&nbsp;
+&nbsp;    //Costruttore che ha il compito di creare un nuovo Organizzatore
+&nbsp;    //con gli attributi ereditati e volendo anche nuovi attributi specifici
+&nbsp;    public Organizzatore(String email, String password) {
+<b class="fc">&nbsp;        super(email, password);</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    //Metodo specifico della classe Organizzatore
+&nbsp;    //per la creazione delle lotterie
+&nbsp;    public void creazioneLotteria() {
+&nbsp;        //Implementazione della creazione delle lotterie
+<b class="nc">&nbsp;    }</b>
+&nbsp;
+&nbsp;    //Metodo specifico della classe Organizzatore
+&nbsp;    //per la gestione delle lotterie
+&nbsp;    public void gestioneLotteria() {
+&nbsp;        //Implementazione della gestione delle lotterie
+<b class="nc">&nbsp;    }</b>
+&nbsp;
+&nbsp;    //Metodo specifico della classe Organizzatore
+&nbsp;    //per la creazione degli eventi
+&nbsp;    public void creazioneEventi() {
+&nbsp;        //Ottieni l&#39;istanza di VistaEvento
+<b class="fc">&nbsp;        VistaEvento vistaEvento = UtenteRegistrato.getVistaEventoInstance();</b>
+&nbsp;        //Creazione degli eventi
+<b class="fc">&nbsp;        Scanner scanner = new Scanner(System.in);</b>
+&nbsp;
+<b class="fc">&nbsp;        System.out.println(&quot;Creazione di un nuovo evento:&quot;);</b>
+&nbsp;
+&nbsp;        try{
+&nbsp;            //Dopo aver creato il nuovo scanner, lo uso per prendere quello
+&nbsp;            //che mi scrive l&#39;Organizzatore
+<b class="fc">&nbsp;            System.out.print(&quot;Nome dell&#39;evento: &quot;);</b>
+<b class="fc">&nbsp;            String nomeEvento = scanner.nextLine();</b>
+&nbsp;
+<b class="fc">&nbsp;            System.out.print(&quot;Via dell&#39;evento: &quot;);</b>
+<b class="fc">&nbsp;            String viaEvento = scanner.nextLine();</b>
+&nbsp;
+<b class="fc">&nbsp;            System.out.print(&quot;Data dell&#39;evento (formato YYYY-MM-DD): &quot;);</b>
+<b class="fc">&nbsp;            String dataEvento = scanner.nextLine();</b>
+&nbsp;
+<b class="fc">&nbsp;            System.out.print(&quot;Ora di inizio dell&#39;evento (formato HH:MM): &quot;);</b>
+<b class="fc">&nbsp;            String oraInizio = scanner.nextLine();</b>
+&nbsp;
+<b class="fc">&nbsp;            System.out.print(&quot;Ora di fine dell&#39;evento (formato HH:MM): &quot;);</b>
+<b class="fc">&nbsp;            String oraFine = scanner.nextLine();</b>
+&nbsp;
+&nbsp;            //Crea l&#39;oggetto Evento utilizzando i dati forniti dal Organizzatore
+<b class="fc">&nbsp;            Evento nuovoEvento = new Evento(nomeEvento, viaEvento, dataEvento, oraInizio, oraFine);</b>
+&nbsp;
+&nbsp;            //L&#39;evento viene aggiunto alla lista degli eventi
+<b class="fc">&nbsp;            eventoController.aggiungiEvento(nuovoEvento);</b>
+&nbsp;
+&nbsp;            //Stampa il report
+<b class="fc">&nbsp;            System.out.println(&quot;Evento creato con successo!&quot;);</b>
+<b class="fc">&nbsp;            vistaEvento.aggiorna(&quot;Creazione di un nuovo evento avvenuta con successo\nNome: &quot; + nomeEvento);</b>
+<b class="nc">&nbsp;        }catch(Exception e){</b>
+&nbsp;            //Se si verifica una qualsiasi eccezione nell&#39;inserimento
+&nbsp;            //dei dati dell&#39;evento, notifica l&#39;Organizzatore e la vista dell&#39;errore
+<b class="nc">&nbsp;            System.out.println(&quot;Si è verificato un errore durante la creazione dell&#39;evento.&quot;);</b>
+<b class="nc">&nbsp;            System.out.println(&quot;Assicurati di inserire i dati in modo corretto, segui il formato.&quot;);</b>
+<b class="nc">&nbsp;            vistaEvento.aggiorna(&quot;Errore durante la creazione di un nuovo evento&quot;);</b>
+&nbsp;        }
+&nbsp;    }
+&nbsp;
+&nbsp;    //Metodo specifico della classe Organizzatore
+&nbsp;    //per la gestione degli eventi
+&nbsp;    public void gestioneEventi() {
+&nbsp;        //Ottieni l&#39;istanza di VistaEvento
+<b class="nc">&nbsp;        VistaEvento vistaEvento = UtenteRegistrato.getVistaEventoInstance();</b>
+<b class="nc">&nbsp;        Scanner scanner = new Scanner(System.in);</b>
+&nbsp;
+&nbsp;        while (true) {
+<b class="nc">&nbsp;            System.out.println(&quot;Menu Gestione Eventi:&quot;);</b>
+<b class="nc">&nbsp;            System.out.println(&quot;1) Modifica Evento&quot;);</b>
+<b class="nc">&nbsp;            System.out.println(&quot;2) Elimina Evento&quot;);</b>
+<b class="nc">&nbsp;            System.out.println(&quot;3) Torna al menù principale&quot;);</b>
+&nbsp;
+<b class="nc">&nbsp;            int scelta = scanner.nextInt();</b>
+<b class="nc">&nbsp;            scanner.nextLine(); //Consuma il newline rimasto dopo nextInt()</b>
+&nbsp;
+<b class="nc">&nbsp;            switch (scelta) {</b>
+&nbsp;                case 1:
+&nbsp;                    //Prende la lista degli eventi dal controller
+<b class="nc">&nbsp;                    List&lt;Evento&gt; eventi = eventoController.getListaEventi();</b>
+&nbsp;                    //Controlla se è vuota
+<b class="nc">&nbsp;                    if (eventi.isEmpty()){</b>
+<b class="nc">&nbsp;                        System.out.println(&quot;Non ci sono eventi disponibili al momento&quot;);</b>
+<b class="nc">&nbsp;                        vistaEvento.aggiorna(&quot;Tentato accesso ad una lista vuota di eventi&quot;);</b>
+&nbsp;                        break;
+&nbsp;                    } else {
+<b class="nc">&nbsp;                        modificaEvento();</b>
+&nbsp;                        break;
+&nbsp;                    }
+&nbsp;                case 2:
+&nbsp;                    //Prende la lista degli eventi dal controller
+<b class="nc">&nbsp;                    eventi = eventoController.getListaEventi();</b>
+&nbsp;                    //Controlla se è vuota
+<b class="nc">&nbsp;                    if (eventi.isEmpty()){</b>
+<b class="nc">&nbsp;                        System.out.println(&quot;Non ci sono eventi disponibili al momento&quot;);</b>
+<b class="nc">&nbsp;                        vistaEvento.aggiorna(&quot;Tentato accesso ad una lista vuota di eventi&quot;);</b>
+&nbsp;                        break;
+&nbsp;                    } else {
+<b class="nc">&nbsp;                        eliminaEvento();</b>
+&nbsp;                        break;
+&nbsp;                    }
+&nbsp;                case 3:
+&nbsp;                    return; //Torna al Menù principale
+&nbsp;                default:
+<b class="nc">&nbsp;                    System.out.println(&quot;Opzione inserita non presente. Scrivi un valore valido:&quot;);</b>
+&nbsp;            }
+&nbsp;        }
+&nbsp;    }
+&nbsp;
+&nbsp;    //Metodo interno al metodo gestioneEventi
+&nbsp;    protected void modificaEvento() {
+&nbsp;        //Ottieni l&#39;istanza di VistaEvento
+<b class="fc">&nbsp;        VistaEvento vistaEvento = UtenteRegistrato.getVistaEventoInstance();</b>
+&nbsp;        //Modificare un evento
+<b class="fc">&nbsp;        Scanner scanner = new Scanner(System.in);</b>
+&nbsp;        //Prende la lista degli eventi dal controller
+<b class="fc">&nbsp;        List&lt;Evento&gt; eventi = eventoController.getListaEventi();</b>
+&nbsp;        //Mostra la lista degli eventi al Organizzatore
+<b class="fc">&nbsp;        System.out.println(&quot;Elenco degli eventi:&quot;);</b>
+<b class="fc">&nbsp;        for (int i = 0; i &lt; eventi.size(); i++) {</b>
+&nbsp;            //Restituisco tutti i nomi degli eventi presenti
+<b class="fc">&nbsp;            System.out.println((i + 1) + &quot;) &quot; + eventi.get(i).getNome());</b>
+&nbsp;        }
+&nbsp;
+&nbsp;        //Richiesta di selezione dell&#39;evento da modificare
+<b class="fc">&nbsp;        System.out.print(&quot;Seleziona il numero corrispondente all&#39;evento da modificare: &quot;);</b>
+<b class="fc">&nbsp;        int sceltaEvento = scanner.nextInt();</b>
+<b class="fc">&nbsp;        scanner.nextLine(); //Consuma il newline rimasto dopo nextInt()</b>
+&nbsp;
+&nbsp;        //Verifica se l&#39;indice selezionato è una possibile scelta
+<b class="pc">&nbsp;        if (sceltaEvento &lt; 1 || sceltaEvento &gt; eventi.size()) {</b>
+<b class="nc">&nbsp;            System.out.println(&quot;Selezione non valida&quot;);</b>
+<b class="nc">&nbsp;            System.out.println(&quot;Ritorno al menù di gestione degli eventi&quot;);</b>
+<b class="nc">&nbsp;            vistaEvento.aggiorna(&quot;Tentato accesso ad un evento non esistente&quot;);</b>
+&nbsp;            return; //Torna al menù di modifica degli Eventi
+&nbsp;        }
+&nbsp;
+&nbsp;        //Quando l&#39;evento selezionato è valido, lo si prende
+<b class="fc">&nbsp;        Evento eventoDaModificare = eventi.get(sceltaEvento - 1);</b>
+&nbsp;
+&nbsp;        //Menù di modifica Evento selezionato con i suoi dati
+<b class="fc">&nbsp;        System.out.println(&quot;Scegli un dato da modificare per l&#39;evento &#39;&quot; + eventoDaModificare.getNome() + &quot;&#39;&quot;);</b>
+<b class="fc">&nbsp;        System.out.println(&quot;1) Nome&quot;);</b>
+<b class="fc">&nbsp;        System.out.println(&quot;2) Via&quot;);</b>
+<b class="fc">&nbsp;        System.out.println(&quot;3) Data&quot;);</b>
+<b class="fc">&nbsp;        System.out.println(&quot;4) Ora di inizio&quot;);</b>
+<b class="fc">&nbsp;        System.out.println(&quot;5) Ora di fine&quot;);</b>
+<b class="fc">&nbsp;        System.out.println(&quot;6) Annulla&quot;);</b>
+&nbsp;
+<b class="fc">&nbsp;        int sceltaModifica = scanner.nextInt();</b>
+<b class="fc">&nbsp;        scanner.nextLine(); //Consuma il newline rimasto dopo nextInt()</b>
+&nbsp;        //Inizialmente, considera ciò che l&#39;Organizzatore inserisce
+&nbsp;        //come non valido
+<b class="fc">&nbsp;        boolean inputValido = false;</b>
+&nbsp;
+&nbsp;        //Esce solo se Organizzatore digita il valore di uscita corretto
+<b class="fc">&nbsp;        while(!inputValido){</b>
+<b class="pc">&nbsp;            switch (sceltaModifica) {</b>
+&nbsp;                case 1:
+<b class="fc">&nbsp;                    inputValido = true; //L&#39;Organizzatore ha inserito un input valido</b>
+<b class="fc">&nbsp;                    System.out.print(&quot;Nuovo nome: &quot;);</b>
+<b class="fc">&nbsp;                    String nuovoNome = scanner.nextLine();</b>
+<b class="fc">&nbsp;                    eventoDaModificare.setNome(nuovoNome);</b>
+&nbsp;                    //Aggiorna il nome dell&#39;evento (implementazione
+&nbsp;                    //specifica che dipenderà dalla classe Evento)
+&nbsp;                    //Notifica l&#39;avvenuta modifica
+<b class="fc">&nbsp;                    System.out.println(&quot;Nuovo nome inserito con successo&quot;);</b>
+<b class="fc">&nbsp;                    vistaEvento.aggiorna(&quot;Modifica del nome avvenuta con successo&quot;);</b>
+&nbsp;                    break;
+&nbsp;                case 2:
+<b class="nc">&nbsp;                    inputValido = true; //L&#39;Organizzatore ha inserito un input valido</b>
+<b class="nc">&nbsp;                    System.out.print(&quot;Nuova via: &quot;);</b>
+<b class="nc">&nbsp;                    String nuovaVia = scanner.nextLine();</b>
+<b class="nc">&nbsp;                    eventoDaModificare.setVia(nuovaVia);</b>
+&nbsp;                    //Aggiorna la via dell&#39;evento (implementazione
+&nbsp;                    //specifica che dipenderà dalla classe Evento)
+&nbsp;                    //Notifica l&#39;avvenuta modifica
+<b class="nc">&nbsp;                    System.out.println(&quot;Nuova via inserita con successo&quot;);</b>
+<b class="nc">&nbsp;                    vistaEvento.aggiorna(&quot;Modifica della via avvenuta con successo&quot;);</b>
+&nbsp;                    break;
+&nbsp;                case 3:
+<b class="nc">&nbsp;                    inputValido = true; //L&#39;Organizzatore ha inserito un input valido</b>
+&nbsp;                    //Continua a fare questo ciclo finché non ottiene un valore accettato
+&nbsp;                    do {
+&nbsp;                        try {
+<b class="nc">&nbsp;                            System.out.print(&quot;Nuova data (formato YYYY-MM-DD): &quot;);</b>
+<b class="nc">&nbsp;                            String nuovaData = scanner.nextLine();</b>
+&nbsp;                            //Converge la stringa in un oggetto LocalDate
+<b class="nc">&nbsp;                            LocalDate data = LocalDate.parse(nuovaData);</b>
+&nbsp;                            //Passo l&#39;oggetto modificato
+<b class="nc">&nbsp;                            eventoDaModificare.setData(data);</b>
+&nbsp;                            //Aggiorna la data dell&#39;evento (implementazione
+&nbsp;                            //specifica che dipenderà dalla classe Evento)
+&nbsp;                            break; //Esci se la data viene inserita correttamente
+<b class="nc">&nbsp;                        } catch (DateTimeParseException e) {</b>
+<b class="nc">&nbsp;                            System.out.println(&quot;Inserire un numero valido per la data&quot;);</b>
+<b class="nc">&nbsp;                            vistaEvento.aggiorna(&quot;Modifica della data fallita&quot;);</b>
+&nbsp;                        }
+&nbsp;                    } while (true);
+&nbsp;                    //Mostra quando la data è stata inserita con successo
+&nbsp;                    //ed esce dal case
+<b class="nc">&nbsp;                    System.out.println(&quot;Nuova data inserita con successo&quot;);</b>
+<b class="nc">&nbsp;                    vistaEvento.aggiorna(&quot;Modifica della data avvenuta con successo&quot;);</b>
+&nbsp;                    break;
+&nbsp;                case 4:
+<b class="nc">&nbsp;                    inputValido = true; //L&#39;Organizzatore ha inserito un input valido</b>
+&nbsp;                    //Continua a fare questo ciclo finché non ottiene un valore accettato
+&nbsp;                    do {
+&nbsp;                        try {
+<b class="nc">&nbsp;                            System.out.print(&quot;Nuova ora di inizio (formato HH:MM): &quot;);</b>
+<b class="nc">&nbsp;                            String nuovaOraInizio = scanner.nextLine();</b>
+&nbsp;                            //Converge la stringa in un oggetto LocalTime
+<b class="nc">&nbsp;                            LocalTime oraInizio = LocalTime.parse(nuovaOraInizio);</b>
+&nbsp;                            //Passo l&#39;oggetto modificato
+<b class="nc">&nbsp;                            eventoDaModificare.setOraInizio(oraInizio);</b>
+&nbsp;                            //Aggiorna l&#39;ora di inizio dell&#39;evento (implementazione
+&nbsp;                            //specifica che dipenderà dalla classe Evento)
+&nbsp;                            break;
+<b class="nc">&nbsp;                        } catch (DateTimeParseException e) {</b>
+<b class="nc">&nbsp;                            System.out.println(&quot;Inserire un numero valido per l&#39;ora di inizio.&quot;);</b>
+<b class="nc">&nbsp;                            vistaEvento.aggiorna(&quot;Modifica dell&#39;ora di inizio fallita&quot;);</b>
+&nbsp;                        }
+&nbsp;                    } while (true);
+&nbsp;                    //Mostra quando l&#39;ora di inizio è stata inserita con
+&nbsp;                    //successo ed esce dal case
+<b class="nc">&nbsp;                    System.out.println(&quot;Nuova ora di inizio inserita con successo&quot;);</b>
+<b class="nc">&nbsp;                    vistaEvento.aggiorna(&quot;Modifica dell&#39;ora di inizio avvenuta con successo&quot;);</b>
+&nbsp;                    break;
+&nbsp;                case 5:
+<b class="nc">&nbsp;                    inputValido = true; //L&#39;Organizzatore ha inserito un input valido</b>
+&nbsp;                    //Continua a fare questo ciclo finché non ottiene un valore accettato
+&nbsp;                    do {
+&nbsp;                        try {
+<b class="nc">&nbsp;                            System.out.print(&quot;Nuova ora di fine (formato HH:MM): &quot;);</b>
+<b class="nc">&nbsp;                            String nuovaOraFine = scanner.nextLine();</b>
+&nbsp;                            //Converge la stringa in un oggetto LocalTime
+<b class="nc">&nbsp;                            LocalTime oraFine = LocalTime.parse(nuovaOraFine);</b>
+&nbsp;                            //Passo l&#39;oggetto modificato
+<b class="nc">&nbsp;                            eventoDaModificare.setOraFine(oraFine);</b>
+&nbsp;                            //Aggiorna l&#39;ora di fine dell&#39;evento (implementazione
+&nbsp;                            //specifica che dipenderà dalla classe Evento)
+&nbsp;                            break;
+<b class="nc">&nbsp;                        } catch (DateTimeParseException e) {</b>
+<b class="nc">&nbsp;                            System.out.println(&quot;Inserire un numero valido per l&#39;ora di fine.&quot;);</b>
+<b class="nc">&nbsp;                            vistaEvento.aggiorna(&quot;Modifica dell&#39;ora di fine fallita&quot;);</b>
+&nbsp;                        }
+&nbsp;                    } while (true);
+&nbsp;                    //Mostra quando l&#39;ora di fine è stata inserita con
+&nbsp;                    //successo ed esce dal case
+<b class="nc">&nbsp;                    System.out.println(&quot;Nuova ora di fine inserita con successo&quot;);</b>
+<b class="nc">&nbsp;                    vistaEvento.aggiorna(&quot;Modifica dell&#39;ora di fine avvenuta con successo&quot;);</b>
+&nbsp;                    break;
+&nbsp;                case 6:
+&nbsp;                    //Siccome qui uscirà completamente dal metodo, non serve
+&nbsp;                    //aggiornare inputValido
+&nbsp;                    //Caso usato per uscire dal ciclo
+<b class="nc">&nbsp;                    System.out.println(&quot;Ritorno al menù di gestione degli eventi&quot;);</b>
+<b class="nc">&nbsp;                    vistaEvento.aggiorna(&quot;Ritorno al menù di gestione degli eventi&quot;);</b>
+&nbsp;                    //Serve per uscire dal metodo modificaEvento e
+&nbsp;                    //Tornare al menù di gestioneEvento
+&nbsp;                    return;
+&nbsp;                default:
+<b class="nc">&nbsp;                    System.out.println(&quot;Scelta non valida.\nInserisci un valore valido&quot;);</b>
+<b class="nc">&nbsp;                    sceltaModifica = scanner.nextInt(); //L&#39;Organizzatore deve inserire un nuovo valore</b>
+<b class="nc">&nbsp;                    scanner.nextLine(); //Consuma il newline rimasto dopo nextInt()</b>
+&nbsp;                    break;
+&nbsp;            }
+&nbsp;        }
+&nbsp;        //Qualsiasi modifica accada, una volta avvenuta, tornerà al menù di gestioneEventi
+<b class="fc">&nbsp;        System.out.println(&quot;Ritorno al menù di gestione degli eventi&quot;);</b>
+<b class="fc">&nbsp;        vistaEvento.aggiorna(&quot;Ritorno al menù di gestione degli eventi&quot;);</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    //Metodo interno al metodo gestioneEventi
+&nbsp;    protected void eliminaEvento() {
+&nbsp;        //Ottieni l&#39;istanza di VistaEvento
+<b class="fc">&nbsp;        VistaEvento vistaEvento = UtenteRegistrato.getVistaEventoInstance();</b>
+&nbsp;        //Eliminare un evento
+<b class="fc">&nbsp;        Scanner scanner = new Scanner(System.in);</b>
+&nbsp;        //Prende la lista degli eventi dal controller
+<b class="fc">&nbsp;        List&lt;Evento&gt; eventi = eventoController.getListaEventi();</b>
+&nbsp;        //Mostra la lista degli eventi al Organizzatore
+<b class="fc">&nbsp;        System.out.println(&quot;Elenco degli eventi:&quot;);</b>
+<b class="fc">&nbsp;        for (int i = 0; i &lt; eventi.size(); i++) {</b>
+&nbsp;            //Restituisco tutti i nomi degli eventi presenti
+<b class="fc">&nbsp;            System.out.println((i + 1) + &quot;) &quot; + eventi.get(i).getNome());</b>
+&nbsp;        }
+&nbsp;
+&nbsp;        //Richiesta di selezione dell&#39;evento da eliminare
+<b class="fc">&nbsp;        System.out.print(&quot;Seleziona il numero corrispondente all&#39;evento da eliminare: &quot;);</b>
+<b class="fc">&nbsp;        int sceltaEvento = scanner.nextInt();</b>
+<b class="fc">&nbsp;        scanner.nextLine(); //Consuma il newline rimasto dopo nextInt()</b>
+&nbsp;
+&nbsp;        //Verifica se l&#39;indice selezionato è una possibile scelta
+<b class="pc">&nbsp;        if (sceltaEvento &lt; 1 || sceltaEvento &gt; eventi.size()) {</b>
+<b class="nc">&nbsp;            System.out.println(&quot;Selezione non valida&quot;);</b>
+<b class="nc">&nbsp;            System.out.println(&quot;Ritorno al menù di gestione degli eventi&quot;);</b>
+<b class="nc">&nbsp;            vistaEvento.aggiorna(&quot;Tentato accesso ad un evento non esistente&quot;);</b>
+&nbsp;            return; //Torna al menù di modifica degli Eventi
+&nbsp;        }
+&nbsp;
+&nbsp;        //Quando l&#39;evento selezionato è valido, lo si prende
+<b class="fc">&nbsp;        Evento eventoDaEliminare = eventi.get(sceltaEvento - 1);</b>
+&nbsp;
+&nbsp;        //Richiesta di conferma per l&#39;eliminazione del Evento selezionato
+<b class="fc">&nbsp;        System.out.print(&quot;Sei sicuro di voler eliminare l&#39;evento &#39;&quot; + eventoDaEliminare.getNome() + &quot;&#39;? (s/n): &quot;);</b>
+<b class="fc">&nbsp;        String conferma = scanner.nextLine();</b>
+&nbsp;
+&nbsp;        //Inizialmente, considera ciò che l&#39;Organizzatore inserisce
+&nbsp;        //come non valido
+<b class="fc">&nbsp;        boolean inputValido = false;</b>
+&nbsp;        //Verifica la risposta del Organizzatore
+<b class="fc">&nbsp;        while (!inputValido) {</b>
+<b class="pc">&nbsp;            switch (conferma.toLowerCase()) {</b>
+&nbsp;                case &quot;s&quot;:
+<b class="fc">&nbsp;                    inputValido = true; //L&#39;Organizzatore ha inserito un input valido</b>
+&nbsp;                    //Eliminazione confermata, rimuovi l&#39;Evento dal &quot;database&quot;
+<b class="fc">&nbsp;                    eventi.remove(eventoDaEliminare);</b>
+<b class="fc">&nbsp;                    System.out.println(&quot;Evento eliminato con successo.&quot;);</b>
+<b class="fc">&nbsp;                    vistaEvento.aggiorna(&quot;Eliminazione dell&#39;evento avvenuta con successo&quot;);</b>
+&nbsp;
+&nbsp;                    //Non serve sistemare il &quot;database&quot; poiché utilizzando una
+&nbsp;                    //Lista, gli Eventi successivi scalano in automatico
+&nbsp;                    break;
+&nbsp;                case &quot;n&quot;:
+&nbsp;                    //Siccome qui uscirà completamente dal metodo, non serve
+&nbsp;                    //aggiornare inputValido
+&nbsp;                    //Eliminazione annullata
+<b class="nc">&nbsp;                    System.out.println(&quot;Eliminazione annullata\nRitorno al menù di gestione degli eventi&quot;);</b>
+<b class="nc">&nbsp;                    vistaEvento.aggiorna(&quot;Eliminazione annullata&quot;);</b>
+&nbsp;                    //Serve per uscire dal metodo eliminaEvento e
+&nbsp;                    //Tornare al menù di gestioneEvento
+&nbsp;                    return; //Esci dal metodo senza eliminare e torna al menù di gestioneEventi
+&nbsp;                default:
+&nbsp;                    //Risposta non valida
+<b class="nc">&nbsp;                    System.out.println(&quot;Scelta non valida\nInserisci un valore valido (s/n)&quot;);</b>
+<b class="nc">&nbsp;                    conferma = scanner.nextLine(); //L&#39;Organizzatore deve inserire un nuovo valore</b>
+&nbsp;                    break;
+&nbsp;            }
+&nbsp;        }
+&nbsp;        //Una volta eliminato l&#39;Evento, si tornerà al menù di gestioneEventi
+<b class="fc">&nbsp;        System.out.println(&quot;Ritorno al menù di gestione degli eventi&quot;);</b>
+<b class="fc">&nbsp;        vistaEvento.aggiorna(&quot;Ritorno al menù di gestione degli eventi&quot;);</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    //Metodo specifico della classe Organizzatore
+&nbsp;    //per la visualizzazione delle partecipazioni agli eventi
+&nbsp;    public void visualizzaPartecipazioneEventi() {
+&nbsp;        //Ottieni l&#39;istanza di VistaEvento
+<b class="fc">&nbsp;        VistaEvento vistaEvento = UtenteRegistrato.getVistaEventoInstance();</b>
+&nbsp;        //Ottiene il &quot;database&quot; degli Eventi
+<b class="fc">&nbsp;        List&lt;Evento&gt; eventi = eventoController.getListaEventi();</b>
+&nbsp;
+&nbsp;        //Controlla se è vuoto
+<b class="pc">&nbsp;        if (eventi.isEmpty()) {</b>
+<b class="nc">&nbsp;            System.out.println(&quot;Non ci sono eventi disponibili al momento&quot;);</b>
+<b class="nc">&nbsp;            vistaEvento.aggiorna(&quot;Tentato accesso alla lista vuota di eventi&quot;);</b>
+&nbsp;        } else {
+<b class="fc">&nbsp;            Scanner scanner = new Scanner(System.in);</b>
+&nbsp;            //Mostra la lista degli eventi al Organizzatore
+<b class="fc">&nbsp;            System.out.println(&quot;Elenco degli eventi:&quot;);</b>
+<b class="fc">&nbsp;            for (int i = 0; i &lt; eventi.size(); i++) {</b>
+&nbsp;                //Restituisco tutti i nomi degli eventi presenti
+<b class="fc">&nbsp;                System.out.println((i + 1) + &quot;) &quot; + eventi.get(i).getNome());</b>
+&nbsp;            }
+&nbsp;
+&nbsp;            //Richiesta di selezione dell&#39;evento a cui visualizzare la partecipazione
+<b class="fc">&nbsp;            System.out.print(&quot;Seleziona il numero corrispondente all&#39;evento da visualizzare: &quot;);</b>
+<b class="fc">&nbsp;            int sceltaEvento = scanner.nextInt();</b>
+<b class="fc">&nbsp;            scanner.nextLine(); //Consuma il newline rimasto dopo nextInt()</b>
+&nbsp;
+&nbsp;            //Verifica se l&#39;indice selezionato è una possibile scelta
+<b class="pc">&nbsp;            if (sceltaEvento &lt; 1 || sceltaEvento &gt; eventi.size()) {</b>
+<b class="nc">&nbsp;                System.out.println(&quot;Selezione non valida&quot;);</b>
+<b class="nc">&nbsp;                System.out.println(&quot;Ritorno al menù principale&quot;);</b>
+<b class="nc">&nbsp;                vistaEvento.aggiorna(&quot;Tentato accesso ad un evento non esistente&quot;);</b>
+&nbsp;                return; //Torna al menù di modifica degli Eventi
+&nbsp;            }
+&nbsp;
+&nbsp;            //Quando l&#39;evento selezionato è valido, lo si prende
+<b class="fc">&nbsp;            Evento eventoSelezionato = eventi.get(sceltaEvento - 1);</b>
+<b class="fc">&nbsp;            System.out.println(&quot;Partecipazioni all&#39;evento &quot; + eventoSelezionato.getNome() + &quot;:&quot;);</b>
+&nbsp;            //Stampa il numero di partecipazioni al Evento selezionato
+<b class="fc">&nbsp;            System.out.println(&quot;Numero di partecipanti: &quot; + eventoSelezionato.getNumPartecipanti());</b>
+<b class="fc">&nbsp;            vistaEvento.aggiorna(&quot;Visualizzazione delle partecipazioni avvenuta con successo&quot;);</b>
+&nbsp;        }
+&nbsp;    }
+&nbsp;    //Utilizzando l&#39;ereditarietà, non è necessario riscrivere questi metodi
+&nbsp;    //Getter e Setter
+&nbsp;}
+</code>
+</pre>
+</div>
+
+<script type="text/javascript">
+(function() {
+    var msie = false, msie9 = false;
+    /*@cc_on
+      msie = true;
+      @if (@_jscript_version >= 9)
+        msie9 = true;
+      @end
+    @*/
+
+    if (!msie || msie && msie9) {
+      hljs.highlightAll()
+      hljs.initLineNumbersOnLoad();
+    }
+})();
+</script>
+
+<div class="footer">
+    
+    <div style="float:right;">generated on 2024-08-29 22:48</div>
+</div>
+</body>
+</html>

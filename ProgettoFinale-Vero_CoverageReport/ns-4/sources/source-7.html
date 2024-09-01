@@ -1,0 +1,1591 @@
+
+
+
+<!DOCTYPE html>
+<html id="htmlId">
+<head>
+  <meta http-equiv="Content-Type" content="text/html;charset=windows-1252"> 
+  <title>Coverage Report > UtenteRegistrato</title>
+  <style type="text/css">
+    @import "../../css/coverage.css";
+    @import "../../css/idea.min.css";
+  </style>
+  <script type="text/javascript" src="../../js/highlight.min.js"></script>
+  <script type="text/javascript" src="../../js/highlightjs-line-numbers.min.js"></script>
+</head>
+
+<body>
+<div class="content">
+<div class="breadCrumbs">
+Current scope:     <a href="../../index.html">all classes</a>
+    <span class="separator">|</span>
+    <a href="../index.html">Model</a>
+</div>
+
+<h1>Coverage Summary for Class: UtenteRegistrato (Model)</h1>
+
+<table class="coverageStats">
+<tr>
+  <th class="name">Class</th>
+<th class="coverageStat 
+">
+  Class, %
+</th>
+<th class="coverageStat 
+">
+  Method, %
+</th>
+<th class="coverageStat 
+">
+  Branch, %
+</th>
+<th class="coverageStat 
+">
+  Line, %
+</th>
+</tr>
+<tr>
+  <td class="name">UtenteRegistrato</td>
+<td class="coverageStat">
+  <span class="percent">
+    100%
+  </span>
+  <span class="absValue">
+    (1/1)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    82,9%
+  </span>
+  <span class="absValue">
+    (34/41)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    7,9%
+  </span>
+  <span class="absValue">
+    (28/355)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    18,5%
+  </span>
+  <span class="absValue">
+    (117/633)
+  </span>
+</td>
+</tr>
+
+</table>
+
+<br/>
+<br/>
+
+
+<pre>
+<code class="sourceCode" id="sourceCode">&nbsp;package Model;
+&nbsp;
+&nbsp;import java.util.*;
+&nbsp;
+&nbsp;import Controller.EventoController;
+&nbsp;import Controller.ProdottoController;
+&nbsp;import Vista.VistaEvento;
+&nbsp;import Vista.VistaProdotto;
+&nbsp;
+&nbsp;//Modello (MVC)
+&nbsp;//Classe che rappresenta un Utente Registrato
+&nbsp;public class UtenteRegistrato {
+&nbsp;    //Attributi privati dell&#39;utente, che rappresentano le informazioni di base
+&nbsp;    private String email;
+&nbsp;    private String password;
+&nbsp;    private String numeroCarta;
+&nbsp;    private String dataScadenza;
+&nbsp;    private String nomeProprietario;
+&nbsp;    private String cognomeProprietario;
+&nbsp;    private String cvv;
+&nbsp;    private double saldo;
+&nbsp;
+&nbsp;    //Riferimento al controller degli eventi associato a questo utente
+&nbsp;    public EventoController eventoController;
+&nbsp;
+&nbsp;    //Istanza singleton della vista associata agli eventi (VistaEvento)
+&nbsp;    private static VistaEvento vistaEventoInstance;
+&nbsp;
+&nbsp;    //Libreria personale dell&#39;utente contenente eventi
+&nbsp;    private List&lt;Evento&gt; libreriaPersonale;
+&nbsp;
+&nbsp;    //Liste per tenere traccia degli ordini attivi e completati
+&nbsp;    private List&lt;Ordine&gt; ordini; //Ordini attivi
+&nbsp;    private List&lt;Ordine&gt; ordiniCompletati; //Ordini completati
+&nbsp;
+&nbsp;    //Lista condivisa per tenere traccia di tutti gli ordini (statico)
+<b class="fc">&nbsp;    private static List&lt;Ordine&gt; tuttiGliOrdini = new ArrayList&lt;&gt;();</b>
+&nbsp;
+&nbsp;    //Costruttore che ha il compito di creare un nuovo Utente
+&nbsp;    //con i suoi attributi che verranno ereditati dalle classi
+&nbsp;    //che estendono UtenteRegistrato
+<b class="fc">&nbsp;    public UtenteRegistrato(String email, String password) {</b>
+<b class="fc">&nbsp;        this.email = email;</b>
+<b class="fc">&nbsp;        this.password = password;</b>
+&nbsp;
+&nbsp;        //Inizializza il controller degli eventi utilizzando il pattern singleton
+<b class="fc">&nbsp;        this.eventoController = EventoController.getInstance();</b>
+&nbsp;
+&nbsp;        //Inizializza la libreria personale come una lista vuota
+<b class="fc">&nbsp;        this.libreriaPersonale = new ArrayList&lt;&gt;();</b>
+&nbsp;
+&nbsp;        //Creazione dell&#39;istanza di VistaEvento solo se non è già stata creata (singleton)
+<b class="fc">&nbsp;        vistaEventoInstance = VistaEvento.getInstance();</b>
+&nbsp;
+&nbsp;        //Inizializza le liste degli ordini attivi e completati
+<b class="fc">&nbsp;        this.ordini = new ArrayList&lt;&gt;();</b>
+<b class="fc">&nbsp;        this.ordiniCompletati = new ArrayList&lt;&gt;();</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    //Metodo per ottenere l&#39;istanza singleton di VistaEvento
+&nbsp;    public static VistaEvento getVistaEventoInstance() {
+<b class="fc">&nbsp;        return VistaEvento.getInstance();</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    //Aggiunge un ordine alla lista degli ordini attivi
+&nbsp;    public void aggiungiOrdine(Ordine ordine) {
+<b class="fc">&nbsp;        ordini.add(ordine);</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    //Ottiene la lista degli ordini attivi
+&nbsp;    public List&lt;Ordine&gt; getOrdini() {
+<b class="fc">&nbsp;        return ordini;</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    //Ottiene la lista degli ordini completati
+&nbsp;    public List&lt;Ordine&gt; getOrdiniCompletati() {
+<b class="fc">&nbsp;        return ordiniCompletati;</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    //Aggiunge un ordine alla lista condivisa, che serve a tenere traccia di tutti gli ordini (statico)
+&nbsp;    public static void aggiungiOrdineGlobal(Ordine ordine) {
+<b class="fc">&nbsp;        tuttiGliOrdini.add(ordine);</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    //Ottiene la lista condivisa degli ordini
+&nbsp;    public static List&lt;Ordine&gt; getTuttiGliOrdini() {
+<b class="fc">&nbsp;        return tuttiGliOrdini;</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    //Rimuove un ordine alla lista condivisa
+&nbsp;    public static void rimuoviOrdineGlobal(Ordine ordine) {
+<b class="fc">&nbsp;        tuttiGliOrdini.remove(ordine);</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    //Rimuove un ordine dalla lista degli ordini attivi per inserirlo in quella degli ordini completati
+&nbsp;    public void spostaOrdineCompletato(Ordine ordine) {
+<b class="fc">&nbsp;        ordini.remove(ordine);</b>
+<b class="fc">&nbsp;        ordiniCompletati.add(ordine);</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    //Metodo usato durante acquistoProdotti: controlla se l&#39;input che legge è un numero intero,
+&nbsp;    //se non lo è fa reinserire l&#39;input
+&nbsp;    private int leggiIntero(Scanner scanner, String messaggio) {
+&nbsp;        while (true) {
+<b class="nc">&nbsp;            System.out.println(messaggio);</b>
+<b class="nc">&nbsp;            String input = scanner.nextLine();</b>
+&nbsp;            try {
+<b class="nc">&nbsp;                return Integer.parseInt(input);</b>
+<b class="nc">&nbsp;            } catch (NumberFormatException e) {</b>
+<b class="nc">&nbsp;                System.out.println(&quot;Input non valido. Per favore inserisci un numero intero.&quot;);</b>
+&nbsp;            }
+&nbsp;        }
+&nbsp;    }
+&nbsp;
+&nbsp;    //Metodo della classe UtenteRegistrato o delle classi che la
+&nbsp;    //estendono per la visualizzazione degli eventi
+&nbsp;    public void visualizzaEventi() {
+&nbsp;        //Ottiene la lista degli Eventi
+<b class="fc">&nbsp;        List&lt;Evento&gt; eventi = eventoController.getListaEventi();</b>
+&nbsp;
+&nbsp;        //Ottiene l&#39;istanza di VistaEvento
+<b class="fc">&nbsp;        VistaEvento vistaEvento = UtenteRegistrato.getVistaEventoInstance();</b>
+&nbsp;
+&nbsp;        //Controlla se la lista è vuota
+<b class="pc">&nbsp;        if (eventi.isEmpty()) {</b>
+&nbsp;            //Avvisa l&#39;utente e torna al menù principale
+<b class="nc">&nbsp;            System.out.println(&quot;Non ci sono eventi disponibili al momento&quot;);</b>
+<b class="nc">&nbsp;            vistaEvento.aggiorna(&quot;Tentato accesso ad una lista vuota di eventi&quot;);</b>
+&nbsp;        } else {
+&nbsp;            //Se non è vuota, stampa tutti gli eventi
+<b class="fc">&nbsp;            System.out.println(&quot;Eventi disponibili:&quot;);</b>
+<b class="fc">&nbsp;            for (Evento evento : eventi) {</b>
+<b class="fc">&nbsp;                System.out.println(evento);</b>
+&nbsp;            }
+<b class="fc">&nbsp;            vistaEvento.aggiorna(&quot;Lista di eventi visualizzata con successo&quot;);</b>
+<b class="fc">&nbsp;            System.out.println(&quot;Vuoi ricercare un evento specifico? (s/n)&quot;);</b>
+<b class="fc">&nbsp;            System.out.println(&quot;Si specifica che ricercando un evento, si può decidere di partecipare ad esso&quot;);</b>
+<b class="fc">&nbsp;            Scanner scanner = new Scanner(System.in);</b>
+<b class="fc">&nbsp;            String scelta = scanner.nextLine();</b>
+&nbsp;            //Inizialmente, considera ciò che l&#39;Utente inserisce
+&nbsp;            //come non valido
+<b class="fc">&nbsp;            boolean input = false;</b>
+&nbsp;            //Verifica la risposta del Utente
+<b class="fc">&nbsp;            while (!input) {</b>
+<b class="pc">&nbsp;                switch (scelta.toLowerCase()) {</b>
+&nbsp;                    case &quot;s&quot;:
+<b class="nc">&nbsp;                        vistaEvento.aggiorna(&quot;Passaggio alla ricerca di un evento&quot;);</b>
+<b class="nc">&nbsp;                        input = true; //L&#39;Utente ha inserito un input valido</b>
+&nbsp;                        //perciò si sposta in ricercaEventi
+&nbsp;                        //Chiamata al metodo ricercaEventi
+<b class="nc">&nbsp;                        ricercaEventi();</b>
+&nbsp;                        break;
+&nbsp;                    case &quot;n&quot;:
+<b class="fc">&nbsp;                        input = true; //L&#39;Utente ha inserito un input valido</b>
+<b class="fc">&nbsp;                        System.out.println(&quot;Ricerca non eseguita&quot;);</b>
+<b class="fc">&nbsp;                        vistaEvento.aggiorna(&quot;Ricerca non eseguita&quot;);</b>
+&nbsp;                        //Serve per uscire dal metodo visualizzaEventi e
+&nbsp;                        //tornare al menù principale
+&nbsp;                        break; //Esce dal metodo senza andare in ricercaEventi
+&nbsp;                    default:
+&nbsp;                        //Risposta non valida
+<b class="nc">&nbsp;                        System.out.println(&quot;Scelta non valida\nInserisci un valore valido (s/n)&quot;);</b>
+<b class="nc">&nbsp;                        scelta = scanner.nextLine(); //L&#39;Utente deve inserire un nuovo valore</b>
+&nbsp;                        break;
+&nbsp;                }
+&nbsp;            }
+&nbsp;            //Controllo se l&#39;accesso è da parte di
+&nbsp;            //un Organizzatore
+<b class="pc">&nbsp;            if (this instanceof Organizzatore) {</b>
+&nbsp;                //Chiede al Organizzatore se vuole passare alla gestioneEventi
+<b class="nc">&nbsp;                System.out.println(&quot;Vuoi passare alla gestione degli eventi? (s/n)&quot;);</b>
+<b class="nc">&nbsp;                String risposta = scanner.nextLine();</b>
+&nbsp;
+&nbsp;                //Inizialmente, considera ciò che l&#39;Organizzatore inserisce
+&nbsp;                //come non valido
+<b class="nc">&nbsp;                boolean inputValido = false;</b>
+&nbsp;                //Verifica la risposta del Organizzatore
+<b class="nc">&nbsp;                while (!inputValido) {</b>
+<b class="nc">&nbsp;                    switch (risposta.toLowerCase()) {</b>
+&nbsp;                        case &quot;s&quot;:
+<b class="nc">&nbsp;                            vistaEvento.aggiorna(&quot;Valido accesso alla gestione degli eventi&quot;);</b>
+<b class="nc">&nbsp;                            inputValido = true; //L&#39;Organizzatore ha inserito un input valido</b>
+&nbsp;                            //perciò si sposta in gestioneEventi
+&nbsp;                            //Chiamata al metodo gestioneEventi tramite cast a Organizzatore
+<b class="nc">&nbsp;                            ((Organizzatore) this).gestioneEventi();</b>
+&nbsp;                            break;
+&nbsp;                        case &quot;n&quot;:
+&nbsp;                            //Siccome in questo punto uscirà completamente dal metodo, non serve
+&nbsp;                            //aggiornare inputValido
+<b class="nc">&nbsp;                            System.out.println(&quot;Ritorno al menù principale&quot;);</b>
+<b class="nc">&nbsp;                            vistaEvento.aggiorna(&quot;Ritorno al menù principale&quot;);</b>
+&nbsp;                            //Serve per uscire dal metodo visualizzaEventi e
+&nbsp;                            //Tornare al menù principale
+&nbsp;                            return; //Esce dal metodo senza andare in gestioneEventi
+&nbsp;                        //e torna al menù principale
+&nbsp;                        default:
+&nbsp;                            //Risposta non valida
+<b class="nc">&nbsp;                            System.out.println(&quot;Scelta non valida\nInserisci un valore valido (s/n)&quot;);</b>
+<b class="nc">&nbsp;                            risposta = scanner.nextLine(); //L&#39;Organizzatore deve inserire un nuovo valore</b>
+&nbsp;                            break;
+&nbsp;                    }
+&nbsp;                }
+&nbsp;            }
+&nbsp;        }
+&nbsp;    }
+&nbsp;
+&nbsp;    //Metodo della classe UtenteRegistrato o delle classi
+&nbsp;    //che la estendono per la ricerca di Eventi
+&nbsp;    public void ricercaEventi() {
+&nbsp;        //Ottiene l&#39;istanza di VistaEvento
+<b class="fc">&nbsp;        VistaEvento vistaEvento = UtenteRegistrato.getVistaEventoInstance();</b>
+<b class="fc">&nbsp;        Scanner scanner = new Scanner(System.in);</b>
+<b class="fc">&nbsp;        System.out.println(&quot;Inserisci il nome dell&#39;evento da cercare:&quot;);</b>
+<b class="fc">&nbsp;        String nomeEvento = scanner.nextLine();</b>
+&nbsp;
+&nbsp;        //Utilizza il metodo trovaEvento, e lo eguaglia a evento di tipo Evento
+<b class="fc">&nbsp;        Evento evento = eventoController.trovaEvento(nomeEvento);</b>
+&nbsp;        //Controlla se ha trovato un evento
+<b class="pc">&nbsp;        if (evento != null) {</b>
+<b class="nc">&nbsp;            System.out.println(evento);</b>
+<b class="nc">&nbsp;            vistaEvento.aggiorna(&quot;Ricerca eseguita con successo&quot;);</b>
+<b class="nc">&nbsp;            System.out.print(&quot;Vuoi partecipare a questo evento? (s/n): &quot;);</b>
+<b class="nc">&nbsp;            String risposta = scanner.nextLine();</b>
+<b class="nc">&nbsp;            if (risposta.equalsIgnoreCase(&quot;s&quot;)) {</b>
+&nbsp;                //Chiama il metodo per incrementare i partecipanti dell&#39;evento e
+&nbsp;                //lo aggiunge alla libreria personale con il metodo apposito
+<b class="nc">&nbsp;                evento.incrementaPartecipanti();</b>
+<b class="nc">&nbsp;                this.aggiungiEventoALibreria(evento);</b>
+<b class="nc">&nbsp;                eventoController.notificaOsservatori(&quot;Numero di partecipanti aggiornato per l&#39;evento: &quot; + evento.getNome() + &quot; - Nuovo numero: &quot; + evento.getNumPartecipanti());</b>
+<b class="nc">&nbsp;                System.out.println(&quot;Partecipazione inserita con successo.&quot;);</b>
+<b class="nc">&nbsp;                System.out.println();</b>
+<b class="nc">&nbsp;            } else if (risposta.equalsIgnoreCase(&quot;n&quot;)){</b>
+&nbsp;                //Avvisa l&#39;utente della scelta di non partecipare e torna al menù principale
+<b class="nc">&nbsp;                System.out.println(&quot;Partecipazione non inserita.&quot;);</b>
+<b class="nc">&nbsp;                vistaEvento.aggiorna(&quot;Numero di partecipanti invariato&quot;);</b>
+<b class="nc">&nbsp;                System.out.println();</b>
+&nbsp;            } else {
+&nbsp;                //Avvisa l&#39;utente della scelta non valida e torna al menù principale
+<b class="nc">&nbsp;                System.out.println(&quot;Scelta Invalida. Partecipazione non inserita.&quot;);</b>
+<b class="nc">&nbsp;                vistaEvento.aggiorna(&quot;Numero di partecipanti invariato&quot;);</b>
+<b class="nc">&nbsp;                System.out.println();</b>
+&nbsp;            }
+&nbsp;        } else {
+&nbsp;            //Avvisa l&#39;utente del evento non trovato ed esce dal metodo
+<b class="fc">&nbsp;            System.out.println(&quot;Errore: Evento non trovato&quot;);</b>
+<b class="fc">&nbsp;            vistaEvento.aggiorna(&quot;Errore durante la ricerca di un evento&quot;);</b>
+&nbsp;        }
+&nbsp;    }
+&nbsp;
+&nbsp;    //Metodo della classe UtenteRegistrato o delle classi che la
+&nbsp;    //estendono per la visualizzazione della lotteria
+&nbsp;    public void visualizzaLotteria() {
+&nbsp;        //Possibile implementazione della visualizzazione della lotteria
+<b class="nc">&nbsp;    }</b>
+&nbsp;
+&nbsp;    //Metodo della classe UtenteRegistrato o delle classi che la
+&nbsp;    //estendono per la partecipazione alla lotteria
+&nbsp;    public void partecipaLotteria() {
+&nbsp;        //Possibile implementazione della partecipazione alla lotteria
+<b class="nc">&nbsp;    }</b>
+&nbsp;
+&nbsp;    //Metodo della classe UtenteRegistrato o delle classi che la
+&nbsp;    //estendono per la visualizzazione dei prodotti
+&nbsp;    public void visualizzaProdotti() {
+&nbsp;        //Ottiene le istanze della vista e del controller di prodotto
+<b class="fc">&nbsp;        VistaProdotto vistaProdotto = VistaProdotto.getInstance();</b>
+<b class="fc">&nbsp;        ProdottoController prodottoController = ProdottoController.getInstance();</b>
+&nbsp;        //Ottiene la lista dei prodotti
+<b class="fc">&nbsp;        List&lt;Prodotto&gt; prodotti = prodottoController.getListaProdotti();</b>
+&nbsp;
+&nbsp;        //Controlla se la lista di prodotti è vuota
+<b class="pc">&nbsp;        if (prodotti.isEmpty()) {</b>
+&nbsp;            //Avvisa l&#39;utente e torna a menù principale
+<b class="nc">&nbsp;            System.out.println(&quot;Non ci sono prodotti disponibili al momento&quot;);</b>
+<b class="nc">&nbsp;            vistaProdotto.aggiorna(&quot;Tentato accesso alla lista vuota di prodotti&quot;);</b>
+&nbsp;        } else {
+<b class="fc">&nbsp;            Scanner scanner = new Scanner(System.in);</b>
+&nbsp;            //Stampa i prodotti disponibili e chiede se si vuole passare alla ricerca dei prodotti
+<b class="fc">&nbsp;            System.out.println(&quot;Elenco dei prodotti:&quot;);</b>
+<b class="fc">&nbsp;            for (int i = 0; i &lt; prodotti.size(); i++) {</b>
+<b class="fc">&nbsp;                System.out.println((i + 1) + &quot;) &quot; + prodotti.get(i).getNome() + &quot; - Quantità: &quot; + prodotti.get(i).getQuantita() + &quot; - Prezzo: &quot; + prodotti.get(i).getPrezzo());</b>
+&nbsp;            }
+<b class="fc">&nbsp;            vistaProdotto.aggiorna(&quot;Accesso effettuato con successo alla lista di prodotti&quot;);</b>
+&nbsp;
+<b class="fc">&nbsp;            System.out.print(&quot;Vuoi passare alla ricerca di un prodotto? (s/n): &quot;);</b>
+<b class="fc">&nbsp;            String rispostaRicerca = scanner.nextLine();</b>
+<b class="fc">&nbsp;            boolean valido = false;</b>
+<b class="fc">&nbsp;            while (!valido){</b>
+<b class="pc">&nbsp;                switch (rispostaRicerca.toLowerCase()){</b>
+&nbsp;                    case &quot;s&quot;:
+&nbsp;                        //Avvisa l&#39;utente del passaggio di metodo e chiama la ricerca dei prodotti
+<b class="nc">&nbsp;                        System.out.println(&quot;Passaggio alla ricerca dei prodotti&quot;);</b>
+<b class="nc">&nbsp;                        vistaProdotto.aggiorna(&quot;Passaggio alla ricerca dei prodotti&quot;);</b>
+<b class="nc">&nbsp;                        ricercaProdotti();</b>
+<b class="nc">&nbsp;                        valido = true;</b>
+&nbsp;                        break;
+&nbsp;                    case &quot;n&quot;:
+&nbsp;                        //Avvisa l&#39;utente della ricerca non eseguita e torna al menù principale
+<b class="fc">&nbsp;                        System.out.println(&quot;Ricerca non eseguita&quot;);</b>
+<b class="fc">&nbsp;                        vistaProdotto.aggiorna(&quot;Ricerca non eseguita&quot;);</b>
+<b class="fc">&nbsp;                        valido = true;</b>
+&nbsp;                        break;
+&nbsp;                    default:
+&nbsp;                        //Avvisa l&#39;utente della scelta non valida e chiede nuovamente di fare una scelta
+<b class="nc">&nbsp;                        System.out.println(&quot;Scelta non valida\nInserisci un valore valido (s/n): &quot;);</b>
+<b class="nc">&nbsp;                        rispostaRicerca = scanner.nextLine();</b>
+&nbsp;                        break;
+&nbsp;                }
+&nbsp;            }
+&nbsp;
+&nbsp;            //Controlla se l&#39;utente registrato è un istanza di ResponsabileBarVenditore
+&nbsp;            //(valido anche per le classi che la estendono)
+<b class="pc">&nbsp;            if (this instanceof ResponsabileBarVenditore) {</b>
+<b class="nc">&nbsp;                System.out.print(&quot;Vuoi passare alla gestione del magazzino? (s/n): &quot;);</b>
+<b class="nc">&nbsp;                String rispostaGestione = scanner.nextLine();</b>
+<b class="nc">&nbsp;                boolean scrittaValida = false;</b>
+<b class="nc">&nbsp;                while (!scrittaValida){</b>
+<b class="nc">&nbsp;                    switch (rispostaGestione.toLowerCase()){</b>
+&nbsp;                        case &quot;s&quot;:
+&nbsp;                            //Chiama il metodo di gestione del magazzino tramite cast a ResponsabileBarVenditore
+&nbsp;                            //(valido anche per le classi che la estendono)
+<b class="nc">&nbsp;                            System.out.println(&quot;Passaggio alla gestione del magazzino&quot;);</b>
+<b class="nc">&nbsp;                            vistaProdotto.aggiorna(&quot;Passaggio alla gestione del magazzino&quot;);</b>
+<b class="nc">&nbsp;                            ((ResponsabileBarVenditore) this).gestioneMagazzino();</b>
+<b class="nc">&nbsp;                            scrittaValida = true;</b>
+&nbsp;                            break;
+&nbsp;                        case &quot;n&quot;:
+&nbsp;                            //Avvisa l&#39;utente del ritorno al menù principale
+<b class="nc">&nbsp;                            System.out.println(&quot;Ritorno al menù principale&quot;);</b>
+<b class="nc">&nbsp;                            vistaProdotto.aggiorna(&quot;Ritorno al menù principale&quot;);</b>
+&nbsp;                            return;
+&nbsp;                        default:
+&nbsp;                            //Avvisa l&#39;utente della scelta non valida e chiede nuovamente di fare una scelta
+<b class="nc">&nbsp;                            System.out.println(&quot;Scelta non valida\nInserisci un valore valido (s/n): &quot;);</b>
+<b class="nc">&nbsp;                            rispostaGestione = scanner.nextLine();</b>
+&nbsp;                            break;
+&nbsp;                    }
+&nbsp;                }
+&nbsp;            }
+&nbsp;        }
+&nbsp;    }
+&nbsp;
+&nbsp;    //Metodo della classe UtenteRegistrato o delle classi
+&nbsp;    //che la estendono per la ricerca dei prodotti
+&nbsp;    public void ricercaProdotti() {
+<b class="fc">&nbsp;        VistaProdotto vistaProdotto = VistaProdotto.getInstance();</b>
+<b class="fc">&nbsp;        Scanner scanner = new Scanner(System.in);</b>
+<b class="fc">&nbsp;        boolean continuaRicerca = true;</b>
+&nbsp;
+&nbsp;        //Se torna al menù è true, esce dal metodo
+<b class="pc">&nbsp;        if (VistaProdotto.getTornaAlMenu()) {</b>
+<b class="nc">&nbsp;            continuaRicerca = false;</b>
+&nbsp;        }
+<b class="fc">&nbsp;        while (continuaRicerca) {</b>
+&nbsp;            //Controlla il flag per tornare al menù principale
+<b class="fc">&nbsp;            System.out.println(&quot;Inserisci il nome del prodotto:&quot;);</b>
+<b class="fc">&nbsp;            String nomeProdotto = scanner.nextLine();</b>
+&nbsp;            //Prende l&#39;istanza del controller di prodotto e chiama il metodo per trovare un prodotto
+<b class="fc">&nbsp;            Prodotto prodotto = ProdottoController.getInstance().trovaProdotto(nomeProdotto);</b>
+&nbsp;            //Controlla che non sia null
+<b class="pc">&nbsp;            if (prodotto != null) {</b>
+<b class="nc">&nbsp;                System.out.println(prodotto);</b>
+<b class="nc">&nbsp;                vistaProdotto.aggiorna(&quot;Ricerca eseguita con successo&quot;);</b>
+<b class="nc">&nbsp;                System.out.print(&quot;Vuoi acquistare questo prodotto? (s/n): &quot;);</b>
+<b class="nc">&nbsp;                String risposta = scanner.nextLine();</b>
+&nbsp;                //Controlla l&#39;input dell&#39;utente
+<b class="nc">&nbsp;                if (risposta.equalsIgnoreCase(&quot;s&quot;)) {</b>
+&nbsp;                    //Controlla se la quantità del prodotto cercato è superiore a zero
+<b class="nc">&nbsp;                    if (prodotto.getQuantita() &gt; 0) {</b>
+&nbsp;                        //Chiama il metodo per acquistare i prodotti
+<b class="nc">&nbsp;                        acquistoProdotti(prodotto);</b>
+&nbsp;                    } else {
+&nbsp;                        //Avvisa l&#39;utente della quantità = 0 e controlla cosa inserisce l&#39;utente in gestisciErrore:
+&nbsp;                        //Se l&#39;utente sceglie &quot;n&quot;, avvisa l&#39;annullamento dell&#39;acquisto e torna al menù principale
+<b class="nc">&nbsp;                        if (!gestisciErrore(scanner, vistaProdotto, &quot;La quantità disponibile del prodotto è zero. Vuoi cercare un altro prodotto?&quot;)) {</b>
+<b class="nc">&nbsp;                            vistaProdotto.aggiorna(&quot;Acquisto annullato, ritorno al menù principale.&quot;);</b>
+<b class="nc">&nbsp;                            continuaRicerca = false;</b>
+&nbsp;                        }
+&nbsp;                    }
+&nbsp;
+&nbsp;                    //Caso in cui l&#39;utente risponde &quot;n&quot; all&#39;acquisto del prodotto
+<b class="nc">&nbsp;                } else if (risposta.equalsIgnoreCase(&quot;n&quot;)) {</b>
+<b class="nc">&nbsp;                    System.out.print(&quot;Vuoi terminare la ricerca senza acquistare? (s/n): &quot;);</b>
+<b class="nc">&nbsp;                    risposta = scanner.nextLine();</b>
+&nbsp;                    //Controlla se l&#39;utente vuole terminare il metodo senza passare all&#39;acquisto
+<b class="nc">&nbsp;                    if (risposta.equalsIgnoreCase(&quot;s&quot;)) {</b>
+<b class="nc">&nbsp;                        System.out.println(&quot;Ritorno al menù principale senza fare acquisti.&quot;);</b>
+<b class="nc">&nbsp;                        vistaProdotto.aggiorna(&quot;Acquisto annullato. Ritorno al menù principale.&quot;);</b>
+<b class="nc">&nbsp;                        continuaRicerca = false;</b>
+&nbsp;                    }
+&nbsp;                }
+&nbsp;            } else {
+&nbsp;                //Avvisa l&#39;utente della ricerca che ha dato risultato null e controlla cosa inserisce l&#39;utente in gestisciErrore:
+&nbsp;                //Se l&#39;utente sceglie &quot;n&quot;, avvisa l&#39;annullamento dell&#39;acquisto e torna al menù principale
+<b class="pc">&nbsp;                if (!gestisciErrore(scanner, vistaProdotto, &quot;Errore durante la ricerca di un prodotto.&quot;)) {</b>
+<b class="fc">&nbsp;                    continuaRicerca = false;</b>
+&nbsp;                }
+&nbsp;            }
+&nbsp;
+&nbsp;            //Se torna al menù è true, esce dal metodo
+<b class="pc">&nbsp;            if (VistaProdotto.getTornaAlMenu()) {</b>
+<b class="nc">&nbsp;                continuaRicerca = false;</b>
+&nbsp;            }
+&nbsp;        }
+&nbsp;    }
+&nbsp;
+&nbsp;    //Metodo della classe UtenteRegistrato o delle classi che la
+&nbsp;    //estendono per l&#39;acquisto dei prodotti
+&nbsp;    public void acquistoProdotti(Prodotto prodottoIniziale) {
+<b class="nc">&nbsp;        VistaProdotto vistaProdotto = VistaProdotto.getInstance();</b>
+<b class="nc">&nbsp;        Scanner scanner = new Scanner(System.in);</b>
+<b class="nc">&nbsp;        double costoParziale = 0.00; //Inizializza il costo dell&#39;acquisto</b>
+<b class="nc">&nbsp;        List&lt;Prodotto&gt; prodottiAcquistati = new ArrayList&lt;&gt;(); //Lista dei prodotti acquistati</b>
+<b class="nc">&nbsp;        List&lt;Integer&gt; quantitaAcquistate = new ArrayList&lt;&gt;(); //Lista delle quantità di prodotti acquistate</b>
+<b class="nc">&nbsp;        List&lt;Boolean&gt; portareViaList = new ArrayList&lt;&gt;(); //Lista dello stato &quot;portare via&quot; dei prodotti</b>
+<b class="nc">&nbsp;        List&lt;Integer&gt; quantitaOriginali = new ArrayList&lt;&gt;(); //Lista per memorizzare le quantità originali dei prodotti</b>
+<b class="nc">&nbsp;        Set&lt;Prodotto&gt; prodottiAggiornati = new HashSet&lt;&gt;(); //Set per memorizzare i prodotti aggiornati</b>
+&nbsp;        //Controlla se l&#39;utente ha già inserito i dati della carta di credito
+<b class="nc">&nbsp;        if (this.numeroCarta == null || this.numeroCarta.isEmpty() ||</b>
+<b class="nc">&nbsp;                this.dataScadenza == null || this.dataScadenza.isEmpty() ||</b>
+<b class="nc">&nbsp;                this.nomeProprietario == null || this.nomeProprietario.isEmpty() ||</b>
+<b class="nc">&nbsp;                this.cognomeProprietario == null || this.cognomeProprietario.isEmpty() ||</b>
+<b class="nc">&nbsp;                this.cvv == null || this.cvv.isEmpty()) {</b>
+&nbsp;
+<b class="nc">&nbsp;            System.out.println(&quot;Non hai inserito le informazioni della carta di credito.&quot;);</b>
+<b class="nc">&nbsp;            System.out.println(&quot;Vuoi inserire i tuoi dati della carta di credito? (s/n)&quot;);</b>
+<b class="nc">&nbsp;            String scelta = scanner.nextLine();</b>
+&nbsp;
+&nbsp;            //Controlla se la scelta è valida e continua a chiederlo se non lo è
+<b class="nc">&nbsp;            while (!scelta.equalsIgnoreCase(&quot;s&quot;) &amp;&amp; !scelta.equalsIgnoreCase(&quot;n&quot;)) {</b>
+<b class="nc">&nbsp;                System.out.println(&quot;Scelta non valida. Vuoi inserire i tuoi dati della carta di credito? (s/n)&quot;);</b>
+<b class="nc">&nbsp;                scelta = scanner.nextLine();</b>
+&nbsp;            }
+&nbsp;
+<b class="nc">&nbsp;            if (scelta.equalsIgnoreCase(&quot;n&quot;)) {</b>
+&nbsp;                //Se l&#39;utente decide di non inserire i dati della sua carta,
+&nbsp;                //Non si procede con l&#39;acquisto e si esce dal metodo
+<b class="nc">&nbsp;                System.out.println(&quot;Acquisto annullato.&quot;);</b>
+<b class="nc">&nbsp;                vistaProdotto.aggiorna(&quot;Acquisto non effettuato: informazioni carta non presenti.&quot;);</b>
+&nbsp;                return;
+&nbsp;
+&nbsp;                //Se l&#39;utente decide di inserire i dati della sua carta
+&nbsp;                //che non aveva inserito durante la registrazione,
+&nbsp;                //esegue tutto il procedimento di inserimento dati
+&nbsp;                //e poi prosegue con l&#39;acquisto
+<b class="nc">&nbsp;            } else if (scelta.equalsIgnoreCase(&quot;s&quot;)) {</b>
+&nbsp;                //Validazione del numero della carta
+<b class="nc">&nbsp;                boolean valid = false;</b>
+<b class="nc">&nbsp;                while (!valid) {</b>
+<b class="nc">&nbsp;                    System.out.println(&quot;Inserisci il numero della carta di credito (16 cifre):&quot;);</b>
+<b class="nc">&nbsp;                    this.numeroCarta = scanner.nextLine();</b>
+&nbsp;                    //Controllo del numero della carta con regex
+<b class="nc">&nbsp;                    if (this.numeroCarta.matches(&quot;\\d{16}&quot;)) {</b>
+&nbsp;                        //Set del numero della carta
+<b class="nc">&nbsp;                        this.setNumeroCarta(numeroCarta);</b>
+<b class="nc">&nbsp;                        valid = true;</b>
+&nbsp;                    } else {
+&nbsp;                        //Avvisa l&#39;utente di un numero della carta non valido
+<b class="nc">&nbsp;                        System.out.println(&quot;Numero della carta non valido.&quot;);</b>
+&nbsp;                    }
+&nbsp;                }
+&nbsp;
+&nbsp;                //Validazione della data di scadenza
+<b class="nc">&nbsp;                valid = false;</b>
+<b class="nc">&nbsp;                while (!valid) {</b>
+<b class="nc">&nbsp;                    System.out.println(&quot;Inserisci la data di scadenza (MM/YY):&quot;);</b>
+<b class="nc">&nbsp;                    this.dataScadenza = scanner.nextLine();</b>
+&nbsp;                    //Controllo della data con regex
+<b class="nc">&nbsp;                    if (this.dataScadenza.matches(&quot;^(0[1-9]|1[0-2])/([2-9][5-9]|[3-9][0-9])$&quot;)) {</b>
+&nbsp;                        //Set della data di scadenza
+<b class="nc">&nbsp;                        this.setDataScadenza(dataScadenza);</b>
+<b class="nc">&nbsp;                        valid = true;</b>
+&nbsp;                    } else {
+&nbsp;                        //Avvisa l&#39;utente di una data di scadenza non valida
+<b class="nc">&nbsp;                        System.out.println(&quot;Data di scadenza non valida.&quot;);</b>
+&nbsp;                    }
+&nbsp;                }
+&nbsp;
+&nbsp;                //Validazione del nome del proprietario
+<b class="nc">&nbsp;                valid = false;</b>
+<b class="nc">&nbsp;                while (!valid) {</b>
+<b class="nc">&nbsp;                    System.out.println(&quot;Inserisci il nome del proprietario della carta:&quot;);</b>
+<b class="nc">&nbsp;                    this.nomeProprietario = scanner.nextLine();</b>
+&nbsp;                    //Controllo del nome con regex
+<b class="nc">&nbsp;                    if (this.nomeProprietario.matches(&quot;^[A-Z][a-z]*(\\s[A-Z][a-z]*)*$&quot;)) {</b>
+&nbsp;                        //Set del nome
+<b class="nc">&nbsp;                        this.setNomeProprietario(nomeProprietario);</b>
+<b class="nc">&nbsp;                        valid = true;</b>
+&nbsp;                    } else {
+&nbsp;                        //Avvisa l&#39;utente di un nome non valido
+<b class="nc">&nbsp;                        System.out.println(&quot;Nome del proprietario non valido.&quot;);</b>
+&nbsp;                    }
+&nbsp;                }
+&nbsp;
+&nbsp;                //Validazione del cognome del proprietario
+<b class="nc">&nbsp;                valid = false;</b>
+<b class="nc">&nbsp;                while (!valid) {</b>
+<b class="nc">&nbsp;                    System.out.println(&quot;Inserisci il cognome del proprietario della carta:&quot;);</b>
+<b class="nc">&nbsp;                    this.cognomeProprietario = scanner.nextLine();</b>
+&nbsp;                    //Controllo del cognome con regex
+<b class="nc">&nbsp;                    if (this.cognomeProprietario.matches(&quot;^[A-Z][a-z]*(\\s[A-Z][a-z]*)*$&quot;)) {</b>
+&nbsp;                        //Set del cognome
+<b class="nc">&nbsp;                        this.setCognomeProprietario(cognomeProprietario);</b>
+<b class="nc">&nbsp;                        valid = true;</b>
+&nbsp;                    } else {
+&nbsp;                        //Avvisa l&#39;utente di un cognome non valido
+<b class="nc">&nbsp;                        System.out.println(&quot;Cognome del proprietario non valido.&quot;);</b>
+&nbsp;                    }
+&nbsp;                }
+&nbsp;
+&nbsp;                //Validazione del CVV
+<b class="nc">&nbsp;                valid = false;</b>
+<b class="nc">&nbsp;                while (!valid) {</b>
+<b class="nc">&nbsp;                    System.out.println(&quot;Inserisci il CVV della carta (3 cifre):&quot;);</b>
+<b class="nc">&nbsp;                    this.cvv = scanner.nextLine();</b>
+&nbsp;                    //Controllo del CVV con regex
+<b class="nc">&nbsp;                    if (this.cvv.matches(&quot;\\d{3}&quot;)) {</b>
+&nbsp;                        //Set del CVV
+<b class="nc">&nbsp;                        this.setCvv(cvv);</b>
+<b class="nc">&nbsp;                        valid = true;</b>
+&nbsp;                    } else {
+&nbsp;                        //Avvisa l&#39;utente di un CVV non valido
+<b class="nc">&nbsp;                        System.out.println(&quot;CVV non valido.&quot;);</b>
+&nbsp;                    }
+&nbsp;                }
+&nbsp;
+&nbsp;                //Validazione del saldo
+<b class="nc">&nbsp;                valid = false;</b>
+<b class="nc">&nbsp;                while (!valid) {</b>
+<b class="nc">&nbsp;                    System.out.println(&quot;Inserisci il saldo iniziale della carta:&quot;);</b>
+<b class="nc">&nbsp;                    String saldoInput = scanner.nextLine();</b>
+&nbsp;                    //Controllo del saldo con regex
+<b class="nc">&nbsp;                    if (saldoInput.matches(&quot;^\\d+\\.\\d{2}$&quot;)) {</b>
+&nbsp;                        try {
+<b class="nc">&nbsp;                            double saldo = Double.parseDouble(saldoInput);</b>
+<b class="nc">&nbsp;                            if (saldo &gt;= 0) {</b>
+&nbsp;                                //Set del saldo
+<b class="nc">&nbsp;                                this.setSaldo(saldo);</b>
+<b class="nc">&nbsp;                                valid = true;</b>
+&nbsp;                            } else {
+&nbsp;                                //Avvisa l&#39;utente di un saldo negativo
+<b class="nc">&nbsp;                                System.out.println(&quot;Saldo non valido. Deve essere maggiore o uguale a zero.&quot;);</b>
+&nbsp;                            }
+<b class="nc">&nbsp;                        } catch (NumberFormatException e) {</b>
+&nbsp;                            //Avvisa l&#39;utente quando l&#39;input non è numerico
+<b class="nc">&nbsp;                            System.out.println(&quot;Saldo non valido.&quot;);</b>
+&nbsp;                        }
+&nbsp;                    } else {
+&nbsp;                        //Avvisa l&#39;utente quando l&#39;input non è inserito correttamente
+<b class="nc">&nbsp;                        System.out.println(&quot;Saldo non valido. Deve essere un numero con due cifre decimali.&quot;);</b>
+&nbsp;                    }
+&nbsp;                }
+&nbsp;            }
+&nbsp;        }
+&nbsp;
+&nbsp;        //Boolean per il controllo sul continuo dell&#39;acquisto
+<b class="nc">&nbsp;        boolean continuare = true;</b>
+&nbsp;        //Rimane nel loop per acquistare finché l&#39;utente non decide di uscire
+&nbsp;        //sia nel caso di annullamento acquisto, sia in quello di acquisto
+&nbsp;        while (true) {
+<b class="nc">&nbsp;            Prodotto prodotto = prodottoIniziale != null ? prodottoIniziale : ricercaAltroProdotto(scanner);</b>
+<b class="nc">&nbsp;            if (prodotto == null) {</b>
+&nbsp;                //Avvisa l&#39;utente del prodotto non trovato o non disponibile e controlla cosa inserisce l&#39;utente in gestisciErrore:
+&nbsp;                //Se l&#39;utente sceglie &quot;n&quot;, avvisa l&#39;annullamento dell&#39;acquisto e torna al menù principale
+<b class="nc">&nbsp;                continuare = gestisciErrore(scanner, vistaProdotto, &quot;Errore: Prodotto non trovato o non disponibile. Acquisto annullato.&quot;);</b>
+<b class="nc">&nbsp;                if (!continuare) {</b>
+&nbsp;                    //Prima di uscire dal metodo, ripristina le quantità originali del prodotto in magazzino
+<b class="nc">&nbsp;                    for (int i = 0; i &lt; prodottiAcquistati.size(); i++) {</b>
+<b class="nc">&nbsp;                        prodottiAcquistati.get(i).incrementaQuantita(quantitaAcquistate.get(i));</b>
+&nbsp;                    }
+<b class="nc">&nbsp;                    vistaProdotto.aggiorna(&quot;Acquisto annullato, ritorno al menù principale.&quot;);</b>
+&nbsp;                    return;
+&nbsp;                } else {
+&nbsp;                    //Se l&#39;utente vuole continuare, rimane nel loop
+&nbsp;                    continue;
+&nbsp;                }
+&nbsp;            }
+&nbsp;
+&nbsp;            //Chiede all&#39;utente di inserire una quantità da acquistare del prodotto
+<b class="nc">&nbsp;            System.out.print(&quot;Quanta quantità vuoi acquistare di &quot; + prodotto.getNome() + &quot;? &quot;);</b>
+<b class="nc">&nbsp;            int quantita = scanner.nextInt();</b>
+<b class="nc">&nbsp;            scanner.nextLine();</b>
+&nbsp;
+&nbsp;            //Controlla se la quantità è minore o uguale a zero
+<b class="nc">&nbsp;            if (quantita &lt;= 0) {</b>
+&nbsp;                //Avvisa l&#39;utente della quantità &lt;= 0 e controlla cosa inserisce l&#39;utente in gestisciErrore:
+&nbsp;                //Se l&#39;utente sceglie &quot;n&quot;, avvisa l&#39;annullamento dell&#39;acquisto e torna al menù principale
+<b class="nc">&nbsp;                continuare = gestisciErrore(scanner, vistaProdotto, &quot;Errore: Quantità richiesta non valida. Deve essere maggiore di zero. Acquisto non effettuato.&quot;);</b>
+<b class="nc">&nbsp;                if (!continuare) {</b>
+&nbsp;                    //Prima di uscire dal metodo, ripristina le quantità originali dei prodotti nel magazzino
+<b class="nc">&nbsp;                    for (int i = 0; i &lt; prodottiAcquistati.size(); i++) {</b>
+<b class="nc">&nbsp;                        prodottiAcquistati.get(i).incrementaQuantita(quantitaAcquistate.get(i));</b>
+&nbsp;                    }
+<b class="nc">&nbsp;                    vistaProdotto.aggiorna(&quot;Acquisto annullato, ritorno al menù principale.&quot;);</b>
+&nbsp;                    return;
+&nbsp;                } else {
+&nbsp;                    //Se l&#39;utente vuole continuare, rimane nel loop
+&nbsp;                    continue;
+&nbsp;                }
+&nbsp;
+&nbsp;                //Controlla se la quantità è superiore a quella disponibile in magazzino
+<b class="nc">&nbsp;            } else if (quantita &gt; prodotto.getQuantita()) {</b>
+&nbsp;                //Avvisa l&#39;utente della quantità superiore a quella disponibile e controlla cosa inserisce l&#39;utente in gestisciErrore:
+&nbsp;                //Se l&#39;utente sceglie &quot;n&quot;, avvisa l&#39;annullamento dell&#39;acquisto e torna al menù principale
+<b class="nc">&nbsp;                continuare = gestisciErrore(scanner, vistaProdotto, &quot;Errore: Quantità richiesta superiore alla quantità disponibile. Acquisto non effettuato.&quot;);</b>
+<b class="nc">&nbsp;                if (!continuare) {</b>
+&nbsp;                    //Prima di uscire dal metodo, ripristina le quantità originali dei prodotti nel magazzino
+<b class="nc">&nbsp;                    for (int i = 0; i &lt; prodottiAcquistati.size(); i++) {</b>
+<b class="nc">&nbsp;                        prodottiAcquistati.get(i).incrementaQuantita(quantitaAcquistate.get(i));</b>
+&nbsp;                    }
+<b class="nc">&nbsp;                    vistaProdotto.aggiorna(&quot;Acquisto annullato, ritorno al menù principale.&quot;);</b>
+&nbsp;                    return;
+&nbsp;                } else {
+&nbsp;                    //Se l&#39;utente vuole continuare, rimane nel loop
+&nbsp;                    continue;
+&nbsp;                }
+&nbsp;            }
+&nbsp;
+&nbsp;            //Memorizza la quantità originale del prodotto
+<b class="nc">&nbsp;            quantitaOriginali.add(prodotto.getQuantita());</b>
+<b class="nc">&nbsp;            boolean portareVia = false;</b>
+&nbsp;            //Richiede all&#39;utente di inserire lo stato &quot;portare via&quot;
+<b class="nc">&nbsp;            System.out.print(&quot;Il prodotto è da portare via? (s/n): &quot;);</b>
+<b class="nc">&nbsp;            String rispostaPortareVia = scanner.nextLine();</b>
+&nbsp;            //Controlla se la risposta è valida e continua a chiederla finché non lo è
+<b class="nc">&nbsp;            while (!rispostaPortareVia.equalsIgnoreCase(&quot;s&quot;) &amp;&amp; !rispostaPortareVia.equalsIgnoreCase(&quot;n&quot;)) {</b>
+<b class="nc">&nbsp;                System.out.print(&quot;Risposta non valida. Il prodotto è da portare via? (s/n): &quot;);</b>
+<b class="nc">&nbsp;                rispostaPortareVia = scanner.nextLine();</b>
+&nbsp;            }
+<b class="nc">&nbsp;            if (rispostaPortareVia.equalsIgnoreCase(&quot;s&quot;)) {</b>
+<b class="nc">&nbsp;                portareVia = true;</b>
+&nbsp;            }
+&nbsp;            //Setta lo stato di &quot;portare via&quot;
+<b class="nc">&nbsp;            portareViaList.add(portareVia);</b>
+&nbsp;
+&nbsp;            //Aggiorna il costo dell&#39;ordine e inserisci il prodotto con le sue caratteristiche all&#39;oridne
+<b class="nc">&nbsp;            double costoProdotto = prodotto.getPrezzo() * quantita;</b>
+<b class="nc">&nbsp;            costoParziale += costoProdotto;</b>
+<b class="nc">&nbsp;            prodottiAcquistati.add(prodotto);</b>
+<b class="nc">&nbsp;            quantitaAcquistate.add(quantita);</b>
+&nbsp;            //Aggiorna temporaneamente la quantità del prodotto
+<b class="nc">&nbsp;            prodotto.decrementaQuantita(quantita);</b>
+<b class="nc">&nbsp;            prodottiAggiornati.add(prodotto); //Aggiungi il prodotto al set</b>
+&nbsp;
+<b class="nc">&nbsp;            System.out.println(&quot;Prodotto aggiunto all&#39;ordine: &quot; + prodotto.getNome() + &quot; - Quantità: &quot; + quantita + &quot; - Portare via: &quot; + portareVia);</b>
+<b class="nc">&nbsp;            System.out.print(&quot;Vuoi acquistare un altro prodotto? (s/n): &quot;);</b>
+<b class="nc">&nbsp;            String risposta = scanner.nextLine();</b>
+<b class="nc">&nbsp;            boolean rispostaValida = false;</b>
+<b class="nc">&nbsp;            while (!rispostaValida) {</b>
+<b class="nc">&nbsp;                if (risposta.equalsIgnoreCase(&quot;n&quot;)) {</b>
+<b class="nc">&nbsp;                    rispostaValida = true;</b>
+<b class="nc">&nbsp;                } else if (risposta.equalsIgnoreCase(&quot;s&quot;)) {</b>
+&nbsp;                    //Verifica se ci sono ancora prodotti acquistabili
+<b class="nc">&nbsp;                    boolean prodottiDisponibili = false;</b>
+<b class="nc">&nbsp;                    for (Prodotto p : ProdottoController.getInstance().getListaProdotti()) {</b>
+<b class="nc">&nbsp;                        if (p.getQuantita() &gt; 0) {</b>
+<b class="nc">&nbsp;                            prodottiDisponibili = true;</b>
+&nbsp;                            break;
+&nbsp;                        }
+&nbsp;                    }
+<b class="nc">&nbsp;                    if (!prodottiDisponibili) {</b>
+&nbsp;                        //Avvisa l&#39;utente della mancanza di prodotti da acquistare e passa all&#39;acquisto dell&#39;ordine attuale
+<b class="nc">&nbsp;                        System.out.println(&quot;Non ci sono altri prodotti acquistabili.&quot;);</b>
+&nbsp;                        //Esce quindi dal loop di aggiunta prodotti all&#39;ordine
+&nbsp;                        break;
+&nbsp;                    }
+&nbsp;                    //Resetta prodotto iniziale e rimane nel loop di acquisto, uscendo
+&nbsp;                    //dal loop di controllo di richiesta acquisto altro prodotto
+<b class="nc">&nbsp;                    prodottoIniziale = null;</b>
+<b class="nc">&nbsp;                    rispostaValida = true;</b>
+&nbsp;                } else {
+&nbsp;                    //Avvisa l&#39;utente della risposta non valida e chiede di inserire una nuova risposta
+<b class="nc">&nbsp;                    System.out.print(&quot;Risposta non valida. Vuoi acquistare un altro prodotto? (s/n): &quot;);</b>
+<b class="nc">&nbsp;                    risposta = scanner.nextLine();</b>
+&nbsp;                }
+&nbsp;            }
+&nbsp;
+&nbsp;            //Se l&#39;utente non vuole più acquistare altri prodotti, esci dal loop
+<b class="nc">&nbsp;            if (risposta.equalsIgnoreCase(&quot;n&quot;)) {</b>
+&nbsp;                break;
+&nbsp;            }
+&nbsp;        }
+&nbsp;
+&nbsp;        //Mostra il costo totale dell&#39;ordine
+<b class="nc">&nbsp;        System.out.println(&quot;Costo totale: &quot; + String.format(&quot;%.2f&quot;, costoParziale));</b>
+&nbsp;
+&nbsp;        //Visualizza l&#39;ordine con tutti i dettagli per ogni prodotto
+&nbsp;        while (true) {
+<b class="nc">&nbsp;            System.out.println(&quot;Ecco i tuoi prodotti nell&#39;ordine:&quot;);</b>
+<b class="nc">&nbsp;            for (int i = 0; i &lt; prodottiAcquistati.size(); i++) {</b>
+<b class="nc">&nbsp;                String dettaglioProdotto = (i + 1) + &quot;) &quot; + prodottiAcquistati.get(i).getNome() + &quot; - Quantità: &quot; + quantitaAcquistate.get(i);</b>
+<b class="nc">&nbsp;                if (portareViaList.get(i)) {</b>
+<b class="nc">&nbsp;                    dettaglioProdotto += &quot; (da portare via)&quot;;</b>
+&nbsp;                }
+<b class="nc">&nbsp;                System.out.println(dettaglioProdotto);</b>
+&nbsp;            }
+&nbsp;
+&nbsp;            //Mostra il costo dell&#39;ordine e chiede all&#39;utente se vuole modificarlo
+<b class="nc">&nbsp;            System.out.println(&quot;Costo totale: &quot; + String.format(&quot;%.2f&quot;, costoParziale));</b>
+<b class="nc">&nbsp;            System.out.print(&quot;Vuoi modificare l&#39;ordine? (s/n): &quot;);</b>
+<b class="nc">&nbsp;            String rispostaModifica = scanner.nextLine();</b>
+&nbsp;
+&nbsp;            //Se l&#39;utente non vuole modificare più nulla dal suo ordine,
+&nbsp;            //passa direttamente al controllo del saldo
+<b class="nc">&nbsp;            if (rispostaModifica.equalsIgnoreCase(&quot;n&quot;)) {</b>
+&nbsp;                break;
+&nbsp;
+&nbsp;                //Se l&#39;utente vuole modificare qualcosa del suo ordine, mostra un piccolo menù di modifica ed
+&nbsp;                //Esegue la modifica richiesta
+<b class="nc">&nbsp;            } else if (rispostaModifica.equalsIgnoreCase(&quot;s&quot;)) {</b>
+<b class="nc">&nbsp;                System.out.print(&quot;1) Aggiungi prodotto\n2) Modifica la quantità di un prodotto\n3) Modifica stato da portare via o no\n4) Togli prodotto\n&quot;);</b>
+<b class="nc">&nbsp;                int sceltaModifica = leggiIntero(scanner, &quot;Inserisci la tua scelta: &quot;);</b>
+<b class="nc">&nbsp;                switch (sceltaModifica) {</b>
+&nbsp;                    case 1: //Aggiungi un nuovo prodotto all&#39;ordine
+&nbsp;                        //Chiama il metodo per ricercare un nuovo prodotto
+<b class="nc">&nbsp;                        Prodotto nuovoProdotto = ricercaAltroProdotto(scanner);</b>
+&nbsp;                        //Controlla che il prodotto passato non sia null
+<b class="nc">&nbsp;                        if (nuovoProdotto != null) {</b>
+&nbsp;                            //Chiede la quantità da acquistare del nuovo prodotto
+<b class="nc">&nbsp;                            System.out.print(&quot;Quanta quantità vuoi acquistare di &quot; + nuovoProdotto.getNome() + &quot;? &quot;);</b>
+<b class="nc">&nbsp;                            int nuovaQuantita = scanner.nextInt();</b>
+<b class="nc">&nbsp;                            scanner.nextLine();</b>
+&nbsp;                            //Controlla che la quantità inserita in input sia in range
+<b class="nc">&nbsp;                            if (nuovaQuantita &gt; 0 &amp;&amp; nuovaQuantita &lt;= nuovoProdotto.getQuantita()) {</b>
+<b class="nc">&nbsp;                                boolean nuovoPortareVia = false;</b>
+&nbsp;                                //Chiede lo stato di &quot;portare via&quot; del nuovo prodotto
+<b class="nc">&nbsp;                                System.out.print(&quot;Il prodotto è da portare via? (s/n): &quot;);</b>
+<b class="nc">&nbsp;                                String nuovaRispostaPortareVia = scanner.nextLine();</b>
+&nbsp;                                //Controlla che l&#39;input sia valido e continua a chiederlo in caso negativo
+<b class="nc">&nbsp;                                while (!nuovaRispostaPortareVia.equalsIgnoreCase(&quot;s&quot;) &amp;&amp; !nuovaRispostaPortareVia.equalsIgnoreCase(&quot;n&quot;)) {</b>
+<b class="nc">&nbsp;                                    System.out.print(&quot;Risposta non valida. Il prodotto è da portare via? (s/n): &quot;);</b>
+<b class="nc">&nbsp;                                    nuovaRispostaPortareVia = scanner.nextLine();</b>
+&nbsp;                                }
+<b class="nc">&nbsp;                                if (nuovaRispostaPortareVia.equalsIgnoreCase(&quot;s&quot;)) {</b>
+<b class="nc">&nbsp;                                    nuovoPortareVia = true;</b>
+&nbsp;                                }
+<b class="nc">&nbsp;                                portareViaList.add(nuovoPortareVia);</b>
+<b class="nc">&nbsp;                                double nuovoCostoProdotto = nuovoProdotto.getPrezzo() * nuovaQuantita;</b>
+<b class="nc">&nbsp;                                costoParziale += nuovoCostoProdotto;</b>
+<b class="nc">&nbsp;                                prodottiAcquistati.add(nuovoProdotto);</b>
+<b class="nc">&nbsp;                                quantitaAcquistate.add(nuovaQuantita);</b>
+<b class="nc">&nbsp;                                nuovoProdotto.decrementaQuantita(nuovaQuantita);</b>
+<b class="nc">&nbsp;                                prodottiAggiornati.add(nuovoProdotto);</b>
+<b class="nc">&nbsp;                                System.out.println(&quot;Prodotto aggiunto all&#39;ordine: &quot; + nuovoProdotto.getNome() + &quot; - Quantità: &quot; + nuovaQuantita + (nuovoPortareVia ? &quot; (da portare via)&quot; : &quot;&quot;));</b>
+&nbsp;                            } else {
+&nbsp;                                //Avvisa l&#39;utente della quantità non valida e controlla cosa inserisce l&#39;utente in gestisciErrore:
+&nbsp;                                //Se l&#39;utente sceglie &quot;n&quot;, avvisa l&#39;annullamento dell&#39;acquisto e torna al menù principale
+<b class="nc">&nbsp;                                continuare = gestisciErrore(scanner, vistaProdotto, &quot;Errore: Quantità richiesta non valida.&quot;);</b>
+<b class="nc">&nbsp;                                if (!continuare) {</b>
+&nbsp;                                    //Prima di uscire dal metodo, ripristina la quantità di prodotti nel magazzino
+<b class="nc">&nbsp;                                    for (int i = 0; i &lt; prodottiAcquistati.size(); i++) {</b>
+<b class="nc">&nbsp;                                        prodottiAcquistati.get(i).incrementaQuantita(quantitaAcquistate.get(i));</b>
+&nbsp;                                    }
+<b class="nc">&nbsp;                                    vistaProdotto.aggiorna(&quot;Acquisto annullato, ritorno al menù principale.&quot;);</b>
+&nbsp;                                    return;
+&nbsp;                                } else {
+&nbsp;                                    //Se l&#39;utente vuole continuare, rimane nel loop
+&nbsp;                                    continue;
+&nbsp;                                }
+&nbsp;                            }
+&nbsp;                        } else {
+&nbsp;                            //Avvisa l&#39;utente del prodotto non trovato e controlla cosa inserisce l&#39;utente in gestisciErrore:
+&nbsp;                            //Se l&#39;utente sceglie &quot;n&quot;, avvisa l&#39;annullamento dell&#39;acquisto e torna al menù principale
+<b class="nc">&nbsp;                            continuare = gestisciErrore(scanner, vistaProdotto, &quot;Errore: Prodotto non trovato.&quot;);</b>
+<b class="nc">&nbsp;                            if (!continuare) {</b>
+&nbsp;                                //Prima di uscire dal metodo, ripristina la quantità dei prodotti in magazzino
+<b class="nc">&nbsp;                                for (int i = 0; i &lt; prodottiAcquistati.size(); i++) {</b>
+<b class="nc">&nbsp;                                    prodottiAcquistati.get(i).incrementaQuantita(quantitaAcquistate.get(i));</b>
+&nbsp;                                }
+<b class="nc">&nbsp;                                vistaProdotto.aggiorna(&quot;Acquisto annullato, ritorno al menù principale.&quot;);</b>
+&nbsp;                                return;
+&nbsp;                            } else {
+&nbsp;                                //Se l&#39;utente vuole continuare, rimane nel loop
+&nbsp;                                continue;
+&nbsp;                            }
+&nbsp;                        }
+&nbsp;                        break;
+&nbsp;                    case 2: //Modifica la quantità di un prodotto nell&#39;ordine
+&nbsp;                        //Chiama il metodo leggi intero poiché c&#39;è bisogno di un indice definito
+<b class="nc">&nbsp;                        int indiceProdotto = leggiIntero(scanner, &quot;Inserisci il numero del prodotto di cui vuoi modificare la quantità: &quot;) - 1;</b>
+&nbsp;                        //Controlla che l&#39;indice inserito in input sia in range
+<b class="nc">&nbsp;                        if (indiceProdotto &gt;= 0 &amp;&amp; indiceProdotto &lt; prodottiAcquistati.size()) {</b>
+&nbsp;                            //Seleziona il prodotto in base all&#39;indice inserito in input
+<b class="nc">&nbsp;                            Prodotto prodottoDaModificare = prodottiAcquistati.get(indiceProdotto);</b>
+<b class="nc">&nbsp;                            int vecchiaQuantita = quantitaAcquistate.get(indiceProdotto);</b>
+&nbsp;                            //Ripristina la quantità del prodotto in magazzino prima di chiedere la nuova quantità richiesta
+<b class="nc">&nbsp;                            prodottoDaModificare.incrementaQuantita(vecchiaQuantita);</b>
+<b class="nc">&nbsp;                            System.out.print(&quot;Inserisci la nuova quantità per &quot; + prodottoDaModificare.getNome() + &quot;: &quot;);</b>
+<b class="nc">&nbsp;                            int nuovaQuantita = scanner.nextInt();</b>
+<b class="nc">&nbsp;                            scanner.nextLine();</b>
+&nbsp;                            //Controlla che la nuova quantità sia in range
+<b class="nc">&nbsp;                            if (nuovaQuantita &gt; 0 &amp;&amp; nuovaQuantita &lt;= prodottoDaModificare.getQuantita()) {</b>
+&nbsp;                                //Setta la nuova quantità e il nuovo costo di conseguenza
+<b class="nc">&nbsp;                                quantitaAcquistate.set(indiceProdotto, nuovaQuantita);</b>
+<b class="nc">&nbsp;                                prodottoDaModificare.decrementaQuantita(nuovaQuantita);</b>
+<b class="nc">&nbsp;                                double differenzaCosto = prodottoDaModificare.getPrezzo() * (nuovaQuantita - vecchiaQuantita);</b>
+<b class="nc">&nbsp;                                costoParziale += differenzaCosto;</b>
+&nbsp;                            } else {
+&nbsp;                                //Avvisa l&#39;utente della quantità non valida e ripristina la vecchia quantità
+&nbsp;                                //nell&#39;acquisto e la decrementa di nuovo nel magazzino
+<b class="nc">&nbsp;                                System.out.println(&quot;Quantità non valida. Ripristino la vecchia quantità.&quot;);</b>
+<b class="nc">&nbsp;                                prodottoDaModificare.decrementaQuantita(vecchiaQuantita);</b>
+&nbsp;                            }
+&nbsp;                        } else {
+&nbsp;                            //Avvisa l&#39;utente del indice non valido e controlla cosa inserisce l&#39;utente in gestisciErrore:
+&nbsp;                            //Se l&#39;utente sceglie &quot;n&quot;, avvisa l&#39;annullamento dell&#39;acquisto e torna al menù principale
+<b class="nc">&nbsp;                            continuare = gestisciErrore(scanner, vistaProdotto, &quot;Errore: Indice prodotto non valido.&quot;);</b>
+<b class="nc">&nbsp;                            if (!continuare) {</b>
+&nbsp;                                //Prima di uscire dal metodo, ripristina la quantità dei prodotti nel magazzino
+<b class="nc">&nbsp;                                for (int i = 0; i &lt; prodottiAcquistati.size(); i++) {</b>
+<b class="nc">&nbsp;                                    prodottiAcquistati.get(i).incrementaQuantita(quantitaAcquistate.get(i));</b>
+&nbsp;                                }
+<b class="nc">&nbsp;                                vistaProdotto.aggiorna(&quot;Acquisto annullato, ritorno al menù principale.&quot;);</b>
+&nbsp;                                return;
+&nbsp;                            } else {
+&nbsp;                                //Se l&#39;utente vuole continuare, rimane nel loop
+&nbsp;                                continue;
+&nbsp;                            }
+&nbsp;                        }
+&nbsp;                        break;
+&nbsp;                    case 3: //Modifica lo stato &quot;da portare via&quot; di un prodotto dell&#39;ordine
+&nbsp;                        //Chiama il metodo leggi intero poiché c&#39;è bisogno di un indice definito
+<b class="nc">&nbsp;                        int indiceProdotto2 = leggiIntero(scanner, &quot;Inserisci il numero del prodotto di cui vuoi modificare lo stato &#39;portare via&#39;: &quot;) - 1;</b>
+&nbsp;                        //Controlla che l&#39;indice inserito in input sia in range
+<b class="nc">&nbsp;                        if (indiceProdotto2 &gt;= 0 &amp;&amp; indiceProdotto2 &lt; prodottiAcquistati.size()) {</b>
+&nbsp;                            //Aggiorna lo stato &quot;da portare via&quot;
+<b class="nc">&nbsp;                            boolean nuovoPortareVia = false;</b>
+<b class="nc">&nbsp;                            System.out.print(&quot;Il prodotto è da portare via? (s/n): &quot;);</b>
+<b class="nc">&nbsp;                            String nuovaRispostaPortareVia = scanner.nextLine();</b>
+&nbsp;                            //Controlla se la risposta è valida:
+&nbsp;                            //Se non lo è, continua a chiedere input
+<b class="nc">&nbsp;                            while (!nuovaRispostaPortareVia.equalsIgnoreCase(&quot;s&quot;) &amp;&amp; !nuovaRispostaPortareVia.equalsIgnoreCase(&quot;n&quot;)) {</b>
+<b class="nc">&nbsp;                                System.out.print(&quot;Risposta non valida. Il prodotto è da portare via? (s/n): &quot;);</b>
+<b class="nc">&nbsp;                                nuovaRispostaPortareVia = scanner.nextLine();</b>
+&nbsp;                            }
+<b class="nc">&nbsp;                            if (nuovaRispostaPortareVia.equalsIgnoreCase(&quot;s&quot;)) {</b>
+<b class="nc">&nbsp;                                nuovoPortareVia = true;</b>
+&nbsp;                            }
+&nbsp;
+&nbsp;                            //Setta il nuovo stato del prodotto nell&#39;ordine
+<b class="nc">&nbsp;                            portareViaList.set(indiceProdotto2, nuovoPortareVia);</b>
+<b class="nc">&nbsp;                            System.out.println(&quot;Stato &#39;da portare via&#39; aggiornato per il prodotto: &quot; + prodottiAcquistati.get(indiceProdotto2).getNome());</b>
+&nbsp;                        } else {
+&nbsp;                            //Avvisa l&#39;utente del indice non valido e controlla cosa inserisce l&#39;utente in gestisciErrore:
+&nbsp;                            //Se l&#39;utente sceglie &quot;n&quot;, avvisa l&#39;annullamento dell&#39;acquisto e torna al menù principale
+<b class="nc">&nbsp;                            continuare = gestisciErrore(scanner, vistaProdotto, &quot;Errore: Indice prodotto non valido.&quot;);</b>
+<b class="nc">&nbsp;                            if (!continuare) {</b>
+&nbsp;                                //Prima di uscire dal metodo, ripristina la quantità dei prodotti nel magazzino
+<b class="nc">&nbsp;                                for (int i = 0; i &lt; prodottiAcquistati.size(); i++) {</b>
+<b class="nc">&nbsp;                                    prodottiAcquistati.get(i).incrementaQuantita(quantitaAcquistate.get(i));</b>
+&nbsp;                                }
+<b class="nc">&nbsp;                                vistaProdotto.aggiorna(&quot;Acquisto annullato, ritorno al menù principale.&quot;);</b>
+&nbsp;                                return;
+&nbsp;                            } else {
+&nbsp;                                //Se l&#39;utente vuole continuare, rimane nel loop
+&nbsp;                                continue;
+&nbsp;                            }
+&nbsp;                        }
+&nbsp;                        break;
+&nbsp;                    case 4: //Rimuove il prodotto dall&#39;ordine
+&nbsp;                        //Chiama il metodo leggi intero poiché è richiesto un indice definito
+<b class="nc">&nbsp;                        int indiceProdotto3 = leggiIntero(scanner, &quot;Inserisci il numero del prodotto che vuoi rimuovere: &quot;) - 1;</b>
+&nbsp;                        //Controlla se l&#39;indice è interno al range
+<b class="nc">&nbsp;                        if (indiceProdotto3 &gt;= 0 &amp;&amp; indiceProdotto3 &lt; prodottiAcquistati.size()) {</b>
+&nbsp;                            //Seleziona il prodotto in base all&#39;indice inserito in input
+<b class="nc">&nbsp;                            Prodotto prodottoDaRimuovere = prodottiAcquistati.get(indiceProdotto3);</b>
+<b class="nc">&nbsp;                            int quantitaDaRimuovere = quantitaAcquistate.get(indiceProdotto3);</b>
+&nbsp;                            //Chiama il metodo per aggiornare la quantità di prodotto nel magazzino
+<b class="nc">&nbsp;                            prodottoDaRimuovere.incrementaQuantita(quantitaDaRimuovere);</b>
+&nbsp;                            //Aggiorna il costo dell&#39;ordine
+<b class="nc">&nbsp;                            double costoDaRimuovere = prodottoDaRimuovere.getPrezzo() * quantitaDaRimuovere;</b>
+<b class="nc">&nbsp;                            costoParziale -= costoDaRimuovere;</b>
+&nbsp;                            //Rimuove il prodotto dalle apposite liste
+<b class="nc">&nbsp;                            prodottiAcquistati.remove(indiceProdotto3);</b>
+<b class="nc">&nbsp;                            quantitaAcquistate.remove(indiceProdotto3);</b>
+<b class="nc">&nbsp;                            portareViaList.remove(indiceProdotto3);</b>
+&nbsp;                        } else {
+&nbsp;                            //Avvisa l&#39;utente del indice prodotto non valido e controlla cosa inserisce l&#39;utente in gestisciErrore:
+&nbsp;                            //Se l&#39;utente sceglie &quot;n&quot;, avvisa l&#39;annullamento dell&#39;acquisto e torna al menù principale
+<b class="nc">&nbsp;                            continuare = gestisciErrore(scanner, vistaProdotto, &quot;Errore: Indice prodotto non valido.&quot;);</b>
+<b class="nc">&nbsp;                            if (!continuare) {</b>
+&nbsp;                                //Prima di uscire dal metodo, ripristina la quantità dei prodotti nel magazzino
+<b class="nc">&nbsp;                                for (int i = 0; i &lt; prodottiAcquistati.size(); i++) {</b>
+<b class="nc">&nbsp;                                    prodottiAcquistati.get(i).incrementaQuantita(quantitaAcquistate.get(i));</b>
+&nbsp;                                }
+<b class="nc">&nbsp;                                vistaProdotto.aggiorna(&quot;Acquisto annullato, ritorno al menù principale.&quot;);</b>
+&nbsp;                                return;
+&nbsp;                            } else {
+&nbsp;                                //Se l&#39;utente vuole continuare, rimane nel loop
+&nbsp;                                continue;
+&nbsp;                            }
+&nbsp;                        }
+&nbsp;                        break;
+&nbsp;                    default: //Gestisci scelta non valida
+&nbsp;                        //Avvisa l&#39;utente della scelta non valida e controlla cosa inserisce l&#39;utente in gestisciErrore:
+&nbsp;                        //Se l&#39;utente sceglie &quot;n&quot;, avvisa l&#39;annullamento dell&#39;acquisto e torna al menù principale
+<b class="nc">&nbsp;                        continuare = gestisciErrore(scanner, vistaProdotto, &quot;Errore: Scelta non valida.&quot;);</b>
+<b class="nc">&nbsp;                        if (!continuare) {</b>
+&nbsp;                            //Prima di uscire dal metodo, ripristina la quantità dei prodotti nel magazzino
+<b class="nc">&nbsp;                            for (int i = 0; i &lt; prodottiAcquistati.size(); i++) {</b>
+<b class="nc">&nbsp;                                prodottiAcquistati.get(i).incrementaQuantita(quantitaAcquistate.get(i));</b>
+&nbsp;                            }
+<b class="nc">&nbsp;                            vistaProdotto.aggiorna(&quot;Acquisto annullato, ritorno al menù principale.&quot;);</b>
+&nbsp;                            return;
+&nbsp;                        } else {
+&nbsp;                            //Se l&#39;utente vuole continuare, rimane nel loop
+&nbsp;                            continue;
+&nbsp;                        }
+&nbsp;                }
+&nbsp;            } else {
+&nbsp;                //Avvisa l&#39;utente della risposta non valida e controlla cosa inserisce l&#39;utente in gestisciErrore:
+&nbsp;                //Se l&#39;utente sceglie &quot;n&quot;, avvisa l&#39;annullamento dell&#39;acquisto e torna al menù principale
+<b class="nc">&nbsp;                continuare = gestisciErrore(scanner, vistaProdotto, &quot;Errore: Risposta non valida.&quot;);</b>
+<b class="nc">&nbsp;                if (!continuare) {</b>
+&nbsp;                    //Prima di uscire dal metodo, ripristina la quantità dei prodotti nel magazzino
+<b class="nc">&nbsp;                    for (int i = 0; i &lt; prodottiAcquistati.size(); i++) {</b>
+<b class="nc">&nbsp;                        prodottiAcquistati.get(i).incrementaQuantita(quantitaAcquistate.get(i));</b>
+&nbsp;                    }
+<b class="nc">&nbsp;                    vistaProdotto.aggiorna(&quot;Acquisto annullato, ritorno al menù principale.&quot;);</b>
+&nbsp;                    return;
+&nbsp;                } else {
+&nbsp;                    //Se l&#39;utente vuole continuare, rimane nel loop
+&nbsp;                    continue;
+&nbsp;                }
+&nbsp;            }
+&nbsp;        }
+&nbsp;
+&nbsp;        //Controlla se il saldo dell&#39;utente sia minore del costo dell&#39;ordine
+<b class="nc">&nbsp;        while (this.saldo &lt; costoParziale) {</b>
+<b class="nc">&nbsp;            System.out.println(&quot;Saldo insufficiente per completare l&#39;acquisto. Ecco i tuoi prodotti nell&#39;ordine:&quot;);</b>
+<b class="nc">&nbsp;            for (int i = 0; i &lt; prodottiAcquistati.size(); i++) {</b>
+&nbsp;                //Mostra tutti i prodotti nell&#39;ordine con le loro caratteristiche
+<b class="nc">&nbsp;                String dettaglioProdotto = (i + 1) + &quot;) &quot; + prodottiAcquistati.get(i).getNome() + &quot; - Quantità: &quot; + quantitaAcquistate.get(i);</b>
+<b class="nc">&nbsp;                if (portareViaList.get(i)) {</b>
+<b class="nc">&nbsp;                    dettaglioProdotto += &quot; (da portare via)&quot;;</b>
+&nbsp;                }
+<b class="nc">&nbsp;                System.out.println(dettaglioProdotto);</b>
+&nbsp;            }
+&nbsp;
+&nbsp;            //Se il saldo è insufficiente, si chiede all&#39;utente se vuole comunque terminare il suo acquisto
+<b class="nc">&nbsp;            System.out.println(&quot;Se si vuole terminare l&#39;acquisto, verrà chiesto di togliere un po&#39; di prodotti dall&#39;ordine.\nVuoi continuare con l&#39;acquisto? (s/n): &quot;);</b>
+<b class="nc">&nbsp;            String rispostaContinuare = scanner.nextLine();</b>
+&nbsp;
+&nbsp;            //Controlla che la risposta inserita dall&#39;utente sia valida:
+&nbsp;            //Se non lo è, chiede un nuovo input
+<b class="nc">&nbsp;            while (!rispostaContinuare.equalsIgnoreCase(&quot;s&quot;) &amp;&amp; !rispostaContinuare.equalsIgnoreCase(&quot;n&quot;)) {</b>
+<b class="nc">&nbsp;                System.out.println(&quot;Scelta non valida.\nSe si vuole terminare l&#39;acquisto, verrà chiesto di togliere un po&#39; di prodotti dall&#39;ordine.\nVuoi continuare con l&#39;acquisto? (s/n): &quot;);</b>
+<b class="nc">&nbsp;                rispostaContinuare = scanner.nextLine();</b>
+&nbsp;            }
+&nbsp;
+&nbsp;            //Controlla se l&#39;utente vuole continuare con l&#39;acquisto in caso di errore
+<b class="nc">&nbsp;            if (rispostaContinuare.equalsIgnoreCase(&quot;n&quot;)) {</b>
+&nbsp;                //Prima di annullare l&#39;acquisto, ripristina la quantità dei prodotti nel magazzino
+<b class="nc">&nbsp;                for (int i = 0; i &lt; prodottiAcquistati.size(); i++) {</b>
+<b class="nc">&nbsp;                    prodottiAcquistati.get(i).incrementaQuantita(quantitaAcquistate.get(i));</b>
+&nbsp;                }
+<b class="nc">&nbsp;                System.out.println(&quot;Acquisto annullato, ritorno al menù principale&quot;);</b>
+<b class="nc">&nbsp;                vistaProdotto.aggiorna(&quot;Acquisto annullato, ritorno al menù principale&quot;);</b>
+&nbsp;                return;
+&nbsp;            }
+&nbsp;
+&nbsp;            //Chiama il metodo per leggere interi siccome c&#39;è bisogno di un indice definito
+<b class="nc">&nbsp;            int sceltaProdotto = leggiIntero(scanner, &quot;Inserisci il numero del prodotto da cui vuoi rimuovere una quantità: &quot;);</b>
+&nbsp;
+&nbsp;            //Controlla che l&#39;indice selezionato sia nel range:
+&nbsp;            //Se non lo è, chiedi nuovamente una scelta
+<b class="nc">&nbsp;            if (sceltaProdotto &lt; 1 || sceltaProdotto &gt; prodottiAcquistati.size()) {</b>
+<b class="nc">&nbsp;                System.out.println(&quot;Scelta non valida.&quot;);</b>
+&nbsp;                continue;
+&nbsp;            }
+&nbsp;
+&nbsp;            //Seleziona il prodotto in base all&#39;indice selezionato con l&#39;input
+<b class="nc">&nbsp;            Prodotto prodottoDaRimuovere = prodottiAcquistati.get(sceltaProdotto - 1);</b>
+<b class="nc">&nbsp;            int quantitaNellOrdine = quantitaAcquistate.get(sceltaProdotto - 1);</b>
+&nbsp;
+&nbsp;            //Chiama il metodo per leggere interi siccome c&#39;è bisogno di una quantità definita
+<b class="nc">&nbsp;            int quantitaDaRimuovere = leggiIntero(scanner, &quot;Inserisci la quantità da rimuovere da &quot; + prodottoDaRimuovere.getNome() + &quot;: &quot;);</b>
+&nbsp;
+&nbsp;            //Controlla che la quantità selezionata sia nel range:
+&nbsp;            //Se non lo è, chiedi nuovamente una scelta
+<b class="nc">&nbsp;            if (quantitaDaRimuovere &lt;= 0 || quantitaDaRimuovere &gt; quantitaNellOrdine) {</b>
+<b class="nc">&nbsp;                System.out.println(&quot;Quantità non valida.&quot;);</b>
+&nbsp;                continue;
+&nbsp;            }
+&nbsp;
+&nbsp;            //Chiama il metodo per incrementare la quantità del prodotto nel magazzino
+&nbsp;            //e setta la nuova quantità di prodotto
+<b class="nc">&nbsp;            prodottoDaRimuovere.incrementaQuantita(quantitaDaRimuovere);</b>
+<b class="nc">&nbsp;            quantitaAcquistate.set(sceltaProdotto - 1, quantitaNellOrdine - quantitaDaRimuovere);</b>
+&nbsp;
+&nbsp;            //Aggiorna il costo dell&#39;acquisto in base alla quantità rimossa di quel prodotto
+<b class="nc">&nbsp;            double costoDaRimuovere = prodottoDaRimuovere.getPrezzo() * quantitaDaRimuovere;</b>
+<b class="nc">&nbsp;            costoParziale -= costoDaRimuovere;</b>
+&nbsp;
+&nbsp;            //Controlla se rimuove l&#39;intera quantità di prodotto acquistato:
+&nbsp;            //Se sì, rimuove il prodotto dalle liste
+<b class="nc">&nbsp;            if (quantitaAcquistate.get(sceltaProdotto - 1) == 0) {</b>
+<b class="nc">&nbsp;                prodottiAcquistati.remove(sceltaProdotto - 1);</b>
+<b class="nc">&nbsp;                quantitaAcquistate.remove(sceltaProdotto - 1);</b>
+&nbsp;            }
+&nbsp;
+&nbsp;            //Mostra il costo aggiornato dopo la modifica
+<b class="nc">&nbsp;            System.out.println(&quot;Nuovo costo totale: &quot; + String.format(&quot;%.2f&quot;, costoParziale));</b>
+&nbsp;        }
+&nbsp;
+&nbsp;        while (true) {
+&nbsp;            //Verifica dei dati della carta di credito dell&#39;utente
+<b class="nc">&nbsp;            System.out.println(&quot;Per procedere con l&#39;acquisto, conferma i tuoi dati della carta di credito.&quot;);</b>
+<b class="nc">&nbsp;            System.out.println(&quot;Inserisci il numero della carta di credito (16 cifre):&quot;);</b>
+<b class="nc">&nbsp;            String numeroCartaInserito = scanner.nextLine();</b>
+<b class="nc">&nbsp;            System.out.println(&quot;Inserisci la data di scadenza (MM/YY):&quot;);</b>
+<b class="nc">&nbsp;            String dataScadenzaInserita = scanner.nextLine();</b>
+<b class="nc">&nbsp;            System.out.println(&quot;Inserisci il nome del proprietario della carta:&quot;);</b>
+<b class="nc">&nbsp;            String nomeProprietarioInserito = scanner.nextLine();</b>
+<b class="nc">&nbsp;            System.out.println(&quot;Inserisci il cognome del proprietario della carta:&quot;);</b>
+<b class="nc">&nbsp;            String cognomeProprietarioInserito = scanner.nextLine();</b>
+<b class="nc">&nbsp;            System.out.println(&quot;Inserisci il CVV della carta (3 cifre):&quot;);</b>
+<b class="nc">&nbsp;            String cvvInserito = scanner.nextLine();</b>
+&nbsp;
+&nbsp;            //Controllo dei dati inseriti con quelli memorizzati
+<b class="nc">&nbsp;            if (!numeroCartaInserito.equals(this.numeroCarta) ||</b>
+<b class="nc">&nbsp;                    !dataScadenzaInserita.equals(this.dataScadenza) ||</b>
+<b class="nc">&nbsp;                    !nomeProprietarioInserito.equals(this.nomeProprietario) ||</b>
+<b class="nc">&nbsp;                    !cognomeProprietarioInserito.equals(this.cognomeProprietario) ||</b>
+<b class="nc">&nbsp;                    !cvvInserito.equals(this.cvv)) {</b>
+&nbsp;
+&nbsp;                //Avvisa l&#39;utente dei dati scorretti inseriti e controlla cosa inserisce l&#39;utente in gestisciErrore:
+&nbsp;                //Se l&#39;utente sceglie &quot;n&quot;, avvisa l&#39;annullamento dell&#39;acquisto e torna al menù principale
+<b class="nc">&nbsp;                continuare = gestisciErrore(scanner, vistaProdotto, &quot;Errore: I dati della carta di credito non sono corretti. Acquisto non effettuato.&quot;);</b>
+<b class="nc">&nbsp;                if (!continuare) {</b>
+&nbsp;                    //Se l&#39;utente non continua, bisogna ripristinare le quantità dei prodotti
+<b class="nc">&nbsp;                    for (int i = 0; i &lt; prodottiAcquistati.size(); i++) {</b>
+<b class="nc">&nbsp;                        prodottiAcquistati.get(i).incrementaQuantita(quantitaAcquistate.get(i));</b>
+&nbsp;                    }
+<b class="nc">&nbsp;                    vistaProdotto.aggiorna(&quot;Acquisto annullato, ritorno al menù principale.&quot;);</b>
+&nbsp;                    return;
+&nbsp;                }
+&nbsp;            } else {
+&nbsp;                break;
+&nbsp;            }
+&nbsp;        }
+&nbsp;
+&nbsp;        //Aggiorna il saldo dell&#39;utente
+<b class="nc">&nbsp;        this.saldo -= costoParziale;</b>
+&nbsp;
+&nbsp;        //Stampa tutti i prodotti acquistati, con le loro quantità
+<b class="nc">&nbsp;        for (int i = 0; i &lt; prodottiAcquistati.size(); i++) {</b>
+<b class="nc">&nbsp;            Prodotto prodotto = prodottiAcquistati.get(i);</b>
+<b class="nc">&nbsp;            int quantita = quantitaAcquistate.get(i);</b>
+&nbsp;
+&nbsp;            //Controlla se il prodotto è da portare via, nel caso, stampa lo stato &quot;da portare via&quot;
+<b class="nc">&nbsp;            if (portareViaList.get(i)) {</b>
+<b class="nc">&nbsp;                System.out.println(&quot;Hai acquistato &quot; + quantita + &quot; &quot; + prodotto.getNome() + &quot; (da portare via).&quot;);</b>
+&nbsp;            } else {
+<b class="nc">&nbsp;                System.out.println(&quot;Hai acquistato &quot; + quantita + &quot; &quot; + prodotto.getNome() + &quot;.&quot;);</b>
+&nbsp;            }
+&nbsp;        }
+&nbsp;
+&nbsp;        //Controlla se è già stato mostrato l&#39;avviso di aggiornamento per quel prodotto
+<b class="nc">&nbsp;        for (Prodotto prodotto : prodottiAggiornati) {</b>
+&nbsp;            //Aggiorna una sola volta per ogni prodotto
+<b class="nc">&nbsp;            vistaProdotto.aggiorna(&quot;Quantità aggiornata per il prodotto: &quot; + prodotto.getNome() + &quot; - Nuova quantità: &quot; + prodotto.getQuantita());</b>
+&nbsp;        }
+&nbsp;
+&nbsp;        //Avvisa l&#39;utente in maniera finale della buona riuscita dell&#39;acquisto e mostra il saldo aggiornato
+<b class="nc">&nbsp;        System.out.println(&quot;Acquisto effettuato con successo.&quot;);</b>
+<b class="nc">&nbsp;        System.out.println(&quot;Saldo rimanente: &quot; + String.format(&quot;%.2f&quot;, this.saldo));</b>
+<b class="nc">&nbsp;        vistaProdotto.aggiorna(&quot;Saldo aggiornato: &quot; + String.format(&quot;%.2f&quot;, this.saldo));</b>
+<b class="nc">&nbsp;        System.out.println();</b>
+&nbsp;        //Crea un ordine con i prodotti acquistati
+<b class="nc">&nbsp;        Ordine ordine = new Ordine(this, prodottiAcquistati, quantitaAcquistate, portareViaList, costoParziale);</b>
+<b class="nc">&nbsp;        aggiungiOrdine(ordine); //Aggiunge l&#39;ordine alla lista personale dell&#39;utente</b>
+<b class="nc">&nbsp;        aggiungiOrdineGlobal(ordine); //Aggiunge l&#39;ordine alla lista globale</b>
+&nbsp;
+&nbsp;        //Viene settato a true il flag per tornare al menù principale
+<b class="nc">&nbsp;        VistaProdotto.setTornaAlMenu(true);</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    private Prodotto ricercaAltroProdotto(Scanner scanner) {
+<b class="nc">&nbsp;        VistaProdotto vistaProdotto = VistaProdotto.getInstance();</b>
+&nbsp;        while (true) {
+<b class="nc">&nbsp;            System.out.println(&quot;Inserisci il nome del prodotto da cercare:&quot;);</b>
+<b class="nc">&nbsp;            String nomeProdotto = scanner.nextLine();</b>
+&nbsp;            //Ottiene l&#39;istanza del controller di prodotto e chiama il metodo che trova il prodotto
+&nbsp;            //in base ad un input dell&#39;utente
+<b class="nc">&nbsp;            Prodotto prodotto = ProdottoController.getInstance().trovaProdotto(nomeProdotto);</b>
+<b class="nc">&nbsp;            if (prodotto != null) {</b>
+&nbsp;                //Controlla se la quantità presente è valida per l&#39;acquisto
+<b class="nc">&nbsp;                if (prodotto.getQuantita() &gt; 0) {</b>
+<b class="nc">&nbsp;                    System.out.println(prodotto);</b>
+<b class="nc">&nbsp;                    vistaProdotto.aggiorna(&quot;Ricerca eseguita con successo&quot;);</b>
+<b class="nc">&nbsp;                    return prodotto;</b>
+&nbsp;                } else {
+&nbsp;                    //Avvisa l&#39;utente della quantità = 0 e controlla cosa inserisce l&#39;utente in gestisciErrore:
+&nbsp;                    //Se l&#39;utente sceglie &quot;n&quot;, avvisa l&#39;annullamento dell&#39;acquisto e torna al menù principale
+<b class="nc">&nbsp;                    if (!gestisciErrore(scanner, vistaProdotto, &quot;Il prodotto trovato non è disponibile (quantità = 0). Vuoi cercare un altro prodotto?&quot;)) {</b>
+<b class="nc">&nbsp;                        vistaProdotto.aggiorna(&quot;Acquisto annullato, ritorno al menù principale.&quot;);</b>
+<b class="nc">&nbsp;                        return null;</b>
+&nbsp;                    }
+&nbsp;                }
+&nbsp;            } else {
+&nbsp;                //Avvisa l&#39;utente che non è stato trovato alcun prodotto dalla ricerca e chiede
+&nbsp;                //di scegliere se tentare una nuova ricerca continuando con l&#39;acquisto
+<b class="nc">&nbsp;                System.out.println(&quot;Prodotto non trovato. Vuoi riprovare? (s/n): &quot;);</b>
+<b class="nc">&nbsp;                String risposta = scanner.nextLine();</b>
+<b class="nc">&nbsp;                if (!risposta.equalsIgnoreCase(&quot;s&quot;)) {</b>
+<b class="nc">&nbsp;                    return null;</b>
+&nbsp;                }
+&nbsp;            }
+&nbsp;        }
+&nbsp;    }
+&nbsp;
+&nbsp;    //Metodo della classe UtenteRegistrato o delle classi
+&nbsp;    //che la estendono per la gestione dell&#39;errore durante un ordine
+&nbsp;    private boolean gestisciErrore(Scanner scanner, VistaProdotto vistaProdotto, String messaggio) {
+<b class="fc">&nbsp;        System.out.println(messaggio);</b>
+<b class="fc">&nbsp;        vistaProdotto.aggiorna(messaggio);</b>
+&nbsp;        //Chiede all&#39;utente di scegliere se continuare e salva la risposta
+<b class="fc">&nbsp;        System.out.println(&quot;Vuoi continuare con l&#39;acquisto dei prodotti? (s/n): &quot;);</b>
+<b class="fc">&nbsp;        String scelta = scanner.nextLine();</b>
+&nbsp;        //Controlla se la scelta è valida e continua a chiedere di scegliere finché non è valida
+<b class="pc">&nbsp;        while (!scelta.equalsIgnoreCase(&quot;s&quot;) &amp;&amp; !scelta.equalsIgnoreCase(&quot;n&quot;)) {</b>
+<b class="nc">&nbsp;            System.out.println(&quot;Scelta non valida. Vuoi continuare con l&#39;acquisto dei prodotti? (s/n): &quot;);</b>
+<b class="nc">&nbsp;            scelta = scanner.nextLine();</b>
+&nbsp;        }
+<b class="fc">&nbsp;        return scelta.equalsIgnoreCase(&quot;s&quot;);</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    //Metodo della classe UtenteRegistrato o delle classi che la
+&nbsp;    //estendono per la visualizzazione della libreria personale
+&nbsp;    public void visualizzaLibreriaPersonale() {
+&nbsp;        //Mostra le informazioni dell&#39;utente registrato
+<b class="fc">&nbsp;        System.out.println(&quot;Informazioni utente:&quot;);</b>
+<b class="fc">&nbsp;        System.out.println(&quot;Email: &quot; + email);</b>
+<b class="fc">&nbsp;        System.out.println(&quot;Nome (Proprietario carta): &quot; + nomeProprietario);</b>
+<b class="fc">&nbsp;        System.out.println(&quot;Cognome (Proprietario carta): &quot; + cognomeProprietario);</b>
+<b class="fc">&nbsp;        System.out.println(&quot;Saldo: &quot; + String.format(&quot;%.2f&quot;, saldo));</b>
+<b class="fc">&nbsp;        System.out.println();</b>
+&nbsp;
+&nbsp;        //Se l&#39;utente non ha ancora effettuato ordini e non partecipa a nessun
+&nbsp;        //evento, lo avvisa e torna al menù principale
+<b class="pc">&nbsp;        if (libreriaPersonale.isEmpty() &amp;&amp; ordini.isEmpty() &amp;&amp; ordiniCompletati.isEmpty()) {</b>
+<b class="fc">&nbsp;            System.out.println(&quot;La libreria personale è vuota. Ritorno al menù principale.&quot;);</b>
+&nbsp;            return;
+&nbsp;        }
+&nbsp;
+&nbsp;        //Controlla se ci sono eventi nella libreria personale
+<b class="nc">&nbsp;        if (libreriaPersonale.isEmpty()) {</b>
+<b class="nc">&nbsp;            System.out.println(&quot;Non sono presenti eventi nella libreria personale.&quot;);</b>
+&nbsp;        } else {
+&nbsp;            //Se ci sono li stampa
+<b class="nc">&nbsp;            System.out.println(&quot;Eventi nella tua libreria personale:&quot;);</b>
+<b class="nc">&nbsp;            for (Evento evento : libreriaPersonale) {</b>
+<b class="nc">&nbsp;                System.out.println(evento);</b>
+&nbsp;            }
+&nbsp;        }
+&nbsp;
+&nbsp;        //Controlla se ci sono ordini in corso nella lista apposita
+<b class="nc">&nbsp;        if (ordini.isEmpty()) {</b>
+<b class="nc">&nbsp;            System.out.println(&quot;Nessun ordine in corso presente.&quot;);</b>
+&nbsp;        } else {
+&nbsp;            //Se ci sono li stampa
+<b class="nc">&nbsp;            System.out.println(&quot;Ordini in corso presenti:&quot;);</b>
+<b class="nc">&nbsp;            for (Ordine ordine : ordini) {</b>
+<b class="nc">&nbsp;                System.out.println(ordine);</b>
+&nbsp;            }
+&nbsp;        }
+&nbsp;
+&nbsp;        //Controlla se sono presenti ordini completati nella lista apposita
+<b class="nc">&nbsp;        if (ordiniCompletati.isEmpty()) {</b>
+<b class="nc">&nbsp;            System.out.println(&quot;Nessun ordine completato.&quot;);</b>
+&nbsp;        } else {
+&nbsp;            //Se ci sono li stampa
+<b class="nc">&nbsp;            System.out.println(&quot;Ordini completati:&quot;);</b>
+<b class="nc">&nbsp;            for (Ordine ordine : ordiniCompletati) {</b>
+<b class="nc">&nbsp;                System.out.println(ordine);</b>
+&nbsp;            }
+&nbsp;        }
+&nbsp;
+<b class="nc">&nbsp;        System.out.println(&quot;Vuoi passare alla gestione della libreria personale? (s/n)&quot;);</b>
+<b class="nc">&nbsp;        Scanner scanner = new Scanner(System.in);</b>
+<b class="nc">&nbsp;        String scelta = scanner.nextLine();</b>
+<b class="nc">&nbsp;        boolean input = false;</b>
+&nbsp;
+&nbsp;        //Rimane nel loop fino a quando l&#39;utente non completa
+&nbsp;        //una funzione o decide di tornare al menù principale
+<b class="nc">&nbsp;        while (!input) {</b>
+<b class="nc">&nbsp;            switch (scelta.toLowerCase()) {</b>
+&nbsp;                case &quot;s&quot;:
+<b class="nc">&nbsp;                    input = true;</b>
+&nbsp;                    //Chiama la funzione per gestire la libreria personale
+<b class="nc">&nbsp;                    gestioneLibreriaPersonale();</b>
+&nbsp;                    break;
+&nbsp;                case &quot;n&quot;:
+&nbsp;                    //Avvisa l&#39;utente e torna al menù principale
+<b class="nc">&nbsp;                    System.out.println(&quot;Fine della visualizzazione della libreria personale.&quot;);</b>
+<b class="nc">&nbsp;                    input = true;</b>
+&nbsp;                    break;
+&nbsp;                default:
+&nbsp;                    //Avvisa l&#39;utente e fai inserire nuovamente la scelta
+<b class="nc">&nbsp;                    System.out.println(&quot;Scelta non valida\nInserisci un valore valido (s/n)&quot;);</b>
+<b class="nc">&nbsp;                    scelta = scanner.nextLine();</b>
+&nbsp;                    break;
+&nbsp;            }
+&nbsp;        }
+&nbsp;    }
+&nbsp;
+&nbsp;    //Metodo della classe UtenteRegistrato o delle classi
+&nbsp;    //che la estendono per la gestione della libreria personale
+&nbsp;    public void gestioneLibreriaPersonale() {
+<b class="fc">&nbsp;        Scanner scanner = new Scanner(System.in);</b>
+&nbsp;        //Rimane nel loop fino a quando l&#39;utente non completa
+&nbsp;        //una funzione o decide di tornare al menù principale
+&nbsp;        while (true) {
+<b class="fc">&nbsp;            System.out.println(&quot;Vuoi gestire gli eventi o gli ordini?&quot;);</b>
+<b class="fc">&nbsp;            System.out.println(&quot;1) Gestione eventi&quot;);</b>
+<b class="fc">&nbsp;            System.out.println(&quot;2) Gestione ordini&quot;);</b>
+<b class="fc">&nbsp;            System.out.println(&quot;3) Torna al menù principale&quot;);</b>
+<b class="fc">&nbsp;            System.out.print(&quot;Seleziona un&#39;opzione: &quot;);</b>
+<b class="fc">&nbsp;            int scelta = scanner.nextInt();</b>
+<b class="fc">&nbsp;            scanner.nextLine();  // Consuma la newline</b>
+&nbsp;
+<b class="pc">&nbsp;            switch (scelta) {</b>
+&nbsp;                case 1:
+&nbsp;                    //Chiama la funzione per gestire gli eventi
+<b class="nc">&nbsp;                    gestisciEventi();</b>
+&nbsp;                    return;
+&nbsp;                case 2:
+&nbsp;                    //Chiama la funzione per gestire gli ordini
+<b class="nc">&nbsp;                    gestisciOrdini();</b>
+&nbsp;                    return;
+&nbsp;                case 3:
+&nbsp;                    //Avvisa l&#39;utente e torna al menù principale
+<b class="fc">&nbsp;                    System.out.println(&quot;Ritorno al menù principale.&quot;);</b>
+&nbsp;                    return;
+&nbsp;                default:
+&nbsp;                    //Avvisa l&#39;utente e fai ripetere la scelta
+<b class="nc">&nbsp;                    System.out.println(&quot;Scelta non valida. Per favore, seleziona una scelta valida.&quot;);</b>
+&nbsp;                    break;
+&nbsp;            }
+&nbsp;        }
+&nbsp;    }
+&nbsp;
+&nbsp;    //Metodo della classe UtenteRegistrato o delle classi che la
+&nbsp;    //estendono per la gestione della libreria personale
+&nbsp;    public void gestisciEventi() {
+<b class="fc">&nbsp;        Scanner scanner = new Scanner(System.in);</b>
+&nbsp;
+&nbsp;        //Controlla se ci sono eventi nella libreria
+<b class="pc">&nbsp;        if (libreriaPersonale.isEmpty()) {</b>
+<b class="fc">&nbsp;            System.out.println(&quot;Non ci sono eventi da gestire.&quot;);</b>
+&nbsp;            return;
+&nbsp;        } else {
+&nbsp;            //Se ci sono stampali
+<b class="nc">&nbsp;            System.out.println(&quot;Eventi nella tua libreria personale:&quot;);</b>
+<b class="nc">&nbsp;            for (int i = 0; i &lt; libreriaPersonale.size(); i++) {</b>
+<b class="nc">&nbsp;                System.out.println((i + 1) + &quot;) &quot; + libreriaPersonale.get(i).getNome());</b>
+&nbsp;            }
+&nbsp;
+<b class="nc">&nbsp;            System.out.print(&quot;Seleziona il numero corrispondente all&#39;evento da gestire: &quot;);</b>
+<b class="nc">&nbsp;            int sceltaEvento = scanner.nextInt();</b>
+<b class="nc">&nbsp;            scanner.nextLine();  //Consuma la newline rimasta</b>
+&nbsp;
+&nbsp;            //Controlla che l&#39;indice sia nel range valido
+<b class="nc">&nbsp;            if (sceltaEvento &lt; 1 || sceltaEvento &gt; libreriaPersonale.size()) {</b>
+<b class="nc">&nbsp;                System.out.println(&quot;Selezione non valida&quot;);</b>
+&nbsp;                return;
+&nbsp;            }
+&nbsp;
+&nbsp;            //Seleziona l&#39;evento in base all&#39;indice inserito in input
+<b class="nc">&nbsp;            Evento eventoSelezionato = libreriaPersonale.get(sceltaEvento - 1);</b>
+<b class="nc">&nbsp;            System.out.println(&quot;Hai selezionato l&#39;evento: &quot; + eventoSelezionato.getNome());</b>
+<b class="nc">&nbsp;            System.out.print(&quot;Vuoi eliminare questo evento dalla tua libreria? (s/n): &quot;);</b>
+<b class="nc">&nbsp;            String risposta = scanner.nextLine();</b>
+&nbsp;
+<b class="nc">&nbsp;            if (risposta.equalsIgnoreCase(&quot;s&quot;)) {</b>
+&nbsp;                //Rimuove dalla libreria l&#39;evento selezionato e chiama il metodo
+&nbsp;                //per decrementare i partecipanti
+<b class="nc">&nbsp;                libreriaPersonale.remove(eventoSelezionato);</b>
+<b class="nc">&nbsp;                eventoSelezionato.decrementaPartecipanti();</b>
+<b class="nc">&nbsp;                eventoController.notificaOsservatori(&quot;Numero di partecipanti aggiornato per l&#39;evento: &quot; + eventoSelezionato.getNome() + &quot; - Nuovo numero: &quot; + eventoSelezionato.getNumPartecipanti());</b>
+<b class="nc">&nbsp;                System.out.println(&quot;Evento eliminato dalla tua libreria personale.&quot;);</b>
+&nbsp;            } else {
+<b class="nc">&nbsp;                System.out.println(&quot;Evento non eliminato.&quot;);</b>
+&nbsp;            }
+&nbsp;        }
+&nbsp;    }
+&nbsp;
+&nbsp;    //Metodo della classe UtenteRegistrato o delle classi
+&nbsp;    //che la estendono per la gestione degli ordini
+&nbsp;    private void gestisciOrdini() {
+<b class="nc">&nbsp;        Scanner scanner = new Scanner(System.in);</b>
+&nbsp;        //Crea la lista che conterrà gli ordini con prodotti da portare via
+<b class="nc">&nbsp;        List&lt;Ordine&gt; ordiniConProdottiDaPortareVia = new ArrayList&lt;&gt;();</b>
+<b class="nc">&nbsp;        for (Ordine ordine : ordini) {</b>
+<b class="nc">&nbsp;            boolean contieneProdottiNonGestiti = false;</b>
+<b class="nc">&nbsp;            for (int i = 0; i &lt; ordine.getPortareVia().size(); i++) { //Per ogni ordine con prodotti da portare via,</b>
+&nbsp;                //controlla se sono presenti prodotti gestiti non ritirati fra i prodotti da portare via
+<b class="nc">&nbsp;                if (ordine.getPortareVia().get(i) &amp;&amp; ordine.getProdottiGestiti().get(i) &amp;&amp; !ordine.getProdottiRitirati().get(i)) {</b>
+<b class="nc">&nbsp;                    contieneProdottiNonGestiti = true;</b>
+&nbsp;                    break;
+&nbsp;                }
+&nbsp;            }
+<b class="nc">&nbsp;            if (contieneProdottiNonGestiti) {</b>
+&nbsp;                //Aggiunge gli ordini trovati con il controllo precedente alla nuova lista
+<b class="nc">&nbsp;                ordiniConProdottiDaPortareVia.add(ordine);</b>
+&nbsp;            }
+&nbsp;        }
+&nbsp;
+&nbsp;        //Verifica se ci sono ordini da gestire
+<b class="nc">&nbsp;        if (ordiniConProdottiDaPortareVia.isEmpty()) {</b>
+<b class="nc">&nbsp;            System.out.println(&quot;Non ci sono ordini da gestire / Non sono pronti i prodotti da ritirare.&quot;);</b>
+&nbsp;            return;
+&nbsp;        }
+&nbsp;
+&nbsp;        //Stampa solo gli ordini con prodotti da portare via pronti da ritirare
+<b class="nc">&nbsp;        System.out.println(&quot;Ordini effettuati con prodotti da portare via pronti da ritirare:&quot;);</b>
+<b class="nc">&nbsp;        for (int i = 0; i &lt; ordiniConProdottiDaPortareVia.size(); i++) {</b>
+<b class="nc">&nbsp;            System.out.println((i + 1) + &quot;) &quot; + ordiniConProdottiDaPortareVia.get(i).toString());</b>
+&nbsp;        }
+&nbsp;
+&nbsp;        //Seleziona un ordine da gestire
+&nbsp;        int sceltaOrdine;
+&nbsp;        while (true) {
+<b class="nc">&nbsp;            System.out.print(&quot;Seleziona il numero corrispondente all&#39;ordine da gestire: &quot;);</b>
+<b class="nc">&nbsp;            String input = scanner.nextLine();</b>
+&nbsp;            try {
+<b class="nc">&nbsp;                sceltaOrdine = Integer.parseInt(input);</b>
+&nbsp;                //Controlla se la scelta è interna al range di ordini
+<b class="nc">&nbsp;                if (sceltaOrdine &lt; 1 || sceltaOrdine &gt; ordiniConProdottiDaPortareVia.size()) {</b>
+<b class="nc">&nbsp;                    System.out.println(&quot;Numero ordine non valido. Per favore inserisci un numero valido.&quot;);</b>
+&nbsp;                } else {
+&nbsp;                    break;
+&nbsp;                }
+<b class="nc">&nbsp;            } catch (NumberFormatException e) { //Si verifica se l&#39;input non è numerico; chiede di inserire un nuovo input</b>
+<b class="nc">&nbsp;                System.out.println(&quot;Input non valido. Per favore inserisci un numero.&quot;);</b>
+&nbsp;            }
+&nbsp;        }
+&nbsp;
+&nbsp;        //Prende l&#39;ordine corrispondente all&#39;indice selezionato in input
+<b class="nc">&nbsp;        Ordine ordineSelezionato = ordiniConProdottiDaPortareVia.get(sceltaOrdine - 1);</b>
+&nbsp;
+&nbsp;        //Chiede se si vuole gestire l&#39;ordine selezionato, se sì, chiama il metodo apposito
+<b class="nc">&nbsp;        System.out.print(&quot;Attenzione! Potrai ritirare solo i prodotti pronti al ritiro\nVerrà mostrato un avviso per quei prodotti non ancora pronti\nVuoi ritirare i prodotti di questo ordine? (s/n): &quot;);</b>
+<b class="nc">&nbsp;        String rispostaOrdine = scanner.nextLine();</b>
+<b class="nc">&nbsp;        if (rispostaOrdine.equalsIgnoreCase(&quot;s&quot;)) {</b>
+<b class="nc">&nbsp;            gestisciOrdine(ordineSelezionato);</b>
+&nbsp;        } else {
+<b class="nc">&nbsp;            System.out.println(&quot;Prodotti di questo ordine non ritirati.&quot;);</b>
+&nbsp;        }
+&nbsp;    }
+&nbsp;
+&nbsp;    //Metodo interno al metodo gestisciOrdini
+&nbsp;    protected void gestisciOrdine(Ordine ordine) {
+<b class="nc">&nbsp;        Scanner scanner = new Scanner(System.in);</b>
+&nbsp;
+&nbsp;        //Ottiene le liste degli ordini e dei prodotti
+<b class="nc">&nbsp;        List&lt;Prodotto&gt; prodotti = ordine.getProdotti();</b>
+<b class="nc">&nbsp;        List&lt;Integer&gt; quantita = ordine.getQuantita();</b>
+<b class="nc">&nbsp;        List&lt;Boolean&gt; portareVia = ordine.getPortareVia();</b>
+<b class="nc">&nbsp;        List&lt;Boolean&gt; prodottiRitirati = ordine.getProdottiRitirati();</b>
+<b class="nc">&nbsp;        List&lt;Boolean&gt; prodottiGestiti = ordine.getProdottiGestiti();</b>
+&nbsp;
+&nbsp;        //Esegue ciò che segue per ogni prodotto nell&#39;ordine selezionato nella ricerca
+<b class="nc">&nbsp;        for (int i = 0; i &lt; prodotti.size(); i++) {</b>
+&nbsp;            //Controlla se sono prodotti da portare via e non sono stati ritirati
+<b class="nc">&nbsp;            if (portareVia.get(i) &amp;&amp; !prodottiRitirati.get(i)) {</b>
+<b class="nc">&nbsp;                if (prodottiGestiti.get(i)) {</b>
+<b class="nc">&nbsp;                    System.out.println(&quot;Prodotto da ritirare: &quot; + prodotti.get(i).getNome() + &quot; - Quantità: &quot; + quantita.get(i));</b>
+<b class="nc">&nbsp;                    System.out.print(&quot;Vuoi ritirare questo prodotto? (s/n): &quot;);</b>
+<b class="nc">&nbsp;                    String risposta = scanner.nextLine();</b>
+&nbsp;
+<b class="nc">&nbsp;                    if (risposta.equalsIgnoreCase(&quot;s&quot;)) {</b>
+<b class="nc">&nbsp;                        prodottiRitirati.set(i, true); //Impostia il prodotto come ritirato</b>
+<b class="nc">&nbsp;                        System.out.println(&quot;Prodotto ritirato: &quot; + prodotti.get(i).getNome());</b>
+&nbsp;                    } else {
+&nbsp;                        //Avvisa che il prodotto non è stato ritirato
+<b class="nc">&nbsp;                        System.out.println(&quot;Il prodotto&quot; + prodotti.get(i).getNome() + &quot; non è stato ritirato&quot;);</b>
+&nbsp;                    }
+&nbsp;                } else {
+<b class="nc">&nbsp;                    System.out.println(&quot;Prodotto &quot; + prodotti.get(i).getNome() + &quot; non ancora pronto per il ritiro.&quot;);</b>
+&nbsp;                }
+&nbsp;            }
+&nbsp;        }
+&nbsp;
+<b class="nc">&nbsp;        ordine.setProdottiRitirati(prodottiRitirati); //Aggiorna la lista dei prodotti ritirati</b>
+&nbsp;
+&nbsp;        //Verifica se tutti i prodotti da portare via sono stati ritirati
+<b class="nc">&nbsp;        boolean tuttiRitirati = true;</b>
+<b class="nc">&nbsp;        for (int i = 0; i &lt; prodotti.size(); i++) {</b>
+<b class="nc">&nbsp;            if (portareVia.get(i) &amp;&amp; !prodottiRitirati.get(i)) {</b>
+<b class="nc">&nbsp;                tuttiRitirati = false;</b>
+&nbsp;                break;
+&nbsp;            }
+&nbsp;        }
+&nbsp;
+<b class="nc">&nbsp;        if (tuttiRitirati) {</b>
+<b class="nc">&nbsp;            ordine.setProdottiPortareViaCompletati(true); //Se sono stati ritirati tutti i prodotti,</b>
+&nbsp;            //imposta a true il completamento del ritiro
+<b class="nc">&nbsp;            System.out.println(&quot;Tutti i prodotti da portare via sono stati ritirati. Ordine completato.&quot;);</b>
+&nbsp;        } else {
+&nbsp;            //Se non sono stati ritirati tutti i prodotti, avvisa solo l&#39;utente
+<b class="nc">&nbsp;            System.out.println(&quot;Non tutti i prodotti da portare via sono stati ritirati. Ordine ancora in attesa.&quot;);</b>
+&nbsp;        }
+&nbsp;    }
+&nbsp;
+&nbsp;    //Getter per email
+&nbsp;    public String getEmail() {
+<b class="fc">&nbsp;        return email;</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    //Getter per password
+&nbsp;    public String getPassword() {
+<b class="fc">&nbsp;        return password;</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    // Metodi getter e setter per le informazioni della carta di credito
+&nbsp;    public String getNumeroCarta() {
+<b class="fc">&nbsp;        return numeroCarta;</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    public void setNumeroCarta(String numeroCarta) {
+<b class="fc">&nbsp;        this.numeroCarta = numeroCarta;</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    public String getDataScadenza() {
+<b class="fc">&nbsp;        return dataScadenza;</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    public void setDataScadenza(String dataScadenza) {
+<b class="fc">&nbsp;        this.dataScadenza = dataScadenza;</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    public String getNomeProprietario() {
+<b class="fc">&nbsp;        return nomeProprietario;</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    public void setNomeProprietario(String nomeProprietario) {
+<b class="fc">&nbsp;        this.nomeProprietario = nomeProprietario;</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    public String getCognomeProprietario() {
+<b class="fc">&nbsp;        return cognomeProprietario;</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    public void setCognomeProprietario(String cognomeProprietario) {
+<b class="fc">&nbsp;        this.cognomeProprietario = cognomeProprietario;</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    public String getCvv() {
+<b class="fc">&nbsp;        return cvv;</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    public void setCvv(String cvv) {
+<b class="fc">&nbsp;        this.cvv = cvv;</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    public double getSaldo() {
+<b class="fc">&nbsp;        return saldo;</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    public void setSaldo(double saldo) {
+<b class="fc">&nbsp;        this.saldo = saldo;</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    //Getter per la libreria personale dell&#39;utente
+&nbsp;    public List&lt;Evento&gt; getLibreriaPersonale() {
+<b class="fc">&nbsp;        return libreriaPersonale;</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    //Aggiunge un evento alla libreria personale dell&#39;utente
+&nbsp;    public void aggiungiEventoALibreria(Evento evento) {
+<b class="fc">&nbsp;        libreriaPersonale.add(evento);</b>
+&nbsp;    }
+&nbsp;}
+</code>
+</pre>
+</div>
+
+<script type="text/javascript">
+(function() {
+    var msie = false, msie9 = false;
+    /*@cc_on
+      msie = true;
+      @if (@_jscript_version >= 9)
+        msie9 = true;
+      @end
+    @*/
+
+    if (!msie || msie && msie9) {
+      hljs.highlightAll()
+      hljs.initLineNumbersOnLoad();
+    }
+})();
+</script>
+
+<div class="footer">
+    
+    <div style="float:right;">generated on 2024-08-29 22:48</div>
+</div>
+</body>
+</html>
