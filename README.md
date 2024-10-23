@@ -1,10 +1,10 @@
-# Progetto Finale
+# Final Project
 
 ## Client
-Codice per il frontend non implementato
+Code for the frontend not done
 
 ## Server
-Codice per il backend scritto in Java (IntelliJ)
+Code for the backend written in Java (IntelliJ)
 
 ## Test
-Unit test eseguiti utilizzando JUnit
+Unit test done using JUnit
